@@ -24,7 +24,7 @@ class Estado_civil_model extends CI_Model
      */
     function get_all_estado_civil()
     {
-        $this->db->order_by('estadocivil_id', 'desc');
+        $this->db->order_by('estadocivil_nombre', 'asc');
         return $this->db->get('estado_civil')->result_array();
     }
         

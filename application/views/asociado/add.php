@@ -2,28 +2,26 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Asociado Add</h3>
+              	<h3 class="box-title">Nuevo Asociado</h3>
             </div>
-            <?php echo form_open('asociado/add'); ?>
+            <?php echo form_open_multipart('asociado/add'); ?>
           	<div class="box-body">
-          		<div class="row clearfix">
-					<div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
-						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="">select estado</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == $this->input->post('estado_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_id'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-6">
+                    <div class="row clearfix">
+                        <div class="col-md-4">
+                            <label for="sociado_apellido" class="control-label"><span class="text-danger">*</span>Apellido(s)</label>
+                            <div class="form-group">
+                                <input type="text" name="sociado_apellido" value="<?php echo $this->input->post('sociado_apellido'); ?>" class="form-control" id="sociado_apellido" autofocus required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="asociado__nombre" class="control-label"><span class="text-danger">*</span>Nombre(s)</label>
+                            <div class="form-group">
+                                <input type="text" name="asociado__nombre" value="<?php echo $this->input->post('asociado__nombre'); ?>" class="form-control" id="asociado__nombre" required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <span class="text-danger"><?php echo form_error('asociado__nombre');?></span>
+                            </div>
+                        </div>
+                        
+					<div class="col-md-4">
 						<label for="estadocivil_id" class="control-label">Estado Civil</label>
 						<div class="form-group">
 							<select name="estadocivil_id" class="form-control">
@@ -71,19 +69,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="asociado__nombre" class="control-label"><span class="text-danger">*</span>Asociado  Nombre</label>
-						<div class="form-group">
-							<input type="text" name="asociado__nombre" value="<?php echo $this->input->post('asociado__nombre'); ?>" class="form-control" id="asociado__nombre" />
-							<span class="text-danger"><?php echo form_error('asociado__nombre');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="sociado_apellido" class="control-label">Sociado Apellido</label>
-						<div class="form-group">
-							<input type="text" name="sociado_apellido" value="<?php echo $this->input->post('sociado_apellido'); ?>" class="form-control" id="sociado_apellido" />
-						</div>
-					</div>
+					
 					<div class="col-md-6">
 						<label for="asociado_fechanac" class="control-label">Asociado Fechanac</label>
 						<div class="form-group">
