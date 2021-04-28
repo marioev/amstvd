@@ -28,17 +28,14 @@ class Estado_civil extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('estadocivil_nombre','Estadocivil Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+        $this->form_validation->set_rules('estadocivil_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
             $params = array(
-				'estadocivil_nombre' => $this->input->post('estadocivil_nombre'),
+                'estadocivil_nombre' => $this->input->post('estadocivil_nombre'),
             );
-            
             $estado_civil_id = $this->Estado_civil_model->add_estado_civil($params);
-            redirect('estado_civil/index');
+            redirect('estado_civil');
         }
         else
         {            
@@ -54,21 +51,17 @@ class Estado_civil extends CI_Controller{
     {   
         // check if the estado_civil exists before trying to edit it
         $data['estado_civil'] = $this->Estado_civil_model->get_estado_civil($estadocivil_id);
-        
         if(isset($data['estado_civil']['estadocivil_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('estadocivil_nombre','Estadocivil Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
+            $this->form_validation->set_rules('estadocivil_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
+            {
                 $params = array(
-					'estadocivil_nombre' => $this->input->post('estadocivil_nombre'),
+                    'estadocivil_nombre' => $this->input->post('estadocivil_nombre'),
                 );
-
                 $this->Estado_civil_model->update_estado_civil($estadocivil_id,$params);            
-                redirect('estado_civil/index');
+                redirect('estado_civil');
             }
             else
             {
@@ -83,7 +76,7 @@ class Estado_civil extends CI_Controller{
     /*
      * Deleting estado_civil
      */
-    function remove($estadocivil_id)
+    /*function remove($estadocivil_id)
     {
         $estado_civil = $this->Estado_civil_model->get_estado_civil($estadocivil_id);
 
@@ -95,6 +88,6 @@ class Estado_civil extends CI_Controller{
         }
         else
             show_error('The estado_civil you are trying to delete does not exist.');
-    }
+    }*/
     
 }

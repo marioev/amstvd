@@ -168,9 +168,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="<?php echo site_url('estado');?>" class="nav-link">
+                                <i class="fa fa-toggle-on"></i>
+                                <p>Estado</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?php echo site_url('estado_civil');?>" class="nav-link">
                                 <i class="fa fa-odnoklassniki"></i>
                                 <p>Estado Civil</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('expedido');?>" class="nav-link">
+                                <i class="fa fa-vcard-o"></i>
+                                <p>Expedido</p>
                             </a>
                         </li>
                         <li class="nav-item">

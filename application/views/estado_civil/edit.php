@@ -10,7 +10,7 @@
                     <div class="col-md-6">
                         <label for="estadocivil_nombre" class="control-label"><span class="text-danger">*</span>Estado Civil</label>
                         <div class="form-group">
-                            <input type="text" name="estadocivil_nombre" value="<?php echo ($this->input->post('estadocivil_nombre') ? $this->input->post('estadocivil_nombre') : $estado_civil['estadocivil_nombre']); ?>" class="form-control" id="estadocivil_nombre" autocomplete="off" requuired onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="estadocivil_nombre" value="<?php echo ($this->input->post('estadocivil_nombre') ? $this->input->post('estadocivil_nombre') : $estado_civil['estadocivil_nombre']); ?>" class="form-control" id="estadocivil_nombre" autocomplete="off" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('estadocivil_nombre');?></span>
                         </div>
                     </div>
