@@ -28,17 +28,14 @@ class Genero extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('genero_nombre','Genero Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+        $this->form_validation->set_rules('genero_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
             $params = array(
-				'genero_nombre' => $this->input->post('genero_nombre'),
+                'genero_nombre' => $this->input->post('genero_nombre'),
             );
-            
             $genero_id = $this->Genero_model->add_genero($params);
-            redirect('genero/index');
+            redirect('genero');
         }
         else
         {            
@@ -54,21 +51,17 @@ class Genero extends CI_Controller{
     {   
         // check if the genero exists before trying to edit it
         $data['genero'] = $this->Genero_model->get_genero($genero_id);
-        
         if(isset($data['genero']['genero_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('genero_nombre','Genero Nombre','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('genero_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
             {   
                 $params = array(
-					'genero_nombre' => $this->input->post('genero_nombre'),
+                    'genero_nombre' => $this->input->post('genero_nombre'),
                 );
-
                 $this->Genero_model->update_genero($genero_id,$params);            
-                redirect('genero/index');
+                redirect('genero');
             }
             else
             {
@@ -83,7 +76,7 @@ class Genero extends CI_Controller{
     /*
      * Deleting genero
      */
-    function remove($genero_id)
+    /*function remove($genero_id)
     {
         $genero = $this->Genero_model->get_genero($genero_id);
 
@@ -95,6 +88,6 @@ class Genero extends CI_Controller{
         }
         else
             show_error('The genero you are trying to delete does not exist.');
-    }
+    }*/
     
 }

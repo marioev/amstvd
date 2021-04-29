@@ -28,28 +28,23 @@ class Gestion extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('gestion_nombre','Gestion Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+        $this->form_validation->set_rules('gestion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
+            $estado_id = 1; // estado ACTIVO
             $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'gestion_nombre' => $this->input->post('gestion_nombre'),
-				'gestion_inicio' => $this->input->post('gestion_inicio'),
-				'gestion_fin' => $this->input->post('gestion_fin'),
-				'gestion_numingreso' => $this->input->post('gestion_numingreso'),
-				'gestion_numegreso' => $this->input->post('gestion_numegreso'),
+                'estado_id' => $estado_id,
+                'gestion_nombre' => $this->input->post('gestion_nombre'),
+                'gestion_inicio' => $this->input->post('gestion_inicio'),
+                'gestion_fin' => $this->input->post('gestion_fin'),
+                'gestion_numingreso' => 0,
+                'gestion_numegreso' => 0,
             );
-            
             $gestion_id = $this->Gestion_model->add_gestion($params);
-            redirect('gestion/index');
+            redirect('gestion');
         }
         else
         {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-            
             $data['_view'] = 'gestion/add';
             $this->load->view('layouts/main',$data);
         }
@@ -62,31 +57,26 @@ class Gestion extends CI_Controller{
     {   
         // check if the gestion exists before trying to edit it
         $data['gestion'] = $this->Gestion_model->get_gestion($gestion_id);
-        
         if(isset($data['gestion']['gestion_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('gestion_nombre','Gestion Nombre','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('gestion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
             {   
                 $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'gestion_nombre' => $this->input->post('gestion_nombre'),
-					'gestion_inicio' => $this->input->post('gestion_inicio'),
-					'gestion_fin' => $this->input->post('gestion_fin'),
-					'gestion_numingreso' => $this->input->post('gestion_numingreso'),
-					'gestion_numegreso' => $this->input->post('gestion_numegreso'),
+                    'estado_id' => $this->input->post('estado_id'),
+                    'gestion_nombre' => $this->input->post('gestion_nombre'),
+                    'gestion_inicio' => $this->input->post('gestion_inicio'),
+                    'gestion_fin' => $this->input->post('gestion_fin'),
+                    //'gestion_numingreso' => $this->input->post('gestion_numingreso'),
+                    //'gestion_numegreso' => $this->input->post('gestion_numegreso'),
                 );
-
                 $this->Gestion_model->update_gestion($gestion_id,$params);            
-                redirect('gestion/index');
-            }
-            else
-            {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+                redirect('gestion');
+            }else{
+                $this->load->model('Estado_model');
+                $tipo = 1;
+                $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
 
                 $data['_view'] = 'gestion/edit';
                 $this->load->view('layouts/main',$data);

@@ -24,8 +24,11 @@ class Gestion_model extends CI_Model
      */
     function get_all_gestion()
     {
+        $this->db->select('g.*, e.estado_nombre, e.estado_color');
+        $this->db->from('gestion as g');
+        $this->db->join('estado as e','g.estado_id = e.estado_id', 'left');
         $this->db->order_by('gestion_id', 'desc');
-        return $this->db->get('gestion')->result_array();
+        return $this->db->get()->result_array();
     }
         
     /*

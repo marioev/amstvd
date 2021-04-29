@@ -53,4 +53,13 @@ class Estado_model extends CI_Model
     {
         return $this->db->delete('estado',array('estado_id'=>$estado_id));
     }
+    /*
+     * Get all estado de un tipo
+     */
+    function get_all_estadotipo($tipo)
+    {
+        $this->db->where('estado_tipo',$tipo);
+        $this->db->order_by('estado_id', 'desc');
+        return $this->db->get('estado')->result_array();
+    }
 }
