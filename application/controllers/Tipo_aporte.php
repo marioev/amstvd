@@ -17,7 +17,6 @@ class Tipo_aporte extends CI_Controller{
     function index()
     {
         $data['tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
-        
         $data['_view'] = 'tipo_aporte/index';
         $this->load->view('layouts/main',$data);
     }
@@ -28,20 +27,15 @@ class Tipo_aporte extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('tipoaporte_nombre','Tipoaporte Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+        $this->form_validation->set_rules('tipoaporte_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
             $params = array(
-				'tipoaporte_nombre' => $this->input->post('tipoaporte_nombre'),
+                'tipoaporte_nombre' => $this->input->post('tipoaporte_nombre'),
             );
-            
             $tipo_aporte_id = $this->Tipo_aporte_model->add_tipo_aporte($params);
-            redirect('tipo_aporte/index');
-        }
-        else
-        {            
+            redirect('tipo_aporte');
+        }else{
             $data['_view'] = 'tipo_aporte/add';
             $this->load->view('layouts/main',$data);
         }
@@ -51,24 +45,20 @@ class Tipo_aporte extends CI_Controller{
      * Editing a tipo_aporte
      */
     function edit($tipoaporte_id)
-    {   
+    {
         // check if the tipo_aporte exists before trying to edit it
         $data['tipo_aporte'] = $this->Tipo_aporte_model->get_tipo_aporte($tipoaporte_id);
-        
         if(isset($data['tipo_aporte']['tipoaporte_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('tipoaporte_nombre','Tipoaporte Nombre','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('tipoaporte_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
             {   
                 $params = array(
-					'tipoaporte_nombre' => $this->input->post('tipoaporte_nombre'),
+                    'tipoaporte_nombre' => $this->input->post('tipoaporte_nombre'),
                 );
-
                 $this->Tipo_aporte_model->update_tipo_aporte($tipoaporte_id,$params);            
-                redirect('tipo_aporte/index');
+                redirect('tipo_aporte');
             }
             else
             {
@@ -83,7 +73,7 @@ class Tipo_aporte extends CI_Controller{
     /*
      * Deleting tipo_aporte
      */
-    function remove($tipoaporte_id)
+    /*function remove($tipoaporte_id)
     {
         $tipo_aporte = $this->Tipo_aporte_model->get_tipo_aporte($tipoaporte_id);
 
@@ -95,6 +85,6 @@ class Tipo_aporte extends CI_Controller{
         }
         else
             show_error('The tipo_aporte you are trying to delete does not exist.');
-    }
+    }*/
     
 }

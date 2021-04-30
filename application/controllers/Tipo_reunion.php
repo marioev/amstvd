@@ -17,7 +17,6 @@ class Tipo_reunion extends CI_Controller{
     function index()
     {
         $data['tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
-        
         $data['_view'] = 'tipo_reunion/index';
         $this->load->view('layouts/main',$data);
     }
@@ -28,20 +27,15 @@ class Tipo_reunion extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('tiporeunion_nombre','Tiporeunion Nombre','required');
-		
-		if($this->form_validation->run())     
+        $this->form_validation->set_rules('tiporeunion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
         {   
             $params = array(
-				'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
+                'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
             );
-            
             $tipo_reunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
-            redirect('tipo_reunion/index');
-        }
-        else
-        {            
+            redirect('tipo_reunion');
+        }else{            
             $data['_view'] = 'tipo_reunion/add';
             $this->load->view('layouts/main',$data);
         }
@@ -54,24 +48,18 @@ class Tipo_reunion extends CI_Controller{
     {   
         // check if the tipo_reunion exists before trying to edit it
         $data['tipo_reunion'] = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
-        
         if(isset($data['tipo_reunion']['tiporeunion_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('tiporeunion_nombre','Tiporeunion Nombre','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('tiporeunion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
             {   
                 $params = array(
-					'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
+                    'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
                 );
-
                 $this->Tipo_reunion_model->update_tipo_reunion($tiporeunion_id,$params);            
-                redirect('tipo_reunion/index');
-            }
-            else
-            {
+                redirect('tipo_reunion');
+            }else{
                 $data['_view'] = 'tipo_reunion/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -83,7 +71,7 @@ class Tipo_reunion extends CI_Controller{
     /*
      * Deleting tipo_reunion
      */
-    function remove($tiporeunion_id)
+    /*function remove($tiporeunion_id)
     {
         $tipo_reunion = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
 
@@ -95,6 +83,6 @@ class Tipo_reunion extends CI_Controller{
         }
         else
             show_error('The tipo_reunion you are trying to delete does not exist.');
-    }
+    }*/
     
 }

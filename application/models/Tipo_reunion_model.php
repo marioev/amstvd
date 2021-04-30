@@ -24,7 +24,7 @@ class Tipo_reunion_model extends CI_Model
      */
     function get_all_tipo_reunion()
     {
-        $this->db->order_by('tiporeunion_id', 'desc');
+        $this->db->order_by('tiporeunion_nombre', 'asc');
         return $this->db->get('tipo_reunion')->result_array();
     }
         

@@ -186,9 +186,38 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation + Sidebar</p>
+                            <a href="<?php echo site_url('genero');?>" class="nav-link">
+                                <i class="fa fa-venus-mars"></i>
+                                <p>G&eacute;nero</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('gestion');?>" class="nav-link">
+                                <i class="fa fa-calendar"></i>
+                                <p>Gesti&oacute;n</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-braille"></i>
+                        <p>Categor&iacute;as
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">6</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('tipo_aporte');?>" class="nav-link">
+                                <i class="fa fa-bars"></i>
+                                <p>Tipo Aporte</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('tipo_reunion');?>" class="nav-link">
+                                <i class="fa fa-list"></i>
+                                <p>Tipo Reuni&oacute;n</p>
                             </a>
                         </li>
                     </ul>
