@@ -24,7 +24,7 @@ class Expedido_model extends CI_Model
      */
     function get_all_expedido()
     {
-        $this->db->order_by('expedido_id', 'desc');
+        $this->db->order_by('expedido_nombre', 'asc');
         return $this->db->get('expedido')->result_array();
     }
         
