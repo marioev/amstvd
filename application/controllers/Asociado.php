@@ -278,4 +278,15 @@ class Asociado extends CI_Controller{
             show_error('The asociado you are trying to delete does not exist.');
     }
     */
+    /* funcion que busca asociados */
+    function buscar_asociados()
+    {
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post('filtro');
+            $res_asociados = $this->Asociado_model->get_all_asociado($filtro);
+            echo json_encode($res_asociados);
+        }else{
+            show_404();
+        }
+    }
 }

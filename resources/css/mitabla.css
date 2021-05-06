@@ -33,4 +33,19 @@
 #div1 table {
     width:500px;
     background-color:lightgray;
-}    
+}
+#contieneimg{
+    width: 45px;
+    height: 45px;
+    text-align: center;
+}
+#contieneimg img{
+    width: 45px;
+    height: 45px;
+    text-align: center;
+}
+#horizontal{
+    display: flex;
+    white-space: nowrap;
+    border-style: none !important;
+}

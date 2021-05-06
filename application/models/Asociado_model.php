@@ -26,6 +26,25 @@ class Asociado_model extends CI_Model
     {
         $this->db->order_by('asociado_id', 'desc');
         return $this->db->get('asociado')->result_array();
+        
+        /*
+        SELECT
+                d.*, e.*, g.*, ec.*
+
+            FROM
+                docente d, estado e, genero g, estado_civil ec
+
+            WHERE
+                d.estado_id=e.estado_id
+                and d.genero_id=g.genero_id
+                and d.estadocivil_id=ec.estadocivil_id
+                and (d.docente_nombre like '%".$filtro."%'
+                or d.docente_apellidos like '%".$filtro."%')
+                    
+            ORDER BY d.docente_apellidos, d.docente_nombre
+                */
+        
+        
     }
         
     /*
