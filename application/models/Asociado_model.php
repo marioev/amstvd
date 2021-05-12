@@ -22,10 +22,17 @@ class Asociado_model extends CI_Model
     /*
      * Get all asociado
      */
-    function get_all_asociado()
+    function get_all_asociado($filtro)
     {
-        $this->db->order_by('asociado_id', 'desc');
-        return $this->db->get('asociado')->result_array();
+        $this->db->select('a.*, ec.estadocivil_nombre, ex.expedido_nombre, e.estado_nombre, e.estado_color, g.genero_nombre');
+        $this->db->from('asociado as a');
+        $this->db->join('estado_civil as ec','a.estadocivil_id = ec.estadocivil_id');
+        $this->db->join('expedido as ex','a.expedido_id = ex.expedido_id');
+        $this->db->join('estado as e','a.estado_id = e.estado_id');
+        $this->db->join('genero as g','a.genero_id = g.genero_id');
+        $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
+        return $this->db->get()->result_array();
+        
         
         /*
         SELECT

@@ -1,4 +1,4 @@
-<script src="<?php echo base_url('resources/js/jquery.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
 <script type="text/javascript">
     function loader() {
      	$("form").submit(function() {
@@ -19,10 +19,10 @@
                             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                         </div>
                         <div class="col-md-4">
-                            <label for="sociado_apellido" class="control-label"><span class="text-danger">*</span>Apellido(s)</label>
+                            <label for="asociado_apellido" class="control-label"><span class="text-danger">*</span>Apellido(s)</label>
                             <div class="form-group">
-                                <input type="text" name="sociado_apellido" value="<?php echo ($this->input->post('sociado_apellido') ? $this->input->post('sociado_apellido') : $asociado['sociado_apellido']); ?>" class="form-control" id="sociado_apellido" autofocus required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                                <span class="text-danger"><?php echo form_error('sociado_apellido');?></span>
+                                <input type="text" name="asociado_apellido" value="<?php echo ($this->input->post('asociado_apellido') ? $this->input->post('asociado_apellido') : $asociado['asociado_apellido']); ?>" class="form-control" id="asociado_apellido" autofocus required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <span class="text-danger"><?php echo form_error('asociado_apellido');?></span>
                             </div>
                         </div>
                         <div class="col-md-4">

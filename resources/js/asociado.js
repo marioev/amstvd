@@ -4,13 +4,12 @@ function inicio(){
    tabla_asociado(filtro);
 }
 
-function validar(e,opcion) {
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13){ 
-     	if (opcion==1){
-            var filtro = document.getElementById('filtrar').value;
-            tabla_asociado(filtro);
-        }
+/* si la tecla enter es apretado; procede con la busqueda */
+function buscarasociado(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        var filtro = document.getElementById('filtrar').value;
+        tabla_asociado(filtro);
     }
 }
 function tabla_asociado(filtro){
@@ -33,7 +32,7 @@ function tabla_asociado(filtro){
                 if (registros[i]["asociado_foto"] != null && registros[i]["asociado_foto"] != ""){
                     html += "<div id='contieneimg'>";
                     var mimagen = "thumb_"+registros[i]["asociado_foto"];
-                    html += "<a class='btn btn-xs' onclick='mostrarimagen("+registros[i]["asociado_foto"]+")' style='padding: 0px;'>";
+                    html += "<a class='btn btn-xs' onclick='mostrarimagen("+JSON.stringify(registros[i]["asociado_foto"])+", "+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+")' style='padding: 0px;'>";
                     html += "<img src='"+base_url+"resources/images/asociados/"+mimagen+"' />";
                     html += "</a>";
                     html += "</div>";
@@ -43,7 +42,7 @@ function tabla_asociado(filtro){
                     html += "</div>";
                 }
                 html += "<div style='padding-left: 4px'>";
-                html += "<b>"+registros[i]["sociado_apellido"]+"</b><br>";
+                html += "<b>"+registros[i]["asociado_apellido"]+"</b><br>";
                 html += "<b>"+registros[i]["asociado_nombre"]+"</b><br>";
                 html += "<b>Cod.:</b> "+registros[i]["asociado_codigo"];
                 html += "</div>";
@@ -68,7 +67,7 @@ function tabla_asociado(filtro){
                     html += "("+edad+")";
                 }
                 html += "</td>";
-                html += "<td><b>Dir.:</b> "+registros[i]["asociado_direccion"]+"</br>";
+                html += "<td><b>Dir.:</b> "+registros[i]["asociado_direccion"];
                 var asociado_telef = "";
                 var asociado_celu = "";
                 var guion = "";
@@ -106,4 +105,12 @@ function tabla_asociado(filtro){
                 //tabla_inventario();
             }		
         });
+}
+/* mostrar modal con imagen */
+function mostrarimagen(imagen, asociado){
+    var base_url = document.getElementById('base_url').value;
+    laimg = "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/asociados/"+imagen+"' />";
+    $("#elasociado").html(asociado);
+    $("#imagenasociado").html(laimg);
+    $("#modalimagenasociado").modal('show');
 }

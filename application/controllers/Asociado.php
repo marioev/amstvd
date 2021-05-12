@@ -16,7 +16,7 @@ class Asociado extends CI_Controller{
      */
     function index()
     {
-        $data['asociado'] = $this->Asociado_model->get_all_asociado();
+        //$data['asociado'] = $this->Asociado_model->get_all_asociado();
         $data['_view'] = 'asociado/index';
         $this->load->view('layouts/main',$data);
     }
@@ -27,7 +27,7 @@ class Asociado extends CI_Controller{
     function add()
     {
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('sociado_apellido','Apellido','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('asociado_apellido','Apellido','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('asociado_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('asociado_ci','C.I.','trim|required|is_unique[asociado.asociado_ci]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
         $this->form_validation->set_rules('asociado_login','usuario','trim|required|is_unique[asociado.asociado_login]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
@@ -96,7 +96,7 @@ class Asociado extends CI_Controller{
                 'expedido_id' => $this->input->post('expedido_id'),
                 'genero_id' => $this->input->post('genero_id'),
                 'asociado_nombre' => $this->input->post('asociado_nombre'),
-                'sociado_apellido' => $this->input->post('sociado_apellido'),
+                'asociado_apellido' => $this->input->post('asociado_apellido'),
                 'asociado_fechanac' => $this->input->post('asociado_fechanac'),
                 'asociado_ci' => $this->input->post('asociado_ci'),
                 //'asociado_ciext' => $this->input->post('asociado_ciext'),
@@ -141,7 +141,7 @@ class Asociado extends CI_Controller{
         if(isset($data['asociado']['asociado_id']))
         {
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('sociado_apellido','Apellido','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('asociado_apellido','Apellido','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('asociado_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('asociado_ci','C.I.','trim|required|is_unique[asociado.asociado_ci]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
             $this->form_validation->set_rules('asociado_login','usuario','trim|required|is_unique[asociado.asociado_login]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
@@ -223,7 +223,7 @@ class Asociado extends CI_Controller{
                     'expedido_id' => $this->input->post('expedido_id'),
                     'genero_id' => $this->input->post('genero_id'),
                     'asociado_nombre' => $this->input->post('asociado_nombre'),
-                    'sociado_apellido' => $this->input->post('sociado_apellido'),
+                    'asociado_apellido' => $this->input->post('asociado_apellido'),
                     'asociado_fechanac' => $this->input->post('asociado_fechanac'),
                     'asociado_ci' => $this->input->post('asociado_ci'),
                     //'asociado_ciext' => $this->input->post('asociado_ciext'),

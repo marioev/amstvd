@@ -1,4 +1,4 @@
-<script src="<?php echo base_url('resources/js/jquery.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/asociado.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -31,7 +31,7 @@
     </section>
 </div>
 <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese Apellido(s), Nombre(s), C.I....">
+    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese Apellido(s), Nombre(s), C.I...." onkeypress="buscarasociado(event)">
 </div>
 <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
@@ -39,30 +39,17 @@
 <div class="row">
     <div class="col-md-12">
         <div class="box">
-            <div class="box-body">
+            <div class="box-body table-responsive">
                 <table class="table table-striped" id="mitabla">
                     <tr>
                         <th>N&deg;</th>
                         <th>Socio</th>
-                        <th>Estado Id</th>
-                        <th>Estadocivil Id</th>
-                        <th>Expedido Id</th>
-                        <th>Genero Id</th>
-                        <th>Sociado Apellido</th>
-                        <th>Asociado Fechanac</th>
-                        <th>Asociado Ci</th>
-                        <th>Asociado Ciext</th>
-                        <th>Asociado Codigo</th>
-                        <th>Asociado Direccion</th>
-                        <th>Asociado Telefono</th>
-                        <th>Asociado Celular</th>
-                        <th>Asociado Foto</th>
-                        <th>Asociado Email</th>
-                        <th>Asociado Login</th>
-                        <th>Asociado Clave</th>
-                        <th>Asocadio Codactivacion</th>
-                        <th>Asociado Fechactivacion</th>
-                        <th>Actions</th>
+                        <th>Informaci&oacute;n</th>
+                        <th>Fecha Nac. (Edad)</th>
+                        <th>Direcc&oacute;n tel&eacute;fono</th>
+                        <th>Correo Electr&oacute;nico</th>
+                        <th>Estado</th>
+                        <th></th>
                     </tr>
                     <tbody id="listasocios"></tbody>
                     <?php /*foreach($asociado as $a){ ?>
@@ -98,3 +85,23 @@
         </div>
     </div>
 </div>
+
+<!----------------------------------- INICIO modal para mostrar Imagen de un asociado ----------------------------------->
+<div class="modal fade" id="modalimagenasociado" tabindex="-1" role="dialog" aria-labelledby="modalimagenasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociado"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span id="imagenasociado"></span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para mostrar Imagen de un asociado ----------------------------------->
