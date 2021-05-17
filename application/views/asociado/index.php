@@ -15,6 +15,8 @@
 </script>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
+<input type="hidden" id="elasociadoactual">
+<input type="hidden" id="elasociadoactualci">
 <div class="box-header">
     <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
         <div class="container-fluid">
@@ -27,7 +29,7 @@
                 </div>
             </div>
 
-        </div> Registros Encontrados: <?php echo sizeof($asociado); ?>
+        </div> Registros Encontrados: <span id="numeroreg"></span>
     </section>
 </div>
 <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
@@ -105,3 +107,63 @@
     </div>
 </div>
 <!----------------------------------- F I N  modal para mostrar Imagen de un asociado ----------------------------------->
+<!----------------------------------- INICIO modal para dar de baja a un asociado ----------------------------------->
+<div class="modal fade" id="modaldardebajaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardebajaasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadobaja"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere dar de baja a este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="dardebaja()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para dar de baja a un asociado ----------------------------------->
+<!----------------------------------- INICIO modal para dar de alta a un asociado ----------------------------------->
+<div class="modal fade" id="modaldardealtaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardealtaasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadoalta"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere dar de alta a este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="dardealta()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->
+<!----------------------------------- INICIO modal para dar de alta a un asociado ----------------------------------->
+<div class="modal fade" id="modalrestablecerasociado" tabindex="-1" role="dialog" aria-labelledby="modalrestablecerasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadorestablecer"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere restablecer el ingreso al sistema de este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="restableceringreso()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->

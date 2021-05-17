@@ -289,4 +289,51 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
+    /* funcion que da de baja a un asociado*/
+    function dardebaja_asociado()
+    {
+        if($this->input->is_ajax_request()){
+            $asociado_id = $this->input->post('asociado_id');
+            $estado_id = 2;
+            $params = array(
+                    'estado_id' => $estado_id,
+                );
+            $this->Asociado_model->update_asociado($asociado_id, $params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* funcion que da de baja a un asociado*/
+    function dardealta_asociado()
+    {
+        if($this->input->is_ajax_request()){
+            $asociado_id = $this->input->post('asociado_id');
+            $estado_id = 1;
+            $params = array(
+                    'estado_id' => $estado_id,
+                );
+            $this->Asociado_model->update_asociado($asociado_id, $params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /** funcion que restablece acceso al sistema de un asociado
+     *  ci por defecto!....   */
+    function restablecer_asociado()
+    {
+        if($this->input->is_ajax_request()){
+            $asociado_id = $this->input->post('asociado_id');
+            $asociado_ci = $this->input->post('asociado_ci');
+            $params = array(
+                'asociado_login' => $asociado_ci,
+                'asociado_clave' => md5($asociado_ci),
+                );
+            $this->Asociado_model->update_asociado($asociado_id, $params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
 }

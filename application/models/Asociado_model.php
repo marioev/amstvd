@@ -30,6 +30,9 @@ class Asociado_model extends CI_Model
         $this->db->join('expedido as ex','a.expedido_id = ex.expedido_id');
         $this->db->join('estado as e','a.estado_id = e.estado_id');
         $this->db->join('genero as g','a.genero_id = g.genero_id');
+        $this->db->like('a.asociado_apellido', $filtro);
+        $this->db->or_like('a.asociado_nombre', $filtro);
+        $this->db->or_like('a.asociado_ci', $filtro);
         $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
         return $this->db->get()->result_array();
         
