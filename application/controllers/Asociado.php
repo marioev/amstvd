@@ -104,7 +104,7 @@ class Asociado extends CI_Controller{
                 'asociado_direccion' => $this->input->post('asociado_direccion'),
                 'asociado_telefono' => $this->input->post('asociado_telefono'),
                 'asociado_celular' => $this->input->post('asociado_celular'),
-                'asociado_foto' => $this->input->post('asociado_foto'),
+                'asociado_foto' => $foto,
                 'asociado_email' => $this->input->post('asociado_email'),
                 'asociado_login' => $this->input->post('asociado_login'),
                 'asociado_clave' => md5($this->input->post('asociado_clave')),
@@ -140,11 +140,21 @@ class Asociado extends CI_Controller{
         $data['asociado'] = $this->Asociado_model->get_asociado($asociado_id);
         if(isset($data['asociado']['asociado_id']))
         {
+            if ($this->input->post('asociado_ci') != $data['asociado']['asociado_ci']) {
+            $is_unique = '|is_unique[asociado.asociado_ci]';
+            } else {
+                $is_unique = '';
+            }
+            if ($this->input->post('asociado_login') != $data['asociado']['asociado_login']) {
+                $is_uniquelog = '|is_unique[asociado.asociado_login]';
+            } else {
+                $is_uniquelog = '';
+            }
             $this->load->library('form_validation');
             $this->form_validation->set_rules('asociado_apellido','Apellido','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('asociado_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            $this->form_validation->set_rules('asociado_ci','C.I.','trim|required|is_unique[asociado.asociado_ci]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
-            $this->form_validation->set_rules('asociado_login','usuario','trim|required|is_unique[asociado.asociado_login]', array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
+            $this->form_validation->set_rules('asociado_ci','C.I.','trim|required'.$is_unique, array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
+            $this->form_validation->set_rules('asociado_login','usuario','trim|required'.$is_uniquelog, array('required' => 'Este Campo no debe ser vacio', 'is_unique' => 'este usuario ya existe.'));
             //$this->form_validation->set_rules('asociado_clave','Contraseña','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())
             {

@@ -28,27 +28,77 @@ class Organizacion extends CI_Controller{
     function add()
     {   
         $this->load->library('form_validation');
+        $this->form_validation->set_rules('organ_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())
+        {
+            /* *********************INICIO imagen***************************** */
+            $foto="";
+            if (!empty($_FILES['organ_imagen']['name'])){
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/organizacion/';
+                        $img_full_path = $config['upload_path'];
 
-		$this->form_validation->set_rules('organ_nombre','Organ Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png|bmp';
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+                        
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('asociado_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('organ_imagen');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif" || $img_data['file_ext'] == ".bmp") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/organizacion/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/organizacion/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/organizacion/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 100;
+                        $confi['height'] = 100;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }
+            /* *********************FIN imagen***************************** */
             $params = array(
-				'organ_nombre' => $this->input->post('organ_nombre'),
-				'organ_slogan' => $this->input->post('organ_slogan'),
-				'organ_direccion' => $this->input->post('organ_direccion'),
-				'organ_telefono' => $this->input->post('organ_telefono'),
-				'organ_imagen' => $this->input->post('organ_imagen'),
-				'organ_departamento' => $this->input->post('organ_departamento'),
-				'organ_zona' => $this->input->post('organ_zona'),
-				'organ_ubicacion' => $this->input->post('organ_ubicacion'),
-				'organ_email' => $this->input->post('organ_email'),
-				'organ_latitud' => $this->input->post('organ_latitud'),
-				'organ_longitud' => $this->input->post('organ_longitud'),
+                'organ_nombre' => $this->input->post('organ_nombre'),
+                'organ_slogan' => $this->input->post('organ_slogan'),
+                'organ_direccion' => $this->input->post('organ_direccion'),
+                'organ_telefono' => $this->input->post('organ_telefono'),
+                'organ_imagen' => $foto,
+                'organ_departamento' => $this->input->post('organ_departamento'),
+                'organ_zona' => $this->input->post('organ_zona'),
+                'organ_ubicacion' => $this->input->post('organ_ubicacion'),
+                'organ_email' => $this->input->post('organ_email'),
+                'organ_latitud' => $this->input->post('organ_latitud'),
+                'organ_longitud' => $this->input->post('organ_longitud'),
             );
-            
             $organizacion_id = $this->Organizacion_model->add_organizacion($params);
-            redirect('organizacion/index');
+            redirect('organizacion');
         }
         else
         {            
