@@ -134,7 +134,7 @@
                             }
                             initMap();
                         </script>                                            
-                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=BIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58&callback=initMap"></script>                                            
+                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcIdlsjMXhMlme9vPTjulEKfadfAox9WE&callback=initMap"></script>                                            
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                         </div>

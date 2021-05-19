@@ -168,6 +168,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="<?php echo site_url('configuracion');?>" class="nav-link">
+                                <i class="fa fa-check-square"></i>
+                                <p>Configuraci&oacute;n</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?php echo site_url('estado');?>" class="nav-link">
                                 <i class="fa fa-toggle-on"></i>
                                 <p>Estado</p>
