@@ -203,6 +203,12 @@
                                 <p>Gesti&oacute;n</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('Organizacion');?>" class="nav-link">
+                                <i class="fa fa-bank"></i>
+                                <p>Organizaci&oacute;n</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
