@@ -234,6 +234,35 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-lock"></i>
+                        <p>Seguridad
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">3</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('rol');?>" class="nav-link">
+                                <i class="fa fa-gg-circle"></i>
+                                <p>Roles</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('tipo_usuario');?>" class="nav-link">
+                                <i class="fa fa-list-ul"></i>
+                                <p>Tipo Usuario</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('usuario');?>" class="nav-link">
+                                <i class="fa fa-users"></i>
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
       <!-- /.sidebar-menu -->

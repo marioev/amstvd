@@ -134,7 +134,7 @@
                             }
                             initMap();
                         </script>                                            
-                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcIdlsjMXhMlme9vPTjulEKfadfAox9WE&callback=initMap"></script>                                            
+                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $configuracion['config_apikey']; ?>&callback=initMap"></script>                                            
                         </div>
                         <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
                         </div>
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="organ_ubicacion" class="control-label">Ubicacion</label>
+                            <label for="organ_ubicacion" class="control-label">Ubicaci&oacute;n</label>
                             <div class="form-group">
                                 <input type="text" name="organ_ubicacion" value="<?php echo $this->input->post('organ_ubicacion'); ?>" class="form-control" id="organ_ubicacion" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             </div>
