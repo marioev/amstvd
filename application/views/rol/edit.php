@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Editar Rol</h3>
+              	<h3 class="box-title">Modificar Rol</h3>
             </div>
             <?php echo form_open('rol/edit/'.$rol['rol_id']); ?>
             <div class="box-body">

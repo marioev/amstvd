@@ -245,7 +245,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?php echo site_url('rol');?>" class="nav-link">
-                                <i class="fa fa-gg-circle"></i>
+                                <i class="fa fa-gg"></i>
                                 <p>Roles</p>
                             </a>
                         </li>

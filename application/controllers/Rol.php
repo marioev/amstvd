@@ -46,7 +46,7 @@ class Rol extends CI_Controller{
             else
             {
                 $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
-                $data['page_title'] = "Rol";
+                $data['page_title'] = "Nuevo Rol";
                 $data['_view'] = 'rol/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -66,12 +66,8 @@ class Rol extends CI_Controller{
                 $this->form_validation->set_rules('rol_nombre','Rol Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 if($this->form_validation->run())     
                 {
-                    $estestado = "1";
-                    if($this->input->post('estado_id') == "INACTIVO"){
-                        $estestado = "2";
-                    }
                     $params = array(
-                        'estado_id' => $estestado,
+                        'estado_id' => $this->input->post('estado_id'),
                         'rol_nombre' => $this->input->post('rol_nombre'),
                         'rol_descripcion' => $this->input->post('rol_descripcion'),
                         'rol_idfk' => $this->input->post('rol_idfk'),

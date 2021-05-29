@@ -34,7 +34,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre del rol">
         </div>
         <div class="box">
             <div class="box-body table-responsive">
@@ -53,31 +53,25 @@
                     $band = true;
                     foreach($all_rolhijo as $rolhijo){
                         if($rolhijo['rol_idfk'] ==$rolpadre['rol_id']){
-                        //$colorbaja = "style='background-color:".$rolhijo['estado_color']."'";
+                        //$colorfondo = "style='background-color:".$rolhijo['estado_color']."'";
                         if($band == true){
                     ?>
                     <tr>
-                        <td>N&deg;</td>
-                        <td>Nombre</td>
-                        <td>Descripci&oacute;n</td>
-                        <td>Estado</td>
-                        <td></td>
+                        <th>N&deg;</th>
+                        <th>Nombre</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Estado</th>
+                        <th></th>
                     </tr>
                     <?php
                     $band = false;
                         }
                     ?>
-                    <tr <?php //echo $colorbaja; ?>>
+                    <tr <?php //echo $colorfondo; ?>>
                         <td><?php echo $i+1; ?></td>
                         <td><b><?php echo $rolhijo['rol_nombre']; ?></td>
                         <td><b><?php echo $rolhijo['rol_descripcion']; ?></td>
-                        <td class="text-center">
-                            <?php
-                            $mostrarestado = "INACTIVO";
-                            if($rolhijo['estado_id'] == 1){
-                                $mostrarestado = "ACTIVO";
-                            }
-                                echo $mostrarestado; ?></td>
+                        <td class="text-center"><?php echo $rolhijo['estado_nombre']; ?></td>
                         <td>
                             <a href="<?php echo site_url('rol/edit/'.$rolhijo['rol_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                         </td>
