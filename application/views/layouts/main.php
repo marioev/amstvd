@@ -302,10 +302,10 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="<?php echo site_url('resources/js/jquery.min.js');?>"></script>
+<!--<script src="<?php //echo site_url('resources/js/jquery.min.js');?>"></script>-->
 <!--<script src="plugins/jquery/jquery.min.js"></script>-->
 <!-- jQuery UI 1.11.4 -->
-<script src="<?php echo site_url('resources/js/jquery-ui.min.js');?>"></script>
+<!--<script src="<?php //echo site_url('resources/js/jquery-ui.min.js');?>"></script>-->
 <!--<script src="plugins/jquery-ui/jquery-ui.min.js"></script>-->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>

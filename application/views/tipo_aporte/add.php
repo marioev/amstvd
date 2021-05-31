@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Añadir Tipo Aporte</h3>
+              	<h3 class="box-title">Nuevo Tipo Aporte</h3>
             </div>
             <?php echo form_open('tipo_aporte/add'); ?>
           	<div class="box-body">
