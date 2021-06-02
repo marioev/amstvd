@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A.M.S.T.V.D.<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
-
+  
+  <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
+  
   <!-- Google Font: Source Sans Pro -->
   <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">-->
   <!-- Font Awesome -->
@@ -305,7 +307,7 @@
 <!--<script src="<?php //echo site_url('resources/js/jquery.min.js');?>"></script>-->
 <!--<script src="plugins/jquery/jquery.min.js"></script>-->
 <!-- jQuery UI 1.11.4 -->
-<!--<script src="<?php //echo site_url('resources/js/jquery-ui.min.js');?>"></script>-->
+<script src="<?php echo site_url('resources/js/jquery-ui.min.js');?>"></script>
 <!--<script src="plugins/jquery-ui/jquery-ui.min.js"></script>-->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>

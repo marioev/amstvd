@@ -49,8 +49,18 @@ class Organizacion_model extends CI_Model
     /*
      * function to delete organizacion
      */
-    function delete_organizacion($organ_id)
+    /*function delete_organizacion($organ_id)
     {
         return $this->db->delete('organizacion',array('organ_id'=>$organ_id));
+    }*/
+    /*
+     * function to update organizacion
+     */
+    function get_diaslicencia($licencia_id)
+    {
+        $this->db->select('DATEDIFF(l.licencia_fechalimite, CURDATE()) as dias');
+        $this->db->from('licencia as l');
+        $this->db->where('l.licencia_id',$licencia_id);
+        return $this->db->get()->row_array();
     }
 }

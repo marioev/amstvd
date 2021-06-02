@@ -1,6 +1,5 @@
-<script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/formValidation.js');?>"></script>
-<script src="<?php echo base_url('resources/js/formValidationBootstrap.js');?>"></script>
+<script src="<?php echo base_url('resources/js/formValidation.js');?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/formValidationBootstrap.js');?>" type="text/javascript"></script>
 <link href="<?php echo site_url('resources/css/formValidation.css')?>" rel="stylesheet">
 <div class="row">
     <div class="col-md-12">

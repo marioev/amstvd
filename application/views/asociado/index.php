@@ -1,4 +1,3 @@
-<script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/asociado.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {

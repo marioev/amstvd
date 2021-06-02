@@ -1,4 +1,4 @@
-<script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>" type="text/javascript"></script>
+<script src="<?php echo site_url('resources/js/usuario.js');?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -13,31 +13,31 @@
     });
 </script>   
 <style type="text/css">
-    #contieneimg{
+    /*#contieneimg{
         width: 100px;
         height: 100px;
         text-align: center;
-    }
+    }*/
 </style>
-<!-- --------------------------- fin script buscador ------------------------------------- -->
-<!-- ---------------- ESTILO DE LAS TABLAS --------------- -->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<!-- ---------------------------------------------------- -->
+
 <div class="box-header">
-<!--                <h3 class="box-title">Usuarios</h3>-->
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+    <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6" style="padding-left: 0px">
+                    <h1>Usuarios</h1>
                 </div>
-        
-            <font size='4' face='Arial'><b>Usuarios</b></font>
-            <br><font size='2' face='Arial' id="encontrados">Registros Encontrados:<?php echo sizeof($usuario);  ?></font> 
-        
+                <div class="col-md-6 text-right" style="padding-right: 0px">
+                    <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm"><span class="fa fa-pencil-square-o"></span> Registrar Usuario</a>
+                </div>
+            </div>
+
+        </div> Registros Encontrados: <span id="numeroreg"></span>
+    </section>
 </div>
 
-
 <div class="row">
-    
-    <!--<p style="margin-left: 20px;" class="text-danger">      <?php //echo $mensaje; ?></p>-->
     <div class="col-md-12">
         <!---- ----------------- parametro de buscador ------------------- -->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
