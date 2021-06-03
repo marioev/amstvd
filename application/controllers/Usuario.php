@@ -19,9 +19,9 @@ class Usuario extends CI_Controller
     {
         $data['mensaje'] = "BORRAR";
         $data['page_title'] = "Usuarios";
-        
+        /*
         $data['usuario'] = $this->Usuario_model->get_all_usuario();
-        
+        */
         $data['_view'] = 'usuario/index';
         $this->load->view('layouts/main', $data);
     }
@@ -259,7 +259,17 @@ class Usuario extends CI_Controller
         */
     }
     
-    
+    /* funcion que busca usuarios */
+    function buscar_usuarios()
+    {
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post('filtro');
+            $res_usuarios = $this->Usuario_model->get_all_usuario($filtro);
+            echo json_encode($res_usuarios);
+        }else{
+            show_404();
+        }
+    }
     
     
     

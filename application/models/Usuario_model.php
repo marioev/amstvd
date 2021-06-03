@@ -11,6 +11,23 @@ class Usuario_model extends CI_Model
         parent::__construct();
     }
     
+    /*
+     * function to add new usuario
+     */
+    function add_usuario($params)
+    {
+        $this->db->insert('usuario',$params);
+        return $this->db->insert_id();
+    }
+    
+    /*
+     * function to update usuario
+     */
+    function update_usuario($usuario_id,$params)
+    {
+        $this->db->where('usuario_id',$usuario_id);
+        return $this->db->update('usuario',$params);
+    }
     public function yahay_login($login)
     {
         $this->db->select('usuario_id');
@@ -24,7 +41,22 @@ class Usuario_model extends CI_Model
         }
     }
     
-    
+    /*
+     * Get all usuario
+     */
+    function get_all_usuario($filtro)
+    {
+        $this->db->select('u.*, e.estado_nombre, e.estado_color, tu.tipousuario_nombre');
+        $this->db->from('usuario as u');
+        $this->db->join('tipo_usuario as tu','u.tipousuario_id = u.tipousuario_id');
+        $this->db->join('estado as e','u.estado_id = e.estado_id');
+        $this->db->like('u.usuario_nombre', $filtro);
+        $this->db->or_like('u.usuario_email', $filtro);
+        $this->db->or_like('u.usuario_login', $filtro);
+        $this->db->or_like('tu.tipousuario_nombre', $filtro);
+        $this->db->order_by('u.usuario_nombre asc');
+        return $this->db->get()->result_array();
+    }
     
     
     
@@ -81,7 +113,7 @@ class Usuario_model extends CI_Model
     /*
      * Get all usuario
      */
-    function get_all_usuario($params = array())
+    /*function get_all_usuario($params = array())
     {
         
         
@@ -103,7 +135,7 @@ class Usuario_model extends CI_Model
         ")->result_array();
 
         return $usuario;
-    }
+    }*/
     function get_all_usuactivo($params = array())
     {
         $limit_condition = "";
@@ -129,23 +161,7 @@ class Usuario_model extends CI_Model
 
         return $usuario;
     } 
-    /*
-     * function to add new usuario
-     */
-    function add_usuario($params)
-    {
-        $this->db->insert('usuario',$params);
-        return $this->db->insert_id();
-    }
     
-    /*
-     * function to update usuario
-     */
-    function update_usuario($usuario_id,$params)
-    {
-        $this->db->where('usuario_id',$usuario_id);
-        return $this->db->update('usuario',$params);
-    }
     public function getCurrentPassword($usuario_id)
     {
        $query = $this->db->where('usuario_id',$usuario_id)

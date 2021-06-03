@@ -52,7 +52,7 @@
                         <th>Estado</th>
                         <th></th>
                     </tr>
-                    <tbody id="listasocios"></tbody>
+                    <tbody class="buscar" id="listasocios"></tbody>
                     <?php /*foreach($asociado as $a){ ?>
                     <tr>
                         <td><?php echo $a['asociado_id']; ?></td>
@@ -146,7 +146,7 @@
     </div>
 </div>
 <!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->
-<!----------------------------------- INICIO modal para dar de alta a un asociado ----------------------------------->
+<!-------------------------- INICIO modal para restablecer acceso al ssitema de un asociado -------------------------->
 <div class="modal fade" id="modalrestablecerasociado" tabindex="-1" role="dialog" aria-labelledby="modalrestablecerasociadolabel">
     <div class="modal-dialog" role="document">
         <br><br>
@@ -165,4 +165,4 @@
         </div>
     </div>
 </div>
-<!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->
+<!-------------------------- F I N  modal para restablecer acceso al ssitema de un asociado -------------------------->

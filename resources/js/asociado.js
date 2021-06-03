@@ -44,8 +44,8 @@ function tabla_asociado(filtro){
                     html += "</div>";
                 }
                 html += "<div style='padding-left: 4px'>";
-                html += "<b>"+registros[i]["asociado_apellido"]+"</b><br>";
-                html += "<b>"+registros[i]["asociado_nombre"]+"</b><br>";
+                html += "<span style='font-size: 10pt'><b>"+registros[i]["asociado_apellido"]+"</b><br>";
+                html += "<b>"+registros[i]["asociado_nombre"]+"</b></span><br>";
                 html += "<b>Cod.:</b> "+registros[i]["asociado_codigo"];
                 html += "</div>";
                 html += "</div>";

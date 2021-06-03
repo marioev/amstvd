@@ -20,6 +20,7 @@
     }*/
 </style>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<input type="hidden" id="base_url" value="<?php echo base_url();?>">
 
 <div class="box-header">
     <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
@@ -36,14 +37,14 @@
         </div> Registros Encontrados: <span id="numeroreg"></span>
     </section>
 </div>
-
+<div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, login, correo electrónico.." onkeypress="buscarusuario(event)">
+</div>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+</div>
 <div class="row">
     <div class="col-md-12">
-        <!---- ----------------- parametro de buscador ------------------- -->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, login, email">
-                  </div>
-            <!-- ------------------- fin parametro de buscador ------------------- -->
         <div class="box">
             <?php if($this->session->flashdata('msg')): ?>
                 <p><?php echo $this->session->flashdata('msg'); ?></p>
@@ -52,142 +53,100 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th></th>
                         <th>Nombre/Usuario</th>
-                        <!--<th>Tipo</th>-->
-                        <th>Email</th>
-                        <th>Login</th>
-                        <th>Perfil</th>
-                        <!--<th>Imagen</th>-->
+                        <th>Correo Electr&oacute;nico</th>
+                        <th>Usuario(Login)</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>
-                    <tbody class="buscar">
-                  <?php
-                      $i=1;
-                      $cont = 0;
-
-                      foreach($usuario as $u) {
-                      $cont = $cont+1;
-                     /* $path_parts = pathinfo('./resources/images/usuarios/' .$u['usuario_imagen']);
-                      $thumb = $path_parts['filename'] . '_thumb.' . $path_parts['extension'];
-                      */
-                  ?>
-
-                    <tr>
-                        <td><?php echo $cont ?></td>
-                        <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
-                        <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
-                            <br>
-                            <?php echo $u['tipousuario_descripcion']; ?></td>
-                      	<td><?php echo $u['usuario_email']; ?></td>
-                        <td><?php echo $u['usuario_login']; ?></td>
-                        <td class="text-center"><?php echo $u['parametro_id']; ?></td>
-                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
-                        <td>
-                            <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
-                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
-                            <?php
-                            if($tipo_usuario_id == 1){
-                            ?>
-                            <a class="btn btn-soundcloud btn-xs" data-toggle="modal" data-target="#modalcambiar<?php echo $i; ?>"  title="Cambiar contraseña"><em class="fa fa-gear"></em></a>
-                            <?php
-                            }
-                            ?>
-                            <a href="<?php echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs" title="Cambiar contraseña"><span class="fa fa-asterisk"></span></a>
-                            <!------------------------ INICIO modal para cambiar PASSWORD ------------------->
-                            <div class="modal fade" id="modalcambiar<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="modalcambiarlabel<?php echo $i; ?>">
-                                <div class="modal-dialog" role="document">
-                                    <br><br>
-                                    <div class="modal-content">
-                                        <div class="modal-header text-center text-bold" style="font-size: 12pt">
-                                            <label>CAMBIAR CONTRASEÑA</label>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                        </div>
-                                        <?php
-                                            echo form_open('usuario/nueva_clave/'.$u['usuario_id']);
-                                        ?>
-                                        <div class="modal-body" style="font-size: 10pt">
-                                            <!------------------------------------------------------------------->
-                                            <div class="col-md-6">
-						<label for="nuevo_pass<?php echo $u['usuario_id'] ?>" class="control-label">Nueva Contraseña</label>
-						<div class="form-group">
-                                                    <input type="password" name="<?php echo "nuevo_pass".$u['usuario_id'] ?>" class="form-control" id="nuevo_pass<?php echo $u['usuario_id'] ?>" />
-                                                    <span class="text-danger"><?php echo form_error('nuevo_pass'.$u['usuario_id']);?></span>
-						</div>
-                                            </div>
-                                            <div class="col-md-6">
-						<label for="repita_pass<?php echo $u['usuario_id'] ?>" class="control-label">Repita Contraseña</label>
-						<div class="form-group">
-                                                    <input type="password" name="<?php echo "repita_pass".$u['usuario_id'] ?>" class="form-control" id="repita_pass<?php echo $u['usuario_id'] ?>" />
-                                                    <span class="text-danger"><?php echo form_error('repita_pass'.$u['usuario_id']);?></span>
-						</div>
-                                            </div>
-                                            <!------------------------------------------------------------------->
-                                        </div>
-                                        <div class="modal-footer aligncenter">
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="fa fa-check"></i> Cambiar
-                                            </button>
-                                            <!--<a href="<?php //echo site_url('usuario/nueva_clave/'.$u['usuario_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Cambiar </a>-->
-                                            <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
-                                        </div>
-                                        <?php
-                                        echo form_close();
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <!------------------------ FIN modal para cambiar PASSWORD ------------------->
-                            
-                        </td>
-                    </tr>
-                  
-                             <!-- ---------------------- modal para eliminar el producto ----------------- -->
-                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                    <!--        <h4 class="modal-title" id="myModalLabel">LISTA DE PRODUCTOS</h4>-->
-                                          </div>
-                                          <div class="modal-body">
-
-                                           <!-- --------------------------------------------------------------- -->
-
-                                           <h1><b> <em class="fa fa-trash"></b></em> 
-                                               ¿Desea eliminar el usuario <b> <?php echo $u['usuario_nombre']; ?></b> seleccionado?
-                                           </h1>
-                                           <!-- --------------------------------------------------------------- -->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-
-
-                                                      <a href="<?php echo site_url('usuario/remove/'.$u['usuario_id']); ?>" class="btn btn-danger"><em class="fa fa-pencil"></em> Si </a></a>
-
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><em class="fa fa-times"></em> No </a>
-                                          </div>
-
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    
-                   <td hidden="hidden"><?php echo $i++; ?></td>
-                    <?php  }?>  
+                    <tbody class="buscar" id="listausuarios"></tbody>
                 </table>
-                
             </div>
-            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
         </div>
     </div>
 </div>
 
+<!----------------------------------- INICIO modal para mostrar Imagen de un asociado ----------------------------------->
+<div class="modal fade" id="modalimagenasociado" tabindex="-1" role="dialog" aria-labelledby="modalimagenasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociado"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span id="imagenasociado"></span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para mostrar Imagen de un asociado ----------------------------------->
+<!----------------------------------- INICIO modal para dar de baja a un asociado ----------------------------------->
+<div class="modal fade" id="modaldardebajaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardebajaasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadobaja"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere dar de baja a este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="dardebaja()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para dar de baja a un asociado ----------------------------------->
+<!----------------------------------- INICIO modal para dar de alta a un asociado ----------------------------------->
+<div class="modal fade" id="modaldardealtaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardealtaasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadoalta"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere dar de alta a este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="dardealta()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->
+<!-------------------------- INICIO modal para restablecer acceso al ssitema de un asociado -------------------------->
+<div class="modal fade" id="modalrestablecerasociado" tabindex="-1" role="dialog" aria-labelledby="modalrestablecerasociadolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" id="elasociadorestablecer"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Esta seguro que quiere restablecer el ingreso al sistema de este asociado?</span>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="restableceringreso()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------------- F I N  modal para restablecer acceso al ssitema de un asociado -------------------------->
 <?php
-if(isset($mensaje)){
+/*if(isset($mensaje)){
     if($mensaje == "a"){
 ?>
 <script type="text/javascript">
@@ -203,5 +162,5 @@ $mensaje = "";
 <?php
 $mensaje = "";
     }
-}
+}*/
 ?>

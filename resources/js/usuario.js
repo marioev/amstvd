@@ -1,20 +1,20 @@
 $(document).on("ready",inicio);
 function inicio(){
     var filtro = document.getElementById('filtrar').value;
-   tabla_asociado(filtro);
+   tabla_usuario(filtro);
 }
 
 /* si la tecla enter es apretado; procede con la busqueda */
-function buscarasociado(e) {
+function buscarusuario(e) {
   tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
         var filtro = document.getElementById('filtrar').value;
-        tabla_asociado(filtro);
+        tabla_usuario(filtro);
     }
 }
-function tabla_asociado(filtro){
+function tabla_usuario(filtro){
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'asociado/buscar_asociados';
+    var controlador = base_url+'usuario/buscar_usuarios';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
     $.ajax({url:controlador,
             type:"POST",
@@ -27,84 +27,45 @@ function tabla_asociado(filtro){
                 $("#numeroreg").html(n);
                 html = "";
                 for (var i = 0; i < n ; i++){
-                html += "<tr>";
-                html += "<td>"+(i+1)+"</td>";
-                html += "<td>";
-                html += "<div id='horizontal'>";
-                if (registros[i]["asociado_foto"] != null && registros[i]["asociado_foto"] != ""){
-                    html += "<div id='contieneimg'>";
-                    var mimagen = "thumb_"+registros[i]["asociado_foto"];
-                    html += "<a class='btn btn-xs' onclick='mostrarimagen("+JSON.stringify(registros[i]["asociado_foto"])+", "+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+")' style='padding: 0px;'>";
-                    html += "<img src='"+base_url+"resources/images/asociados/"+mimagen+"' />";
-                    html += "</a>";
-                    html += "</div>";
-                }else{
-                    html += "<div id='contieneimg'>";
-                    html += "<img src='"+base_url+"resources/images/asociados/thumb_default.jpg' />";
-                    html += "</div>";
-                }
-                html += "<div style='padding-left: 4px'>";
-                html += "<b>"+registros[i]["asociado_apellido"]+"</b><br>";
-                html += "<b>"+registros[i]["asociado_nombre"]+"</b><br>";
-                html += "<b>Cod.:</b> "+registros[i]["asociado_codigo"];
-                html += "</div>";
-                html += "</div>";
-                html += "</td>";
-                html += "<td>"+registros[i]["estadocivil_nombre"]+"<br>";
-                html += registros[i]["genero_nombre"]+"<br>";
-                html += "<b>C.I.:</b> "+registros[i]["asociado_ci"];
-                html += " "+registros[i]["expedido_nombre"];
-                html += "</td>			";
-                html += "<td align='center'>";
-                if(registros[i]["asociado_fechanac"] != '0000-00-00'){
-                    html += moment(registros[i]["asociado_fechanac"]).format("DD/MM/YYYY");
-                    html += "</br>";
-                    var hoy = new Date();
-                    var cumpleanios = new Date(registros[i]["asociado_fechanac"]);
-                    var edad = hoy.getFullYear() - cumpleanios.getFullYear();
-                    var m = hoy.getMonth() - cumpleanios.getMonth();
-                    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanios.getDate())) {
-                        edad--;
+                    html += "<tr>";
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td>";
+                    html += "<div id='horizontal'>";
+                    if (registros[i]["usuario_imagen"] != null && registros[i]["usuario_imagen"] != ""){
+                        html += "<div id='contieneimg'>";
+                        var mimagen = "thumb_"+registros[i]["usuario_imagen"];
+                        html += "<a class='btn btn-xs' onclick='mostrarimagen("+JSON.stringify(registros[i]["usuario_imagen"])+", "+JSON.stringify(registros[i]["usuario_nombre"])+")' style='padding: 0px;'>";
+                        html += "<img src='"+base_url+"resources/images/usuarios/"+mimagen+"' />";
+                        html += "</a>";
+                        html += "</div>";
+                    }else{
+                        html += "<div id='contieneimg'>";
+                        html += "<img src='"+base_url+"resources/images/usuarios/thumb_usuario.jpg' />";
+                        html += "</div>";
                     }
-                    html += "("+edad+")";
+                    html += "<div style='padding-left: 4px'>";
+                    html += "<span style='font-size: 12pt'><b>"+registros[i]["usuario_nombre"]+"</b></span><br>";
+                    html += "<b>"+registros[i]["tipousuario_nombre"]+"</b>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</td>";
+                    html += "<td>"+registros[i]["usuario_email"]+"</td>";
+                    html += "<td class='text-center'><span style='font-size:10pt'><b>"+registros[i]["usuario_login"]+"</b></span></td>";
+                    html += "<td class='text-center'>"+registros[i]["estado_nombre"]+"</td>";
+                    
+                    html += "<td>";
+                    html += "<a class='btn btn-info btn-xs' href='"+base_url+"usuario/edit/"+registros[i]["usuario_id"]+"' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
+                    if(registros[i]["estado_id"] == 1){
+                        html += "<a class='btn btn-dark btn-xs' onclick='modalrestablecer("+JSON.stringify(registros[i]["usuario_nombre"])+", "+JSON.stringify(registros[i]["usuario_id"])+", "+registros[i]["usuario_id"]+")' target='_blank' title='Cambiar contraseña' ><span class='fa fa-gear'></span></a>";
+                        html += "<a class='btn btn-danger btn-xs' onclick='modaldardebaja("+JSON.stringify(registros[i]["usuario_nombre"])+", "+registros[i]["usuario_id"]+")' title='Dar de baja al usuario' ><span class='fa fa-trash'></span></a>";
+                    }else{
+                        html += "<a class='btn btn-warning btn-xs' onclick='modaldardealta("+JSON.stringify(registros[i]["usuario_nombre"])+", "+registros[i]["usuario_id"]+")' title='Dar de alta al usuario' ><span class='fa fa-undo'></span></a>";
+                    }
+                    html += "</td>";
+
+                    html += "</tr>";
                 }
-                html += "</td>";
-                html += "<td><b>Dir.:</b> "+registros[i]["asociado_direccion"];
-                var asociado_telef = "";
-                var asociado_celu = "";
-                var guion = "";
-                var nomtelef = "";
-                if((registros[i]["asociado_telefono"] != "") && (registros[i]["asociado_telefono"] != null) && (registros[i]["asociado_celular"] != "") && (registros[i]["asociado_celular"] != null))
-                {
-                    guion = "-";
-                    nomtelef = "<br>Telef.: ";
-                }
-                if(registros[i]["asociado_telefono"] != null && registros[i]["asociado_telefono"] != ""){
-                    asociado_telef = registros[i]["asociado_telefono"];
-                    nomtelef = "<br>Telef.: ";
-                }
-                if(registros[i]["asociado_celular"] != null && registros[i]["asociado_celular"] != ""){
-                    asociado_celu = registros[i]["asociado_celular"];
-                    nomtelef = "<br>Telef.: ";
-                }
-                html += nomtelef+asociado_telef+guion+asociado_celu;
-                html += "</td>";
-                html += "<td>"+registros[i]["asociado_email"]+"</td>";
-                html += "<td>"+registros[i]["estado_nombre"];
-                html += "</td>";
-                html += "<td>";
-                html += "<a class='btn btn-info btn-xs' href='"+base_url+"asociado/edit/"+registros[i]["asociado_id"]+"' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
-                if(registros[i]["estado_id"] == 1){
-                    html += "<a class='btn btn-dark btn-xs' onclick='modalrestablecer("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+JSON.stringify(registros[i]["asociado_ci"])+", "+registros[i]["asociado_id"]+")' target='_blank' title='Restablecer accesos al sistema' ><span class='fa fa-gear'></span></a>";
-                    html += "<a class='btn btn-danger btn-xs' onclick='modaldardebaja("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+registros[i]["asociado_id"]+")' title='Dar de baja al asociado' ><span class='fa fa-trash'></span></a>";
-                }else{
-                    html += "<a class='btn btn-warning btn-xs' onclick='modaldardealta("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+registros[i]["asociado_id"]+")' title='Dar de alta al asociado' ><span class='fa fa-undo'></span></a>";
-                }
-                html += "</td>";
-                
-                html += "</tr>";
-            }
-                $("#listasocios").html(html);
+                $("#listausuarios").html(html);
                 document.getElementById('loader').style.display = 'none';
             }
             },
@@ -145,7 +106,7 @@ function dardebaja(){
             if (registros != null){
                 var filtro = document.getElementById('filtrar').value;
                 $("#modaldardebajaasociado").modal('hide');
-                tabla_asociado(filtro);
+                tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
             },
@@ -178,7 +139,7 @@ function dardealta(){
             if (registros != null){
                 var filtro = document.getElementById('filtrar').value;
                 $("#modaldardealtaasociado").modal('hide');
-                tabla_asociado(filtro);
+                tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
             },
@@ -214,7 +175,7 @@ function restableceringreso(){
                 var filtro = document.getElementById('filtrar').value;
                 $("#modalrestablecerasociado").modal('hide');
                 alert("Se restablecio el acceso al sistema correctamente");
-                tabla_asociado(filtro);
+                tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
             },
