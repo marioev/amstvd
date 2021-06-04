@@ -48,12 +48,13 @@ class Usuario_model extends CI_Model
     {
         $this->db->select('u.*, e.estado_nombre, e.estado_color, tu.tipousuario_nombre');
         $this->db->from('usuario as u');
-        $this->db->join('tipo_usuario as tu','u.tipousuario_id = u.tipousuario_id');
-        $this->db->join('estado as e','u.estado_id = e.estado_id');
+        $this->db->join('tipo_usuario as tu','u.tipousuario_id = u.tipousuario_id', 'left');
+        $this->db->join('estado as e','u.estado_id = e.estado_id', 'left');
         $this->db->like('u.usuario_nombre', $filtro);
         $this->db->or_like('u.usuario_email', $filtro);
         $this->db->or_like('u.usuario_login', $filtro);
         $this->db->or_like('tu.tipousuario_nombre', $filtro);
+        $this->db->group_by("u.usuario_id");
         $this->db->order_by('u.usuario_nombre asc');
         return $this->db->get()->result_array();
     }

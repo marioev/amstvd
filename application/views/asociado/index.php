@@ -32,7 +32,7 @@
     </section>
 </div>
 <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese Apellido(s), Nombre(s), C.I...." onkeypress="buscarasociado(event)">
+    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese Apellido(s), Nombre(s), C.I...." autocomplete="off" autofocus onkeypress="buscarasociado(event)">
 </div>
 <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >

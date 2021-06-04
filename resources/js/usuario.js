@@ -56,7 +56,7 @@ function tabla_usuario(filtro){
                     html += "<td>";
                     html += "<a class='btn btn-info btn-xs' href='"+base_url+"usuario/edit/"+registros[i]["usuario_id"]+"' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
                     if(registros[i]["estado_id"] == 1){
-                        html += "<a class='btn btn-dark btn-xs' onclick='modalrestablecer("+JSON.stringify(registros[i]["usuario_nombre"])+", "+JSON.stringify(registros[i]["usuario_id"])+", "+registros[i]["usuario_id"]+")' target='_blank' title='Cambiar contraseña' ><span class='fa fa-gear'></span></a>";
+                        html += "<a class='btn btn-dark btn-xs' onclick='modalrestablecer("+JSON.stringify(registros[i]["usuario_nombre"])+", "+registros[i]["usuario_id"]+")' target='_blank' title='Cambiar contraseña' ><span class='fa fa-gear'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' onclick='modaldardebaja("+JSON.stringify(registros[i]["usuario_nombre"])+", "+registros[i]["usuario_id"]+")' title='Dar de baja al usuario' ><span class='fa fa-trash'></span></a>";
                     }else{
                         html += "<a class='btn btn-warning btn-xs' onclick='modaldardealta("+JSON.stringify(registros[i]["usuario_nombre"])+", "+registros[i]["usuario_id"]+")' title='Dar de alta al usuario' ><span class='fa fa-undo'></span></a>";
@@ -152,29 +152,38 @@ function dardealta(){
             }		
         });
 }
-/* mostrar modal para confirmar solicitud de restablecer acceso del asociado al sistema */
-function modalrestablecer(asociado_nombre, asociado_ci, asociado_id){
-    $("#elasociadoactual").val(asociado_id);
-    $("#elasociadoactualci").val(asociado_ci);
-    $("#elasociadorestablecer").html(asociado_nombre);
-    $("#modalrestablecerasociado").modal('show');
+/* mostrar modal para cambiar contraseña de un usuario */
+function modalrestablecer(usuario_nombre, usuario_id){
+    $("#elusuarioactual").val(usuario_id);
+    $("#elusuariocambiar").html(usuario_nombre);
+    $('#rusuario_clave').val("");
+    $('#usuario_clave').val("");
+    $('#modalrestablecerusuario').on('shown.bs.modal', function() {
+        $('#usuario_clave').focus();
+    });
+    $("#modalrestablecerusuario").modal('show');
 }
 /* restablece el ingreso de un asociado al sistema */
-function restableceringreso(){
+function restableceringresousuario(){
+    var usuario_id = document.getElementById('elusuarioactual').value;
+    var usuario_clave = document.getElementById('usuario_clave').value;
+    var rusuario_clave = document.getElementById('rusuario_clave').value;
+    if(!(usuario_clave === rusuario_clave)){
+        $("#mensajecambiarcontrasenia").html("<span class='fa fa-close'></span> Las contraseñas no son iguales, por favor vuelva a intentar!.");
+    }else{
     var base_url = document.getElementById('base_url').value;
-    var asociado_id = document.getElementById('elasociadoactual').value;
-    var asociado_ci = document.getElementById('elasociadoactualci').value;
-    var controlador = base_url+'asociado/restablecer_asociado';
+    var controlador = base_url+'usuario/registrar_nuevacontrasenia';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
     $.ajax({url:controlador,
             type:"POST",
-            data:{asociado_id:asociado_id, asociado_ci:asociado_ci},
+            data:{usuario_id:usuario_id, usuario_clave:usuario_clave},
             success:function(respuesta){
             var registros = JSON.parse(respuesta);
             if (registros != null){
                 var filtro = document.getElementById('filtrar').value;
-                $("#modalrestablecerasociado").modal('hide');
-                alert("Se restablecio el acceso al sistema correctamente");
+                $("#modalrestablecerusuario").modal('hide');
+                $("#mensajeusuario").html('Contraseña modificada con exito!.');
+                $('#bloquemensajeusuario').css("display", "block");
                 tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
@@ -187,4 +196,5 @@ function restableceringreso(){
                 //tabla_inventario();
             }		
         });
+    }
 }

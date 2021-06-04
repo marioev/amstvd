@@ -271,6 +271,21 @@ class Usuario extends CI_Controller
         }
     }
     
+    /* funcion registra nueva contraseña */
+    function registrar_nuevacontrasenia()
+    {
+        if($this->input->is_ajax_request()){
+            $usuario_id = $this->input->post('usuario_id');
+            $usuario_clave = $this->input->post('usuario_clave');
+            $params = array(
+                'usuario_clave' => md5($usuario_clave),
+            );
+            $this->Usuario_model->Update_usuario($usuario_id, $params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
     
     
     
