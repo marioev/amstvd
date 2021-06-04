@@ -79,33 +79,33 @@ function tabla_usuario(filtro){
         });
 }
 /* mostrar modal con imagen */
-function mostrarimagen(imagen, asociado){
+function mostrarimagen(imagen, usuario_nombre){
     var base_url = document.getElementById('base_url').value;
-    laimg = "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/asociados/"+imagen+"' />";
-    $("#elasociado").html(asociado);
-    $("#imagenasociado").html(laimg);
-    $("#modalimagenasociado").modal('show');
+    laimg = "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/usuarios/"+imagen+"' />";
+    $("#elusuario").html(usuario_nombre);
+    $("#imagenusuario").html(laimg);
+    $("#modalimagenusuario").modal('show');
 }
-/* mostrar modal para confirmar si se da de baja al asociado */
-function modaldardebaja(asociado_nombre, asociado_id){
-    $("#elasociadoactual").val(asociado_id);
-    $("#elasociadobaja").html(asociado_nombre);
-    $("#modaldardebajaasociado").modal('show');
+/* mostrar modal para confirmar si se da de baja al usuario */
+function modaldardebaja(usuario_nombre, usuario_id){
+    $("#elusuarioactual").val(usuario_id);
+    $("#elusuariobaja").html(usuario_nombre);
+    $("#modaldardebajausuario").modal('show');
 }
-/* da de baja a un asociado */
-function dardebaja(){
+/* da de baja a un usuario */
+function dardebajausuario(){
     var base_url = document.getElementById('base_url').value;
-    var asociado_id = document.getElementById('elasociadoactual').value;
-    var controlador = base_url+'asociado/dardebaja_asociado';
+    var usuario_id = document.getElementById('elusuarioactual').value;
+    var controlador = base_url+'usuario/dardebaja_usuario';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
     $.ajax({url:controlador,
             type:"POST",
-            data:{asociado_id:asociado_id},
+            data:{usuario_id:usuario_id},
             success:function(respuesta){
             var registros = JSON.parse(respuesta);
             if (registros != null){
                 var filtro = document.getElementById('filtrar').value;
-                $("#modaldardebajaasociado").modal('hide');
+                $("#modaldardebajausuario").modal('hide');
                 tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
@@ -119,26 +119,26 @@ function dardebaja(){
             }		
         });
 }
-/* mostrar modal para confirmar si se da de alta al asociado */
-function modaldardealta(asociado_nombre, asociado_id){
-    $("#elasociadoactual").val(asociado_id);
-    $("#elasociadoalta").html(asociado_nombre);
-    $("#modaldardealtaasociado").modal('show');
+/* mostrar modal para confirmar si se da de alta al usuario */
+function modaldardealta(usuario_nombre, usuario_id){
+    $("#elusuarioactual").val(usuario_id);
+    $("#elusuarioalta").html(usuario_nombre);
+    $("#modaldardealtausuario").modal('show');
 }
-/* da de alta a un asociado */
-function dardealta(){
+/* da de alta a un usuario */
+function dardealtausuario(){
     var base_url = document.getElementById('base_url').value;
-    var asociado_id = document.getElementById('elasociadoactual').value;
-    var controlador = base_url+'asociado/dardealta_asociado';
+    var usuario_id = document.getElementById('elusuarioactual').value;
+    var controlador = base_url+'usuario/dardealta_usuario';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
     $.ajax({url:controlador,
             type:"POST",
-            data:{asociado_id:asociado_id},
+            data:{usuario_id:usuario_id},
             success:function(respuesta){
             var registros = JSON.parse(respuesta);
             if (registros != null){
                 var filtro = document.getElementById('filtrar').value;
-                $("#modaldardealtaasociado").modal('hide');
+                $("#modaldardealtausuario").modal('hide');
                 tabla_usuario(filtro);
                 document.getElementById('loader').style.display = 'none';
             }
@@ -156,6 +156,7 @@ function dardealta(){
 function modalrestablecer(usuario_nombre, usuario_id){
     $("#elusuarioactual").val(usuario_id);
     $("#elusuariocambiar").html(usuario_nombre);
+    $("#mensajecambiarcontrasenia").html("");
     $('#rusuario_clave').val("");
     $('#usuario_clave').val("");
     $('#modalrestablecerusuario').on('shown.bs.modal', function() {
@@ -163,7 +164,7 @@ function modalrestablecer(usuario_nombre, usuario_id){
     });
     $("#modalrestablecerusuario").modal('show');
 }
-/* restablece el ingreso de un asociado al sistema */
+/* restablece el ingreso de un usuario al sistema */
 function restableceringresousuario(){
     var usuario_id = document.getElementById('elusuarioactual').value;
     var usuario_clave = document.getElementById('usuario_clave').value;

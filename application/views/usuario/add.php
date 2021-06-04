@@ -1,11 +1,19 @@
 <script src="<?php echo base_url('resources/js/formValidation.js');?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/formValidationBootstrap.js');?>" type="text/javascript"></script>
 <link href="<?php echo site_url('resources/css/formValidation.css')?>" rel="stylesheet">
+<script type="text/javascript">
+    function loader() {
+        document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+    }
+</script>
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Nuevo Usuario</h3>
+            </div>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
             <?php
             $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
@@ -64,7 +72,7 @@
                     <div class="col-md-6">
                         <label for="user_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
-                            <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="form-control.input"  value="<?php echo $this->input->post('usuario_imagen'); ?>">
+                            <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="btn-success form-control" value="<?php echo $this->input->post('usuario_imagen'); ?>">
                             <small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>
                             <h4 id='loading' ></h4>
                             <div id="message"></div>
@@ -76,7 +84,7 @@
                 </div>
             </div>
             <div class="box-footer">
-                <button type="submit" id="boton" class="btn btn-success">
+                <button type="submit" id="boton" class="btn btn-success" onclick="loader()">
                     <i class="fa fa-check"></i> Guardar
                 </button>
                 <a href="<?php echo site_url('usuario'); ?>" class="btn btn-danger">

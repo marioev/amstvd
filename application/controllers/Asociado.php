@@ -314,7 +314,7 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
-    /* funcion que da de baja a un asociado*/
+    /* funcion que da de alta a un asociado*/
     function dardealta_asociado()
     {
         if($this->input->is_ajax_request()){

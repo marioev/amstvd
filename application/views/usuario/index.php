@@ -78,17 +78,17 @@
     </div>
 </div>
 
-<!----------------------------------- INICIO modal para mostrar Imagen de un asociado ----------------------------------->
-<div class="modal fade" id="modalimagenasociado" tabindex="-1" role="dialog" aria-labelledby="modalimagenasociadolabel">
+<!----------------------------------- INICIO modal para mostrar Imagen de un usuario ----------------------------------->
+<div class="modal fade" id="modalimagenusuario" tabindex="-1" role="dialog" aria-labelledby="modalimagenusuariolabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center d-block">
-                <span class="text-bold" id="elasociado"></span>
+                <span class="text-bold" id="elusuario"></span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <span id="imagenasociado"></span>
+                <span id="imagenusuario"></span>
             </div>
             <div class="modal-footer text-center d-block">
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
@@ -96,47 +96,47 @@
         </div>
     </div>
 </div>
-<!----------------------------------- F I N  modal para mostrar Imagen de un asociado ----------------------------------->
-<!----------------------------------- INICIO modal para dar de baja a un asociado ----------------------------------->
-<div class="modal fade" id="modaldardebajaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardebajaasociadolabel">
+<!----------------------------------- F I N  modal para mostrar Imagen de un usuario ----------------------------------->
+<!----------------------------------- INICIO modal para dar de baja a un usuario ----------------------------------->
+<div class="modal fade" id="modaldardebajausuario" tabindex="-1" role="dialog" aria-labelledby="modaldardebajausuariolabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center d-block">
-                <span class="text-bold" id="elasociadobaja"></span>
+                <span class="text-bold" id="elusuariobaja"></span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <span>Esta seguro que quiere dar de baja a este asociado?</span>
+                <span>Esta seguro que quiere dar de baja a este usuario?</span>
             </div>
             <div class="modal-footer text-center d-block">
-                <a class="btn btn-success" onclick="dardebaja()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-success" onclick="dardebajausuario()" ><span class="fa fa-check"></span> Aceptar</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
 </div>
-<!----------------------------------- F I N  modal para dar de baja a un asociado ----------------------------------->
-<!----------------------------------- INICIO modal para dar de alta a un asociado ----------------------------------->
-<div class="modal fade" id="modaldardealtaasociado" tabindex="-1" role="dialog" aria-labelledby="modaldardealtaasociadolabel">
+<!----------------------------------- F I N  modal para dar de baja a un usuario ----------------------------------->
+<!----------------------------------- INICIO modal para dar de alta a un usuario ----------------------------------->
+<div class="modal fade" id="modaldardealtausuario" tabindex="-1" role="dialog" aria-labelledby="modaldardealtausuariolabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center d-block">
-                <span class="text-bold" id="elasociadoalta"></span>
+                <span class="text-bold" id="elusuarioalta"></span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <span>Esta seguro que quiere dar de alta a este asociado?</span>
+                <span>Esta seguro que quiere dar de alta a este usuario?</span>
             </div>
             <div class="modal-footer text-center d-block">
-                <a class="btn btn-success" onclick="dardealta()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-success" onclick="dardealtausuario()" ><span class="fa fa-check"></span> Aceptar</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
 </div>
-<!----------------------------------- F I N  modal para dar de alta a un asociado ----------------------------------->
+<!----------------------------------- F I N  modal para dar de alta a un usuario ----------------------------------->
 <!-------------------------- INICIO modal para cambiar contraseña de un Usuario -------------------------->
 <div class="modal fade" id="modalrestablecerusuario" tabindex="-1" role="dialog" aria-labelledby="modalrestablecerusuariolabel">
     <div class="modal-dialog" role="document">

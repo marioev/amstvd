@@ -1,118 +1,105 @@
 <link href="<?php echo site_url('resources/css/formValidation.css')?>" rel="stylesheet">
-
+<script type="text/javascript">
+    function loader() {
+        document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+    }
+</script>
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Editar Usuario</h3>
+              	<h3 class="box-title">Modificar Usuario</h3>
             </div>
-
-<!--            <ol class="breadcrumb">
-                <li><a href="<?php //echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="<?php //echo site_url('usuario')?>">Usuarios</a></li>
-                <li class="active">Editar Usuario</li>
-            </ol>-->
-
+            <div class="row" id='loader' style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
             <?php $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
-            echo form_open_multipart("usuario/set", $attributes);?>
-			<div class="box-body">
-				<div class="row clearfix">
-						<div class="col-md-6">
-						<label for="usuario_nombre" class="control-label">Nombre</label>
-						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="tipousuario_id" class="control-label">Tipo</label>
-						<div class="form-group">
-							<select name="tipousuario_id" class="form-control">
-								<option value="">seleccionar tipo de usuario</option>
-								<?php 
-								foreach($all_tipo_usuario as $tipo_usuario)
-								{
-									$selected = ($tipo_usuario['tipousuario_id'] == $usuario['tipousuario_id']) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$tipo_usuario['tipousuario_id'].'" '.$selected.'>'.$tipo_usuario['tipousuario_descripcion'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
-				
-					<div class="col-md-6">
-						<label for="usuario_email" class="control-label">Email</label>
-						<div class="form-group">
-                                                    <input type="email" minlength="5" maxlength="250" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" />
-							<span class="text-danger"><?php echo form_error('usuario_email');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="usuario_login" class="control-label">Login</label>
-						<div class="form-group">
-							<input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" required/>
-							<span class="text-danger"><?php echo form_error('usuario_login');?></span>
-                            <div id="user-result"></div>
-						</div>
-					</div>
-                    <div class="col-md-3">
-                        <label for="parametro_id" class="control-label">Perfil</label>
-                        <div class="form-group">
-                            <select name="parametro_id" id="parametro_id" class="form-control">
-                                <!--<option value="1">ACTIVO</option>-->
-                                <?php 
-                                foreach($all_parametros as $parametro)
-                                {
-                                    $selected = ($parametro['parametro_id'] == $usuario['parametro_id']) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$parametro['parametro_id'].'" '.$selected.'>'.$parametro['parametro_id'].'</option>';
-                                } 
-                                ?>
-                            </select>
+            echo form_open_multipart("usuario/edit/".$usuario["usuario_id"], $attributes);?>
+                <div class="box-body">
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <label for="usuario_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                            <div class="form-group">
+                                <input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" autocomplete="off" autofocus required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="estado_id" class="control-label">Estado</label>
-                        <div class="form-group">
-                            <select name="estado_id" class="form-control">
-                                <!--<option value="1">ACTIVO</option>-->
-                                <?php 
-                                foreach($all_estado as $estado)
-                                {
-                                    $selected = ($estado['estado_id'] == $usuario['estado_id']) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-                                } 
-                                ?>
-                            </select>
+                        <div class="col-md-6">
+                            <label for="tipousuario_id" class="control-label">Tipo</label>
+                            <div class="form-group">
+                                <select name="tipousuario_id" class="form-control" id="tipousuario_id" required>
+                                    <!--<option value="">seleccionar tipo de usuario</option>-->
+                                    <?php 
+                                    foreach($all_tipo_usuario as $tipo_usuario)
+                                    {
+                                        $selected = ($tipo_usuario['tipousuario_id'] == $usuario['tipousuario_id']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$tipo_usuario['tipousuario_id'].'" '.$selected.'>'.$tipo_usuario['tipousuario_nombre'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="user_imagen" class="control-label">Imagen</label>
-                        <div class="form-group">
-                            <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="form-control.input"  value="">
-                            <small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>
-                            <h4 id='loading' ></h4>
-                            <div id="message"></div>
+                        <div class="col-md-5">
+                            <label for="usuario_email" class="control-label"><span class="text-danger">*</span>Correo Electr&oacute;nico</label>
+                            <div class="form-group">
+                                <input type="email" minlength="5" maxlength="100" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" autocomplete="off" required />
+                                <span class="text-danger"><?php echo form_error('usuario_email');?></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <img src="<?php echo site_url('resources/images/usuarios/'.$usuario['usuario_imagen'])?>" id="previewing" class="img-responsive center-block">
-                        <input type="hidden" value="<?php echo $usuario['usuario_id'] ?>" name="userid" id="userid">
-                        <input type="hidden" value="<?php echo $usuario['usuario_imagen'] ?>" name="foto">
-                    </div>
+                        <div class="col-md-4">
+                            <label for="usuario_login" class="control-label"><span class="text-danger">*</span>Usuario(Login)</label>
+                            <div class="form-group">
+                                <input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" autocomplete="off" required/>
+                                <span class="text-danger"><?php echo form_error('usuario_login');?></span>
+                                <div id="user-result"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="estado_id" class="control-label">Estado</label>
+                            <div class="form-group">
+                                <select name="estado_id" class="form-control" id="estado_id" required>
+                                    <!--<option value="1">ACTIVO</option>-->
+                                    <?php 
+                                    foreach($all_estado as $estado)
+                                    {
+                                        $selected = ($estado['estado_id'] == $usuario['estado_id']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="user_imagen" class="control-label">Imagen</label>
+                            <div class="form-group">
+                                <input type="file" name="usuario_imagen" value="<?php echo ($this->input->post('usuario_imagen') ? $this->input->post('usuario_imagen') : $usuario['usuario_imagen']); ?>" class="btn-success form-control" kl_virtual_keyboard_secure_input="on" id="usuario_imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/bmp" />
+                                <input type="hidden" name="usuario_imagen1" value="<?php echo ($this->input->post('usuario_imagen') ? $this->input->post('usuario_imagen') : $usuario['usuario_imagen']); ?>" class="form-control" id="usuario_imagen1" />
+                                <small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>
+                                <h4 id='loading' ></h4>
+                                <div id="message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <?php if($usuario['usuario_imagen']){ ?>
+                            <img width="80%" height="80%" src="<?php echo site_url('resources/images/usuarios/'.$usuario['usuario_imagen'])?>" id="previewing" class="img-responsive center-block">
+                            <?php }else{ ?>
+                                <img src="<?php echo site_url('resources/images/usuarios/usuario.jpg')?>" id="previewing" class="img-responsive center-block">
+                            <?php } ?>
+                            <input type="hidden" value="<?php echo $usuario['usuario_id'] ?>" name="userid" id="userid">
+                            <input type="hidden" value="<?php echo $usuario['usuario_imagen'] ?>" name="foto">
+                        </div>
 
-				</div>
-			</div>
-			<div class="box-footer">
-            	<button type="submit" id="boton" class="btn btn-success">
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" id="boton" class="btn btn-success" onclick="loader()">
                         <i class="fa fa-check"></i> Guardar
-                </button>
-                <a href="<?php echo site_url('usuario'); ?>" class="btn btn-danger">
-                <i class="fa fa-times"></i> Cancelar</a>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+                    </button>
+                    <a href="<?php echo site_url('usuario'); ?>" class="btn btn-danger">
+                        <i class="fa fa-times"></i> Cancelar</a>
+	        </div>
+            <?php echo form_close(); ?>
+        </div>
     </div>
 </div>
 
@@ -160,10 +147,10 @@
                 usuario_imagen: {
                     validators: {
                         file: {
-                            extension: 'jpeg,jpg,png',
-                            type: 'image/jpeg,image/png',
-                            maxSize: 3600800,   // 2048 * 1024
-                            message: 'El archivo seleccionado no es valido, Tamaño Maximo 350 Kb'
+                            extension: 'jpeg,jpg,png,gif,bmp',
+                            type: 'image/jpeg,image/jpg,image/png,image/gif,image/bmp',
+                            maxSize: 31457280, //1048576<-- 1 mega,   // 2048 * 1024
+                            message: 'El archivo seleccionado no es valido, Tamaño Maximo 30 Mb'
                         }
                     }
                 }
@@ -177,8 +164,8 @@
                 $("#message").empty(); // To remove the previous error message
                 var file = this.files[0];
                 var imagefile = file.type;
-                var match= ["image/jpeg","image/png","image/jpg"];
-                if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2])))
+                var match= ["image/jpeg","image/png","image/jpg","image/bmp","image/gif"];
+                if(!((imagefile==match[0]) || (imagefile==match[1]) || (imagefile==match[2]) || (imagefile==match[3]) || (imagefile==match[4])))
                 {
                     $('#previewing').attr('src','default.png');
                     $("#message").html("<p id='error'>Seleccione archivo valido</p>"+"<h4>Note</h4>"+"<span id='error_message'>Only jpeg, jpg and png Images type allowed</span>");
@@ -224,12 +211,12 @@
 
             $.ajax({
                 data:  parametros,
-                url:   '<?php echo base_url('admin/dashb/haylogin2')?>',
+                url:   '<?php echo base_url('usuario/yahayloginedit')?>',
                 type:  'post',
 //                    dataType: "json",
                 beforeSend: function () {
                     /// $("#registrando").html("<h5>Procesando, espere por favor...</h5>");
-                    $("#user-result").html('<img src="<?php echo base_url('resources/images/usuarios/loader.gif')?>" />');
+                    $("#user-result").html('<img src="<?php echo base_url('resources/images/loader.gif')?>" />');
                 },
                 success:  function (response) {
                     console.log(response);
