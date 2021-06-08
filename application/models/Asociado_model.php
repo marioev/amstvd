@@ -35,26 +35,6 @@ class Asociado_model extends CI_Model
         $this->db->or_like('a.asociado_ci', $filtro);
         $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
         return $this->db->get()->result_array();
-        
-        
-        /*
-        SELECT
-                d.*, e.*, g.*, ec.*
-
-            FROM
-                docente d, estado e, genero g, estado_civil ec
-
-            WHERE
-                d.estado_id=e.estado_id
-                and d.genero_id=g.genero_id
-                and d.estadocivil_id=ec.estadocivil_id
-                and (d.docente_nombre like '%".$filtro."%'
-                or d.docente_apellidos like '%".$filtro."%')
-                    
-            ORDER BY d.docente_apellidos, d.docente_nombre
-                */
-        
-        
     }
         
     /*
@@ -78,8 +58,19 @@ class Asociado_model extends CI_Model
     /*
      * function to delete asociado
      */
-    function delete_asociado($asociado_id)
+    /*function delete_asociado($asociado_id)
     {
         return $this->db->delete('asociado',array('asociado_id'=>$asociado_id));
+    }*/
+    /*
+     * Get all asociados segun su estado!..
+     */
+    function get_all_asociadosestado($estado_id)
+    {
+        $this->db->select('a.*');
+        $this->db->from('asociado as a');
+        $this->db->where('a.estado_id',$estado_id);
+        $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
+        return $this->db->get()->result_array();
     }
 }

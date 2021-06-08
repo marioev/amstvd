@@ -147,15 +147,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?php echo site_url('asociado');?>" class="nav-link">
-                                <i class="fa fa-user nav-icon"></i>
-                                <p>Socios</p>
+                            <a href="<?php echo site_url('aporte');?>" class="nav-link">
+                                <i class="fa fa-list-ol nav-icon"></i>
+                                <p>Aportes</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Navigation + Sidebar</p>
+                            <a href="<?php echo site_url('asociado');?>" class="nav-link">
+                                <i class="fa fa-user nav-icon"></i>
+                                <p>Socios</p>
                             </a>
                         </li>
                     </ul>

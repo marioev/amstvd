@@ -1,3 +1,42 @@
+<script src="<?php echo base_url('resources/js/aporte.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        (function ($) {
+            $('#filtrar').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+</script>
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<input type="hidden" id="base_url" value="<?php echo base_url();?>">
+<!--<input type="hidden" id="elasociadoactual">
+<input type="hidden" id="elasociadoactualci">-->
+<div class="box-header">
+    <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-md-6" style="padding-left: 0px">
+                    <h1>Aportes</h1>
+                </div>
+                <div class="col-md-6 text-right" style="padding-right: 0px">
+                    <a href="<?php echo site_url('aporte/add'); ?>" class="btn btn-success btn-sm"><span class="fa fa-pencil-square-o"></span> Registrar Aporte</a>
+                </div>
+            </div>
+
+        </div> Registros Encontrados: <span id="numeroreg"></span>
+    </section>
+</div>
+<div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese Apellido(s), Nombre(s), C.I...." autocomplete="off" autofocus onkeypress="buscarasociado(event)">
+</div>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="box">
