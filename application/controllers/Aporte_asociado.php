@@ -4,13 +4,53 @@
  * www.crudigniter.com
  */
  
-class Aporte extends CI_Controller{
+class Aporte_asociado extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Aporte_model');
+        $this->load->model('Aporte_asociado_model');
     } 
-
+    
+    /* funcion que busca deudas de un asociado */
+    function buscar_deudas()
+    {
+        if($this->input->is_ajax_request()){
+            $asociado_id = $this->input->post('asociado_id');
+            $estado_id = 3;
+            $res_deudas = $this->Aporte_asociado_model->get_aportesasociado($asociado_id, $estado_id);
+            echo json_encode($res_deudas);
+        }else{
+            show_404();
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /*
      * Listing of aporte
      */
@@ -23,7 +63,7 @@ class Aporte extends CI_Controller{
         $this->load->model('Gestion_model');
         $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
         
-        $data['_view'] = 'aporte/index';
+        $data['_view'] = 'aporte_asociado/index';
         $this->load->view('layouts/main',$data);
     }
 
@@ -38,7 +78,7 @@ class Aporte extends CI_Controller{
         if($this->form_validation->run())
         {
             $fechahora = date("Y-m-d H:i:s");
-            $estado_id = 3; // pendiente
+            $estado_id = 1;
             $params = array(
                 'aporte_nombre' => $this->input->post('aporte_nombre'),
                 'gestion_id' => $this->input->post('gestion_id'),

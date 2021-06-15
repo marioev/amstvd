@@ -73,4 +73,27 @@ class Asociado_model extends CI_Model
         $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
         return $this->db->get()->result_array();
     }
+    
+    /*
+     * Get all asociados activos
+     */
+    function get_all_asociadoactivos($filtro)
+    {
+        $this->db->select('a.*, ec.estadocivil_nombre, ex.expedido_nombre, e.estado_nombre, e.estado_color, g.genero_nombre');
+        $this->db->where('a.estado_id', 1);
+        //$this->db->from('asociado as a');
+        $this->db->join('estado_civil as ec','a.estadocivil_id = ec.estadocivil_id', 'left');
+        $this->db->join('expedido as ex','a.expedido_id = ex.expedido_id', 'left');
+        $this->db->join('estado as e','a.estado_id = e.estado_id', 'left');
+        $this->db->join('genero as g','a.genero_id = g.genero_id', 'left');
+        $this->db->group_start();
+        $this->db->like('a.asociado_apellido', $filtro);
+        $this->db->or_like('a.asociado_nombre', $filtro);
+        $this->db->or_like('a.asociado_ci', $filtro);
+        $this->db->group_end();
+        $this->db->order_by('a.asociado_apellido asc, a.asociado_nombre asc');
+        return $this->db->get("asociado as a")->result_array();
+        //return $this->db->get()->result_array();
+        //return $query->result_array();
+    }
 }

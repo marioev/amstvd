@@ -346,4 +346,16 @@ class Asociado extends CI_Controller{
             show_404();
         }
     }
+    
+    /* funcion que busca asociados activos */
+    function buscar_asociadosactivos()
+    {
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post('filtro');
+            $res_asociados = $this->Asociado_model->get_all_asociadoactivos($filtro);
+            echo json_encode($res_asociados);
+        }else{
+            show_404();
+        }
+    }
 }

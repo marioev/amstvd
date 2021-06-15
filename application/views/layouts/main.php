@@ -140,6 +140,29 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book"></i>
+                        <p>Cobro de
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">3</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('aporte_asociado');?>" class="nav-link">
+                                <i class="fa fa-list-ol nav-icon"></i>
+                                <p>Aportes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('asociado');?>" class="nav-link">
+                                <i class="fa fa-user nav-icon"></i>
+                                <p>Socios</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-book"></i>
                         <p>Registro de
                             <i class="fas fa-angle-left right"></i>
                             <span class="badge badge-info right">6</span>

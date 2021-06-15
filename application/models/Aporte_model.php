@@ -22,11 +22,11 @@ class Aporte_model extends CI_Model
     /*
      * Get all aporte
      */
-    function get_all_aporte()
+    /*function get_all_aporte()
     {
         $this->db->order_by('aporte_id', 'desc');
         return $this->db->get('aporte')->result_array();
-    }
+    }*/
         
     /*
      * function to add new aporte
@@ -49,8 +49,59 @@ class Aporte_model extends CI_Model
     /*
      * function to delete aporte
      */
-    function delete_aporte($aporte_id)
+    /*function delete_aporte($aporte_id)
     {
         return $this->db->delete('aporte',array('aporte_id'=>$aporte_id));
+    }*/
+    /*
+     * Get all aportes
+     */
+    function get_all_aportes($filtro, $gestion_id, $tipoaporte_id)
+    {
+        $comp = " ";
+        if($gestion_id > 0){
+            $comp = $comp." and a.gestion_id = ".$gestion_id;
+        }
+        if($tipoaporte_id > 0){
+            $comp = $comp." and a.tipoaporte_id = ".$tipoaporte_id;
+        }
+        $sql = "SELECT
+                 a.*, g.gestion_nombre, ta.tipoaporte_nombre, e.estado_nombre, e.estado_color
+              FROM
+              aporte as a
+              LEFT JOIN gestion as g on a.gestion_id = g.gestion_id
+              LEFT JOIN tipo_aporte as ta on a.tipoaporte_id = ta.tipoaporte_id
+              LEFT JOIN estado e on a.estado_id = e.estado_id
+              WHERE 
+                   (a.aporte_nombre like '%".$filtro."%' or a.aporte_monto like '%".$filtro."%')
+                   ".$comp."
+              ORDER By a.aporte_id asc";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+        /*$comp = " 1 = 1";
+        if($gestion_id > 0){
+            $comp = $comp." and a.gestion_id = ".$gestion_id;
+        }
+        if($tipoaporte_id > 0){
+            $comp = $comp." and a.tipoaporte_id = ".$tipoaporte_id;
+        }*/
+        /*$this->db->select('a.*, g.gestion_nombre, ta.tipoaporte_nombre, e.estado_nombre, e.estado_color');
+        $this->db->from('aporte as a');
+        $this->db->join('gestion as g','a.gestion_id = g.gestion_id', 'left');
+        $this->db->join('tipo_aporte as ta','a.tipoaporte_id = ta.tipoaporte_id', 'left');
+        $this->db->join('estado as e','a.estado_id = e.estado_id', 'left');
+        $this->db->like('a.aporte_nombre', $filtro);
+        $this->db->or_like('a.aporte_monto', $filtro);
+        if($gestion_id > 0){
+            $this->db->where("g.gestion_id", $gestion_id);
+        }
+        if($tipoaporte_id > 0){
+            $this->db->where("ta.tipoaporte_id", $tipoaporte_id);
+        }
+        $this->db->group_by('a.aporte_id');
+        $this->db->order_by('a.aporte_id asc');
+        return $this->db->get()->result_array();
+        */
     }
 }

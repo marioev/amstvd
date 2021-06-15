@@ -19,4 +19,28 @@ class Aporte_asociado_model extends CI_Model
         $this->db->insert('aporte_asociado',$params);
         return $this->db->insert_id();
     }
+    
+    /*
+     * Get all aportes de un asociado segun estado(PENDIENTE 3; CANCELADO 4, ANULADO 5)
+     */
+    function get_aportesasociado($asociado_id, $estado_id)
+    {
+        $this->db->select('aa.aporteasoc_id, aa.aporteasoc_acobrar, a.aporte_nombre, ta.tipoaporte_nombre, g.gestion_nombre');
+        $this->db->where('aa.estado_id', $estado_id);
+        $this->db->where('aa.asociado_id', $asociado_id);
+        //$this->db->from('asociado as a');
+        $this->db->join('aporte as a','aa.aporte_id = a.aporte_id', 'left');
+        $this->db->join('gestion as g','a.gestion_id = g.gestion_id', 'left');
+        $this->db->join('tipo_aporte as ta','a.tipoaporte_id = ta.tipoaporte_id', 'left');
+        /*$this->db->group_start();
+        $this->db->like('a.asociado_apellido', $filtro);
+        $this->db->or_like('a.asociado_nombre', $filtro);
+        $this->db->or_like('a.asociado_ci', $filtro);
+        $this->db->group_end();*/
+        $this->db->group_by('aa.aporteasoc_id ');
+        $this->db->order_by('aa.aporte_id asc');
+        return $this->db->get("aporte_asociado as aa")->result_array();
+        //return $this->db->get()->result_array();
+        //return $query->result_array();
+    }
 }

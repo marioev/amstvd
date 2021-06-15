@@ -27,8 +27,8 @@
                     <a href="<?php echo site_url('asociado/add'); ?>" class="btn btn-success btn-sm"><span class="fa fa-pencil-square-o"></span> Registrar Asociado</a>
                 </div>
             </div>
-
-        </div> Registros Encontrados: <span id="numeroreg"></span>
+        </div>
+        Registros Encontrados: <span id="numeroreg"></span>
     </section>
 </div>
 <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
