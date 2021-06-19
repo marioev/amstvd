@@ -75,6 +75,18 @@
                         </div>
                         <?php }else{ ?>
                         <?php echo form_open('verificar'); ?>
+                        <label style="margin-bottom: 0px">Gesti&oacute;n:</label>
+                        <div class="input-group mb-3">
+                            <select name="gestion_id" class="form-control btn btn-dark btn-sm btn-block" id="gestion_id" required >
+                                <?php 
+                                foreach($all_gestion as $gestion)
+                                {
+                                    $selected = ($gestion["estado_id"] == 1) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$gestion['gestion_id'].'" '.$selected.'>'.$gestion['gestion_nombre'].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
                         <div class="input-group mb-3">
                             <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" autocomplete="off" autofocus  required>
                         </div>
@@ -91,8 +103,8 @@
                         <?php } ?>
                         <div class="row">
                             <div class="col-8"></div>
-                            <div class="col-4">
-                                <h5><a href="<?php echo base_url(); ?>">Regresar</a></h5>
+                            <div class="col-4 text-right" style="color: #007bff">
+                                <h6><u><a href="<?php echo base_url(); ?>">Regresar</a></u></h6>
                             </div>
                         </div>
                     </div>

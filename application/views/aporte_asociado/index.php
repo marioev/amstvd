@@ -14,7 +14,8 @@
 </script>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
-<input type="hidden" id="elasociadoactual">
+<input type="hidden" id="elasociadoactual" name="elasociadoactual">
+<input type="hidden" id="parapagar" name="parapagar">
 <!--
 <input type="hidden" id="elasociadoactualci">-->
 <div class="box-header">
@@ -117,20 +118,28 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
+                <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader2.gif"); ?>"  >
+                </div>
                 <table class="table table-striped" id="mitabla">
+                    <tr style="font-size: 12px">
+                        <td colspan="4" class="text-right"><b>DEUDA TOTAL:</b></td>
+                        <td class="text-right text-bold"><span id="ladeuda">0.00</span></td>
+                        <td><input type="checkbox" name="selectodo" id="selectodo" onclick="marcartodo(this)" title="Pagar todo" /></td>
+                    </tr>
                     <tr>
                         <th>N&deg;</th>
                         <th>Aporte</th>
                         <th>Tipo</th>
                         <th>Gesti&oacute;n</th>
-                        <th>Moonto</th>
+                        <th>Monto</th>
                         <th></th>
                     </tr>
                     <tbody class="buscar" id="listadedeudas"></tbody>
                 </table>
             </div>
             <div class="modal-footer text-center d-block">
-                <a class="btn btn-success" onclick="restableceringreso()" ><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-success" onclick="cobrar()" id="cobrar" ><span class="fa fa-dollar"></span> Cobrar</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

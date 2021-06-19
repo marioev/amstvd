@@ -37,22 +37,25 @@ class Aporte extends CI_Controller{
         $this->form_validation->set_rules('aporte_monto','Aporte Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         if($this->form_validation->run())
         {
-            $fechahora = date("Y-m-d H:i:s");
-            $estado_id = 3; // pendiente
+            $fecha = date("Y-m-d");
+            $hora  = date("H:i:s");
+            $estadoap_id = 1; // activo
             $params = array(
                 'aporte_nombre' => $this->input->post('aporte_nombre'),
                 'gestion_id' => $this->input->post('gestion_id'),
                 'tipoaporte_id' => $this->input->post('tipoaporte_id'),
-                'estado_id' => $estado_id,
+                'estado_id' => $estadoap_id,
                 'aporte_monto' => $this->input->post('aporte_monto'),
-                'aporte_fechahora' => $fechahora,
+                'aporte_fecha' => $fecha,
+                'aporte_hora' => $hora,
                 'aporte_obs' => $this->input->post('aporte_obs'),
             );
             $aporte_id = $this->Aporte_model->add_aporte($params);
             
             $this->load->model('Asociado_model');
             $this->load->model('Aporte_asociado_model');
-            $res_asociados = $this->Asociado_model->get_all_asociadosestado($estado_id);
+            $res_asociados = $this->Asociado_model->get_all_asociadosestado($estadoap_id);
+            $estado_id = 3; // pendiente
             foreach ($res_asociados as $asociado) {
                 $paramsa = array(
                     'aporte_id' => $aporte_id,

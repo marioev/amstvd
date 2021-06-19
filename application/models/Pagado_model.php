@@ -4,7 +4,7 @@
  * www.crudigniter.com
  */
  
-class Aporte_asociado_model extends CI_Model
+class Pagado_model extends CI_Model
 {
     function __construct()
     {
@@ -12,20 +12,47 @@ class Aporte_asociado_model extends CI_Model
     }
     
     /*
-     * function to add new aporte_asociado
+     * function to add new pagado
      */
-    function add_aporte_asociado($params)
+    function add_pagado($params)
     {
-        $this->db->insert('aporte_asociado',$params);
+        $this->db->insert('pagado',$params);
         return $this->db->insert_id();
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /*
      * Get all aportes de un asociado segun estado(PENDIENTE 3; CANCELADO 4, ANULADO 5)
      */
     function get_aportesasociado($asociado_id, $estado_id)
     {
-        $this->db->select('aa.aporteasoc_id, aa.aporteasoc_acobrar, a.aporte_nombre, a.aporte_id, ta.tipoaporte_nombre, g.gestion_nombre');
+        $this->db->select('aa.aporteasoc_id, aa.aporteasoc_acobrar, a.aporte_nombre, ta.tipoaporte_nombre, g.gestion_nombre');
         $this->db->where('aa.estado_id', $estado_id);
         $this->db->where('aa.asociado_id', $asociado_id);
         //$this->db->from('asociado as a');
@@ -42,14 +69,5 @@ class Aporte_asociado_model extends CI_Model
         return $this->db->get("aporte_asociado as aa")->result_array();
         //return $this->db->get()->result_array();
         //return $query->result_array();
-    }
-    
-    /*
-     * function to update aporte_asociado
-     */
-    function update_aporte_asociado($aporteasoc_id,$params)
-    {
-        $this->db->where('aporteasoc_id',$aporteasoc_id);
-        return $this->db->update('aporte_asociado',$params);
     }
 }

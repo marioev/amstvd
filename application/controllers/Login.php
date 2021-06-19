@@ -19,7 +19,8 @@ Class Login extends CI_Controller
     	/*$licencia="SELECT DATEDIFF(licencia_fechalimite, CURDATE()) as dias FROM licencia WHERE licencia_id = 1";
         $lice = $this->db->query($licencia)->row_array();
         */
-        
+        $this->load->model('Gestion_model');
+        $data["all_gestion"] = $this->Gestion_model->get_all_gestion();
         //print_r($data['organizacion']);
         //echo $data['organizacion']['organ_slogan']."ererererer";
         if ($licencia['dias']<=10) {

@@ -17,6 +17,7 @@ class Verificar extends CI_Controller
     {
         $username = $this->input->post('username');
         $clave = $this->input->post('password');
+        $gestion_id = $this->input->post('gestion_id');
         $result = $this->login_model->login2($username, $clave);
         if($result){
             if($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6 or $result->tipousuario_id == 7 or $result->tipousuario_id == 8) {
@@ -41,6 +42,7 @@ class Verificar extends CI_Controller
                     'usuario_imagen' => $result->usuario_imagen,
                     'usuario_email' => $result->usuario_email,
                     'usuario_clave' => $result->usuario_clave,
+                    'gestion_id' => $gestion_id,
                     'thumb' => $thumb,
                     'rol' => $rolusuario,
                     //'codigo' => $this->get_codigo_empresa()

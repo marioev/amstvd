@@ -11,6 +11,22 @@ class Aporte_asociado extends CI_Controller{
         $this->load->model('Aporte_asociado_model');
     } 
     
+    /*
+     * Listing of aporte_asociado
+     */
+    function index()
+    {
+        //$data['aporte'] = $this->Aporte_model->get_all_aporte();
+        /*$this->load->model('Tipo_aporte_model');
+        $data['all_tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
+
+        $this->load->model('Gestion_model');
+        $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+        */
+        $data['_view'] = 'aporte_asociado/index';
+        $this->load->view('layouts/main',$data);
+    }
+    
     /* funcion que busca deudas de un asociado */
     function buscar_deudas()
     {
@@ -19,189 +35,6 @@ class Aporte_asociado extends CI_Controller{
             $estado_id = 3;
             $res_deudas = $this->Aporte_asociado_model->get_aportesasociado($asociado_id, $estado_id);
             echo json_encode($res_deudas);
-        }else{
-            show_404();
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-     * Listing of aporte
-     */
-    function index()
-    {
-        //$data['aporte'] = $this->Aporte_model->get_all_aporte();
-        $this->load->model('Tipo_aporte_model');
-        $data['all_tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
-
-        $this->load->model('Gestion_model');
-        $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
-        
-        $data['_view'] = 'aporte_asociado/index';
-        $this->load->view('layouts/main',$data);
-    }
-
-    /*
-     * Adding a new aporte
-     */
-    function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('aporte_nombre','Aporte Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('aporte_monto','Aporte Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())
-        {
-            $fechahora = date("Y-m-d H:i:s");
-            $estado_id = 1;
-            $params = array(
-                'aporte_nombre' => $this->input->post('aporte_nombre'),
-                'gestion_id' => $this->input->post('gestion_id'),
-                'tipoaporte_id' => $this->input->post('tipoaporte_id'),
-                'estado_id' => $estado_id,
-                'aporte_monto' => $this->input->post('aporte_monto'),
-                'aporte_fechahora' => $fechahora,
-                'aporte_obs' => $this->input->post('aporte_obs'),
-            );
-            $aporte_id = $this->Aporte_model->add_aporte($params);
-            
-            $this->load->model('Asociado_model');
-            $this->load->model('Aporte_asociado_model');
-            $res_asociados = $this->Asociado_model->get_all_asociadosestado($estado_id);
-            foreach ($res_asociados as $asociado) {
-                $paramsa = array(
-                    'aporte_id' => $aporte_id,
-                    'asociado_id' => $asociado["asociado_id"],
-                    'estado_id' => $estado_id,
-                    //'aporteasoc_quienpaga' => $this->input->post('aporteasoc_quienpaga'),
-                    'aporteasoc_acobrar' => $this->input->post('aporte_monto'),
-                    //'aporteasoc_fechapago' => $fechahora,
-                    //'aporteasoc_fecha' => $fechahora,
-                    //'aporteasoc_hora' => $fechahora,
-                    //'aporteasoc_obs' => $this->input->post('aporte_obs'),
-                );
-                $aporteasoc_id = $this->Aporte_asociado_model->add_aporte_asociado($paramsa);
-            }
-            redirect('aporte/index');
-        }
-        else
-        {
-            $this->load->model('Tipo_aporte_model');
-            $data['all_tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
-
-            $this->load->model('Gestion_model');
-            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
-
-            $this->load->model('Configuracion_model');
-            $config_id = 1;
-            $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
-            
-            $data['_view'] = 'aporte/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a aporte
-     */
-    function edit($aporte_id)
-    {   
-        // check if the aporte exists before trying to edit it
-        $data['aporte'] = $this->Aporte_model->get_aporte($aporte_id);
-        
-        if(isset($data['aporte']['aporte_id']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('aporte_nombre','Aporte Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'tipoaporte_id' => $this->input->post('tipoaporte_id'),
-					'gestion_id' => $this->input->post('gestion_id'),
-					'estado_id' => $this->input->post('estado_id'),
-					'aporte_nombre' => $this->input->post('aporte_nombre'),
-					'aporte_nombrepago' => $this->input->post('aporte_nombrepago'),
-					'aporte_mes' => $this->input->post('aporte_mes'),
-					'aporte_anio' => $this->input->post('aporte_anio'),
-					'aporte_monto' => $this->input->post('aporte_monto'),
-					'aporte_fechahora' => $this->input->post('aporte_fechahora'),
-					'aporte_obs' => $this->input->post('aporte_obs'),
-                );
-
-                $this->Aporte_model->update_aporte($aporte_id,$params);            
-                redirect('aporte/index');
-            }
-            else
-            {
-				$this->load->model('Tipo_aporte_model');
-				$data['all_tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
-
-				$this->load->model('Gestion_model');
-				$data['all_gestion'] = $this->Gestion_model->get_all_gestion();
-
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-                $data['_view'] = 'aporte/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The aporte you are trying to edit does not exist.');
-    } 
-
-    /*
-     * Deleting aporte
-     */
-    /*function remove($aporte_id)
-    {
-        $aporte = $this->Aporte_model->get_aporte($aporte_id);
-
-        // check if the aporte exists before trying to delete it
-        if(isset($aporte['aporte_id']))
-        {
-            $this->Aporte_model->delete_aporte($aporte_id);
-            redirect('aporte/index');
-        }
-        else
-            show_error('The aporte you are trying to delete does not exist.');
-    }*/
-    /* funcion que busca aportes */
-    function buscar_aportes()
-    {
-        if($this->input->is_ajax_request()){
-            $filtro = $this->input->post('filtro');
-            $gestion_id = $this->input->post('gestion_id');
-            $tipoaporte_id = $this->input->post('tipoaporte_id');
-            $res_aportes = $this->Aporte_model->get_all_aportes($filtro, $gestion_id, $tipoaporte_id);
-            echo json_encode($res_aportes);
         }else{
             show_404();
         }
