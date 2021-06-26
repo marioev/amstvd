@@ -15,7 +15,10 @@ class Configuracion_model extends CI_Model
      */
     function get_configuracion($config_id)
     {
-        return $this->db->get_where('configuracion',array('config_id'=>$config_id))->row_array();
+        $this->db->select('c.*, m.moneda_nombre');
+        $this->db->where('c.config_id', $config_id);
+        $this->db->join('moneda as m','c.moneda_id = m.moneda_id', 'left');
+        return $this->db->get("configuracion as c")->row_array();
     }
         
     /*

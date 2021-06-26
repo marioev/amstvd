@@ -67,58 +67,63 @@ function modalmostardeudas(asociado_nombre, asociado_id){
             var registros = JSON.parse(respuesta);
             if (registros != null){
                 var n = registros.length;
-                var deudatotal = Number(0);
-                html = "";
-                for (var i = 0; i < n ; i++){
-                    deudatotal += Number(registros[i]["aporteasoc_acobrar"]);
-                    html += "<tr>";
-                    html += "<td class='text-center'>"+(i+1)+"</td>";
-                    html += "<td>"+registros[i]["aporte_nombre"]+"</td>";
-                    html += "<td>"+registros[i]["tipoaporte_nombre"]+"</td>";
-                    html += "<td>"+registros[i]["gestion_nombre"]+"</td>";
-                    html += "<td class='text-right'><span id='aporteacobrar"+registros[i]["aporteasoc_id"]+"'>"+Number(registros[i]["aporteasoc_acobrar"]).toFixed(2)+"</span></td>";
-                    html += "<td>";
-                    html += "<input type='checkbox' id='pagaraporte"+registros[i]["aporteasoc_id"]+"' name='checkpagar[]' value='"+registros[i]["aporteasoc_id"]+"' class='seltodo' onclick='calculartotal()' />";
+                if(n == ""){
+                    document.getElementById('loader').style.display = 'none';
+                    alert("El asociado: "+asociado_nombre+" no tiene deudas");
+                }else{
+                    var deudatotal = Number(0);
+                    html = "";
+                    for (var i = 0; i < n ; i++){
+                        deudatotal += Number(registros[i]["aporteasoc_acobrar"]);
+                        html += "<tr>";
+                        html += "<td class='text-center'>"+(i+1)+"</td>";
+                        html += "<td>"+registros[i]["aporte_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["tipoaporte_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["gestion_nombre"]+"</td>";
+                        html += "<td class='text-right'><span id='aporteacobrar"+registros[i]["aporteasoc_id"]+"'>"+Number(registros[i]["aporteasoc_acobrar"]).toFixed(2)+"</span></td>";
+                        html += "<td>";
+                        html += "<input type='checkbox' id='pagaraporte"+registros[i]["aporteasoc_id"]+"' name='checkpagar[]' value='"+registros[i]["aporteasoc_id"]+"' class='seltodo' onclick='calculartotal()' />";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                    html += "<tr style='font-size: 11pt'>";
+                    html += "<td colspan='4' class='text-right' style='padding: 0; vertical-align: central'><b>TOTAL A PAGAR:</b></td>";
+                    html += "<td colspan='2' class='text-right' style='padding: 0'><b><input style='background: #eb8634' class='text-right' type='number' min='0' step='any' size='12' id='totalapagar' name='totalapagar' value='0.00' readonly /></b></td>";
+                    html += "</tr>";
+                    html += "<tr style='font-size: 11pt'>";
+                    html += "<td colspan='4' class='text-right' style='padding: 0'><b>EFECTIVO:</b></td>";
+                    html += "<td colspan='2' class='text-right' style='padding: 0'><input style='background: #ebb081; cursor:pointer;' class='text-right' type='number' min='0' step='any' size='12' id='efectivo' name='efectivo' value='0.00' onkeyup='calcular_cambio(event)' onclick='marcar(1)' /></td>";
+                    html += "</tr>";
+                    html += "<tr style='font-size: 11pt'>";
+                    html += "<td colspan='4' class='text-right' style='padding: 0'><b>CAMBIO:</b></td>";
+                    html += "<td colspan='2' class='text-right' style='padding: 0'><b><input style='background: #e6494f' class='text-right' type='number' min='0' step='any' size='12' id='cambio' name='cambio' value='0.00' readonly /></b></td>";
+                    html += "</tr>";
+                    html += "<tr style='font-size: 12px'>";
+                    html += "<td colspan='2' style='padding: 0' class='text-right'>";
+                    html += "<b>PAGADO POR:</b>";
+                    html += "</td>";
+                    html += "<td colspan='4' style='padding: 0'>";
+                    html += "<input type='text' size='50' id='pagadopor' name='pagadopor' value='"+asociado_nombre+"' onclick='marcar(2)' style='cursor:pointer;' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                     html += "</td>";
                     html += "</tr>";
+                    html += "<tr style='font-size: 12px'>";
+                    html += "<td colspan='2' style='padding: 0' class='text-right'>";
+                    html += "<b>OBSERVACION:</b>";
+                    html += "</td>";
+                    html += "<td colspan='4' style='padding: 0'>";
+                    html += "<input type='text' size='50' max='250' id='observacion' name='observacion' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
+                    html += "</td>";
+                    html += "</tr>";
+                    //var filtro = document.getElementById('filtrar').value;
+                    //$("#modaldardebajaasociado").modal('hide');
+                    $("#ladeuda").html(Number(deudatotal).toFixed(2));
+                    //$("#selectodo").
+                    $("#selectodo").prop("checked", false);
+                    $("#listadedeudas").html(html);
+                    //tabla_aporteasociado(filtro);
+                    $("#modalmostrardeuda").modal('show');
+                    document.getElementById('loader').style.display = 'none';
                 }
-                html += "<tr style='font-size: 11pt'>";
-                html += "<td colspan='4' class='text-right' style='padding: 0; vertical-align: central'><b>TOTAL A PAGAR:</b></td>";
-                html += "<td colspan='2' class='text-right' style='padding: 0'><b><input style='background: #eb8634' class='text-right' type='number' min='0' step='any' size='12' id='totalapagar' name='totalapagar' value='0.00' readonly /></b></td>";
-                html += "</tr>";
-                html += "<tr style='font-size: 11pt'>";
-                html += "<td colspan='4' class='text-right' style='padding: 0'><b>EFECTIVO:</b></td>";
-                html += "<td colspan='2' class='text-right' style='padding: 0'><input style='background: #ebb081; cursor:pointer;' class='text-right' type='number' min='0' step='any' size='12' id='efectivo' name='efectivo' value='0.00' onkeyup='calcular_cambio(event)' onclick='marcar()' /></td>";
-                html += "</tr>";
-                html += "<tr style='font-size: 11pt'>";
-                html += "<td colspan='4' class='text-right' style='padding: 0'><b>CAMBIO:</b></td>";
-                html += "<td colspan='2' class='text-right' style='padding: 0'><b><input style='background: #e6494f' class='text-right' type='number' min='0' step='any' size='12' id='cambio' name='cambio' value='0.00' readonly /></b></td>";
-                html += "</tr>";
-                html += "<tr style='font-size: 12px'>";
-                html += "<td colspan='2' style='padding: 0' class='text-right'>";
-                html += "<b>PAGADO POR:</b>";
-                html += "</td>";
-                html += "<td colspan='4' style='padding: 0'>";
-                html += "<input type='text' size='50' id='pagadopor' name='pagadopor' value='"+asociado_nombre+"' />";
-                html += "</td>";
-                html += "</tr>";
-                html += "<tr style='font-size: 12px'>";
-                html += "<td colspan='2' style='padding: 0' class='text-right'>";
-                html += "<b>OBSERVACION:</b>";
-                html += "</td>";
-                html += "<td colspan='4' style='padding: 0'>";
-                html += "<input type='text' size='50' max='250' id='observacion' name='observacion' />";
-                html += "</td>";
-                html += "</tr>";
-                //var filtro = document.getElementById('filtrar').value;
-                //$("#modaldardebajaasociado").modal('hide');
-                $("#ladeuda").html(Number(deudatotal).toFixed(2));
-                //$("#selectodo").
-                $("#selectodo").prop("checked", false);
-                $("#listadedeudas").html(html);
-                //tabla_aporteasociado(filtro);
-                $("#modalmostrardeuda").modal('show');
-                document.getElementById('loader').style.display = 'none';
             }else{
                 alert(asociado_nombre+" no tiene aportes pendientes");
             }
@@ -185,9 +190,11 @@ function cobrar(){
             success:function(respuesta){
             var registros = JSON.parse(respuesta);
             if (registros != null){
-                    alert(registros+"mostrar recibo");
                 $("#modalmostrardeuda").modal('hide');
                 document.getElementById('loader2').style.display = 'none';
+                
+                dir_url = base_url+"pagado/recibo_carta/"+registros;
+                window.open(dir_url, '_blank');
             }
             },
             error:function(respuesta){
@@ -201,9 +208,13 @@ function cobrar(){
     }
 }
 
-/* marca el input efectivo */
-function marcar(){
-    document.getElementById('efectivo').select();
+/* marca el input efectivo(valor =1); pagadopor(valor=2) */
+function marcar(valor){
+    if(valor == 1){
+        document.getElementById('efectivo').select();
+    }else if(valor == 2){
+        document.getElementById('pagadopor').select();
+    }
 }
 
 /* calcula el cambio a devolver al momento de cobrar */
