@@ -39,5 +39,40 @@ class Aporte_asociado extends CI_Controller{
             show_404();
         }
     }
+    /*
+     * historial de aportes de un asociado
+     */
+    function historial($asociado_id)
+    {
+        //$data['aporte'] = $this->Aporte_model->get_all_aporte();
+        $this->load->model('Asociado_model');
+        $data['asociado'] = $this->Asociado_model->get_asociado($asociado_id);
+        
+        $this->load->model('Tipo_aporte_model');
+        $data['all_tipo_aporte'] = $this->Tipo_aporte_model->get_all_tipo_aporte();
+
+        $this->load->model('Gestion_model');
+        $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+        $data['asociado_id'] = $asociado_id;
+                
+        $data['_view'] = 'aporte_asociado/historial';
+        $this->load->view('layouts/main',$data);
+    }
+    
+    /* funcion que busca todos los aportes de un asociado */
+    function buscar_historial()
+    {
+        if($this->input->is_ajax_request()){
+            $asociado_id = $this->input->post('asociado_id');
+            $gestion_id = $this->input->post('gestion_id');
+            $tipoaporte_id = $this->input->post('tipoaporte_id');
+            
+            $estado_id = 4;
+            $res_deudas = $this->Aporte_asociado_model->get_historialaportes($asociado_id, $estado_id, $gestion_id, $tipoaporte_id);
+            echo json_encode($res_deudas);
+        }else{
+            show_404();
+        }
+    }
     
 }

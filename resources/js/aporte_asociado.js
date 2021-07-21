@@ -36,6 +36,7 @@ function tabla_aporteasociado(){
                     html += "<td>"+registros[i]["asociado_nombre"]+"</td>";
                     html += "<td>";
                     html += "<a class='btn btn-success btn-xs' onclick='modalmostardeudas("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+registros[i]["asociado_id"]+")' title='Mostrar deudas' ><span class='fa fa-dollar'></span></a>";
+                    html += "<a class='btn btn-info btn-xs' href='"+base_url+"aporte_asociado/historial/"+registros[i]["asociado_id"]+"' target='_blank' title='Historial de aportes' ><span class='fa fa-list'></span></a>";
                     html += "</td>";
                     html += "</tr>";
                 }

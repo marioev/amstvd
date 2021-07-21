@@ -36,9 +36,10 @@ class Pagado_model extends CI_Model
      */
     function getall_pagadoasociado($pagado_id)
     {
-        $this->db->select('aa.*, a.*');
+        $this->db->select('aa.*, a.aporte_nombre, ta.tipoaporte_nombre');
         $this->db->where('aa.pagado_id', $pagado_id);
         $this->db->join('aporte as a','aa.aporte_id = a.aporte_id', 'left');
+        $this->db->join('tipo_aporte as ta','a.tipoaporte_id = ta.tipoaporte_id', 'left');
         return $this->db->get("aporte_asociado as aa")->result_array();
     }
 }

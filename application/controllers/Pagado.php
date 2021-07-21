@@ -76,6 +76,8 @@ class Pagado extends CI_Controller{
         $config_id = 1;
         $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
         
+        $this->load->helper('numeros_helper'); // para convertir numeros a letras
+        
         $data['pagado'] = $this->Pagado_model->get_pagado($pagado_id);
         $data['aporte_asociado'] = $this->Pagado_model->getall_pagadoasociado($pagado_id);
         
