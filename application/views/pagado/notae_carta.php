@@ -102,7 +102,7 @@ padding: 5px;
                         </td>
                         <td style="width: 6cm; padding: 0; line-height: 12px; " > 
                             <center><br>
-                                <font size="3" face="arial"><b>RECIBO</b></font><br>
+                                <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font><br>
                                 <font size="3" face="arial"><b>Nº 00<?php echo $pagado['pagado_numrecibo']; ?></b></font> <br>
                                 <font size="1" face="arial"><b>Expresado en <?php echo $configuracion["moneda_nombre"]; ?></b></font><br>
                             </center>

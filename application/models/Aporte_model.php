@@ -77,8 +77,8 @@ class Aporte_model extends CI_Model
                    ".$comp."
               ORDER By a.aporte_id asc";
 
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
+        $aporte = $this->db->query($sql)->result_array();
+        return $apoerte;
         /*$comp = " 1 = 1";
         if($gestion_id > 0){
             $comp = $comp." and a.gestion_id = ".$gestion_id;

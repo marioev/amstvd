@@ -9,6 +9,11 @@ class Reunion extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Reunion_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
 
     /*
@@ -16,7 +21,13 @@ class Reunion extends CI_Controller{
      */
     function index()
     {
-        $data['reunion'] = $this->Reunion_model->get_all_reunion();
+        $data['estagestion_id'] = $this->session_data['gestion_id'];
+        $this->load->model('Gestion_model');
+        $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+        
+        $this->load->model('Tipo_reunion_model');
+        $data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
+        //$data['reunion'] = $this->Reunion_model->get_all_reunion();
         
         $data['_view'] = 'reunion/index';
         $this->load->view('layouts/main',$data);
@@ -28,30 +39,25 @@ class Reunion extends CI_Controller{
     function add()
     {   
         if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'tiporeunion_id' => $this->input->post('tiporeunion_id'),
-				'estado_id' => $this->input->post('estado_id'),
-				'gestion_id' => $this->input->post('gestion_id'),
-				'reunion_fechahora' => $this->input->post('reunion_fechahora'),
-				'reunion_inicio' => $this->input->post('reunion_inicio'),
-				'reunion_fin' => $this->input->post('reunion_fin'),
-				'reunion_tolerancia' => $this->input->post('reunion_tolerancia'),
-            );
-            
-            $reunion_id = $this->Reunion_model->add_reunion($params);
-            redirect('reunion/index');
-        }
-        else
         {
-			$this->load->model('Tipo_reunion_model');
-			$data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
+            $estado_id = 1; // 1 = activo
+            $params = array(
+                'tiporeunion_id' => $this->input->post('tiporeunion_id'),
+                'estado_id' => $estado_id,
+                'gestion_id' => $this->input->post('gestion_id'),
+                'reunion_fecha' => $this->input->post('reunion_fecha'),
+                'reunion_inicio' => $this->input->post('reunion_inicio'),
+                //'reunion_fin' => $this->input->post('reunion_fin'),
+                'reunion_tolerancia' => $this->input->post('reunion_tolerancia'),
+            );
+            $reunion_id = $this->Reunion_model->add_reunion($params);
+            redirect('reunion');
+        }else{
+            $this->load->model('Tipo_reunion_model');
+            $data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
 
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-			$this->load->model('Gestion_model');
-			$data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+            $this->load->model('Gestion_model');
+            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
             
             $data['_view'] = 'reunion/add';
             $this->load->view('layouts/main',$data);
@@ -69,30 +75,29 @@ class Reunion extends CI_Controller{
         if(isset($data['reunion']['reunion_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
-            {   
+            {
                 $params = array(
-					'tiporeunion_id' => $this->input->post('tiporeunion_id'),
-					'estado_id' => $this->input->post('estado_id'),
-					'gestion_id' => $this->input->post('gestion_id'),
-					'reunion_fechahora' => $this->input->post('reunion_fechahora'),
-					'reunion_inicio' => $this->input->post('reunion_inicio'),
-					'reunion_fin' => $this->input->post('reunion_fin'),
-					'reunion_tolerancia' => $this->input->post('reunion_tolerancia'),
+                    'tiporeunion_id' => $this->input->post('tiporeunion_id'),
+                    'estado_id' => $this->input->post('estado_id'),
+                    'gestion_id' => $this->input->post('gestion_id'),
+                    'reunion_fecha' => $this->input->post('reunion_fecha'),
+                    'reunion_inicio' => $this->input->post('reunion_inicio'),
+                    'reunion_fin' => $this->input->post('reunion_fin'),
+                    'reunion_tolerancia' => $this->input->post('reunion_tolerancia'),
                 );
 
                 $this->Reunion_model->update_reunion($reunion_id,$params);            
-                redirect('reunion/index');
-            }
-            else
-            {
-				$this->load->model('Tipo_reunion_model');
-				$data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
+                redirect('reunion');
+            }else{
+                $this->load->model('Tipo_reunion_model');
+                $data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
 
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+                $this->load->model('Estado_model');
+                $tipo = 1; // 1 = ACTIVO; INACTIVO
+                $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
 
-				$this->load->model('Gestion_model');
-				$data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+                $this->load->model('Gestion_model');
+                $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
 
                 $data['_view'] = 'reunion/edit';
                 $this->load->view('layouts/main',$data);
@@ -105,7 +110,7 @@ class Reunion extends CI_Controller{
     /*
      * Deleting reunion
      */
-    function remove($reunion_id)
+    /*function remove($reunion_id)
     {
         $reunion = $this->Reunion_model->get_reunion($reunion_id);
 
@@ -117,6 +122,21 @@ class Reunion extends CI_Controller{
         }
         else
             show_error('The reunion you are trying to delete does not exist.');
-    }
+    }*/
     
+    /* * busca reuniones en index */
+    function buscar_reunion()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro     = $this->input->post('filtro');
+            $gestion_id = $this->input->post('gestion_id');
+            $tiporeunion_id = $this->input->post('tiporeunion_id');
+            $datos = $this->Reunion_model->get_las_reunion($filtro, $gestion_id, $tiporeunion_id);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
 }

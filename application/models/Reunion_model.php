@@ -49,8 +49,35 @@ class Reunion_model extends CI_Model
     /*
      * function to delete reunion
      */
-    function delete_reunion($reunion_id)
+    /*function delete_reunion($reunion_id)
     {
         return $this->db->delete('reunion',array('reunion_id'=>$reunion_id));
+    }*/
+    /*
+     * Obtiene las reuniones dado un filtro y una gestion
+     */
+    function get_las_reunion($filtro, $gestion_id, $tiporeunion_id)
+    {
+        $comp = " ";
+        if($gestion_id > 0){
+            $comp = $comp." and r.gestion_id = ".$gestion_id;
+        }
+        if($tiporeunion_id > 0){
+            $comp = $comp." and r.tiporeunion_id = ".$tiporeunion_id;
+        }
+        $sql = "SELECT
+                 r.*, g.gestion_nombre, tr.tiporeunion_nombre, e.estado_nombre, e.estado_color
+              FROM
+              reunion as r
+              LEFT JOIN tipo_reunion as tr on r.tiporeunion_id = tr.tiporeunion_id
+              LEFT JOIN gestion as g on r.gestion_id = g.gestion_id
+              LEFT JOIN estado e on r.estado_id = e.estado_id
+              WHERE
+                   (tr.tiporeunion_nombre like '%".$filtro."%')
+                   ".$comp."
+              ORDER By r.reunion_id asc";
+
+        $reunion = $this->db->query($sql)->result_array();
+        return $reunion;
     }
 }

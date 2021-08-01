@@ -176,6 +176,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="<?php echo site_url('reunion');?>" class="nav-link">
+                                <i class="fa fa-users nav-icon"></i>
+                                <p>Reuniones</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?php echo site_url('asociado');?>" class="nav-link">
                                 <i class="fa fa-user nav-icon"></i>
                                 <p>Socios</p>

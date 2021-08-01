@@ -85,4 +85,22 @@ class Tipo_reunion extends CI_Controller{
             show_error('The tipo_reunion you are trying to delete does not exist.');
     }*/
     
+    /* * añadir nuevo tipo de reunion desde nueva reunion(reunion/add) */
+    function nuevotipodereunion()
+    {
+        if ($this->input->is_ajax_request()) {
+            $tiporeunion_nombre = $this->input->post('tiporeunion_nombre');
+            $params = array(
+                'tiporeunion_nombre' => $tiporeunion_nombre,
+            );
+            $tiporeunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
+            $datos = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    
 }

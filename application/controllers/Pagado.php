@@ -64,6 +64,28 @@ class Pagado extends CI_Controller{
     }
     
     /*
+     * nota de entrega de cobro de un asociado
+     */
+    function notae_carta($pagado_id)
+    {
+        $this->load->model('Organizacion_model');
+        $organ_id = 1;
+        $data['organizacion'] = $this->Organizacion_model->get_organizacion($organ_id);
+        
+        $this->load->model('Configuracion_model');
+        $config_id = 1;
+        $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
+        
+        $this->load->helper('numeros_helper'); // para convertir numeros a letras
+        
+        $data['pagado'] = $this->Pagado_model->get_pagado($pagado_id);
+        $data['aporte_asociado'] = $this->Pagado_model->getall_pagadoasociado($pagado_id);
+        
+        $data['_view'] = 'pagado/notae_carta';
+        $this->load->view('layouts/main',$data);
+    }
+    
+    /*
      * comprobante de cobro de un asociado
      */
     function recibo_carta($pagado_id)
