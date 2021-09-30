@@ -106,5 +106,33 @@ class Orden_dia extends CI_Controller{
         else
             show_error('The orden_dia you are trying to delete does not exist.');
     }
-    
+    /*
+     * nueva orden del dia para una reunion
+     */
+    function nuevareunion($reunion_id)
+    {   
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('ordendia_nombre','Ordendia Nombre','required');
+		
+		if($this->form_validation->run())     
+        {   
+            $params = array(
+				'reunion_id' => $this->input->post('reunion_id'),
+				'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+				'ordendia_observacion' => $this->input->post('ordendia_observacion'),
+            );
+            
+            $orden_dia_id = $this->Orden_dia_model->add_orden_dia($params);
+            redirect('orden_dia/index');
+        }
+        else
+        {
+			$this->load->model('Reunion_model');
+			$data['all_reunion'] = $this->Reunion_model->get_all_reunion();
+            
+            $data['_view'] = 'orden_dia/add';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 }

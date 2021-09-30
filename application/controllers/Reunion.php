@@ -40,7 +40,7 @@ class Reunion extends CI_Controller{
     {   
         if(isset($_POST) && count($_POST) > 0)     
         {
-            $estado_id = 1; // 1 = activo
+            $estado_id = 6; // 6 = EN REUNION
             $params = array(
                 'tiporeunion_id' => $this->input->post('tiporeunion_id'),
                 'estado_id' => $estado_id,
@@ -93,7 +93,7 @@ class Reunion extends CI_Controller{
                 $data['all_tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
 
                 $this->load->model('Estado_model');
-                $tipo = 1; // 1 = ACTIVO; INACTIVO
+                $tipo = 3; // 1 = EN REUNION; CONCLUIDO
                 $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
 
                 $this->load->model('Gestion_model');

@@ -46,6 +46,7 @@ function tabla_reunion(filtro){
                 html += "<td class='text-center'>"+registros[i]["estado_nombre"]+"</td>";
                 html += "<td class='text-center'>";
                 html += "<a class='btn btn-info btn-xs' href='"+base_url+"reunion/edit/"+registros[i]["reunion_id"]+"' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
+                html += "<a class='btn btn-success btn-xs' href='"+base_url+"orden_dia/nuevareunion/"+registros[i]["reunion_id"]+"' title='Orden del día' ><span class='fa fa-file-text-o'></span></a>";
                 /*if(registros[i]["estado_id"] == 1){
                     html += "<a class='btn btn-dark btn-xs' onclick='modalrestablecer("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+JSON.stringify(registros[i]["asociado_ci"])+", "+registros[i]["asociado_id"]+")' target='_blank' title='Restablecer accesos al sistema' ><span class='fa fa-gear'></span></a>";
                     html += "<a class='btn btn-danger btn-xs' onclick='modaldardebaja("+JSON.stringify(registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"])+", "+registros[i]["asociado_id"]+")' title='Dar de baja al asociado' ><span class='fa fa-trash'></span></a>";
