@@ -34,9 +34,9 @@ class Orden_dia extends CI_Controller{
 		if($this->form_validation->run())     
         {   
             $params = array(
-				'reunion_id' => $this->input->post('reunion_id'),
-				'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-				'ordendia_observacion' => $this->input->post('ordendia_observacion'),
+                'reunion_id' => $this->input->post('reunion_id'),
+                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+                'ordendia_observacion' => $this->input->post('ordendia_observacion'),
             );
             
             $orden_dia_id = $this->Orden_dia_model->add_orden_dia($params);
@@ -110,29 +110,36 @@ class Orden_dia extends CI_Controller{
      * nueva orden del dia para una reunion
      */
     function nuevareunion($reunion_id)
-    {   
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('ordendia_nombre','Ordendia Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
+    {
+        $this->load->model('Reunion_model');
+        $data['reunion'] = $this->Reunion_model->get_lareunion($reunion_id);
+        $data['_view'] = 'orden_dia/nuevareunion';
+        $this->load->view('layouts/main',$data);
+    }
+    /* registra orden del día */
+    function registrar_ordendia()
+    {
+        if ($this->input->is_ajax_request()){
             $params = array(
-				'reunion_id' => $this->input->post('reunion_id'),
-				'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-				'ordendia_observacion' => $this->input->post('ordendia_observacion'),
+                'reunion_id' => $this->input->post('reunion_id'),
+                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+                'ordendia_fechahora' => date("Y-m-d H:i:s"),
             );
-            
-            $orden_dia_id = $this->Orden_dia_model->add_orden_dia($params);
-            redirect('orden_dia/index');
+            $ordendia_id = $this->Orden_dia_model->add_orden_dia($params);
+            echo json_encode("ok");
+        }else{
+            show_404();
         }
-        else
-        {
-			$this->load->model('Reunion_model');
-			$data['all_reunion'] = $this->Reunion_model->get_all_reunion();
-            
-            $data['_view'] = 'orden_dia/add';
-            $this->load->view('layouts/main',$data);
+    }
+    /* buscar orden del día */
+    function buscar_ordendia()
+    {
+        if ($this->input->is_ajax_request()){
+            $reunion_id = $this->input->post('reunion_id');
+            $datos = $this->Orden_dia_model->get_all_orden_dia($reunion_id);
+            echo json_encode($datos);
+        }else{
+            show_404();
         }
     }
 }

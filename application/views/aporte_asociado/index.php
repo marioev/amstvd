@@ -67,7 +67,7 @@
         </div>
     </div>-->
 </div>
-</div>
+
 <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
 </div>

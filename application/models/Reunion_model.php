@@ -80,4 +80,17 @@ class Reunion_model extends CI_Model
         $reunion = $this->db->query($sql)->result_array();
         return $reunion;
     }
+    /*
+     * Get reunion by reunion_id mas completo
+     */
+    function get_lareunion($reunion_id)
+    {
+        $this->db->select('r.*, g.gestion_nombre, tr.tiporeunion_nombre, e.estado_nombre, e.estado_color');
+        $this->db->from('reunion as r');
+        $this->db->join('tipo_reunion as tr','r.tiporeunion_id = tr.tiporeunion_id', 'left');
+        $this->db->join('gestion as g','r.gestion_id = g.gestion_id', 'left');
+        $this->db->join('estado as e','r.estado_id = e.estado_id', 'left');
+        $this->db->where('r.reunion_id',$reunion_id);
+        return $this->db->get()->row_array();
+    }
 }

@@ -22,10 +22,12 @@ class Orden_dia_model extends CI_Model
     /*
      * Get all orden_dia
      */
-    function get_all_orden_dia()
+    function get_all_orden_dia($reunion_id)
     {
-        $this->db->order_by('ordendia_id', 'desc');
-        return $this->db->get('orden_dia')->result_array();
+        $this->db->select('od.*');
+        $this->db->from('orden_dia as od');
+        $this->db->where('od.reunion_id',$reunion_id);
+        return $this->db->get()->result_array();
     }
         
     /*
