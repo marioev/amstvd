@@ -71,7 +71,7 @@
 
 <a href="<?php echo site_url('reunion'); ?>" class="btn btn-danger">
     <i class="fa fa-times"></i> Cancelar</a>
-<!-------------------------- INICIO modal para restablecer acceso al ssitema de un asociado -------------------------->
+<!-------------------------- INICIO modal nueva orden -------------------------->
 <div class="modal fade" id="modalnuevaorden" tabindex="-1" role="dialog" aria-labelledby="modalnuevaordenlabel">
     <div class="modal-dialog" role="document">
         <br><br>
@@ -99,4 +99,33 @@
         </div>
     </div>
 </div>
-<!-------------------------- F I N  modal para restablecer acceso al ssitema de un asociado -------------------------->
+<!-------------------------- F I N  modal nueva orden -------------------------->
+<!-------------------------- INICIO modal nueva orden -------------------------->
+<div class="modal fade" id="modalnuevaorden" tabindex="-1" role="dialog" aria-labelledby="modalnuevaordenlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <span class="text-bold" >Registrar Orden del día</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader2.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="ordendia_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                    <div class="form-group">
+                        <input type="text" name="ordendia_nombre" value="<?php echo $this->input->post('ordendia_nombre'); ?>" class="form-control" id="ordendia_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        <span class="text-danger" id="mensaje_nombre"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="registrar_ordendia()" id="cobrar" ><span class="fa fa-check"></span> Registrar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------------- F I N  modal modificar orden -------------------------->

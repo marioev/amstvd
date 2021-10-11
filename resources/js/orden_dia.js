@@ -2,7 +2,7 @@ $(document).on("ready",inicio);
 function inicio(){
     tabla_ordendia();
 }
-/* mostrar modal con imagen */
+/* mostrar modal nuevo orden */
 function mostrarnuevomodalorden(){
     $("#mensaje_nombre").html("");
     $("#ordendia_nombre").val("");
@@ -92,7 +92,15 @@ function tabla_ordendia(){
         });
 }
 
-
+/* mostrar modal modificar orden */
+function modificarmodalorden(){
+    $("#mensaje_nombre").html("");
+    $("#ordendia_nombre").val("");
+    $('#modalnuevaorden').on('shown.bs.modal', function (e) {
+       $('#ordendia_nombre').focus();
+    });
+    $("#modalnuevaorden").modal('show');
+}
 
 
 
