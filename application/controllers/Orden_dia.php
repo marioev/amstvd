@@ -124,6 +124,7 @@ class Orden_dia extends CI_Controller{
                 'reunion_id' => $this->input->post('reunion_id'),
                 'ordendia_nombre' => $this->input->post('ordendia_nombre'),
                 'ordendia_fechahora' => date("Y-m-d H:i:s"),
+                'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
             );
             $ordendia_id = $this->Orden_dia_model->add_orden_dia($params);
             echo json_encode("ok");

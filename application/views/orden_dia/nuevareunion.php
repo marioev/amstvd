@@ -1,4 +1,7 @@
 <script src="<?php echo base_url('resources/js/orden_dia.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/ckeditor530/ckeditor.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/ckfinder352/ckfinder.js'); ?>" type="text/javascript"></script>-->
+<script src="<?php echo base_url('resources/ckfinder/ckfinder.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -12,6 +15,11 @@
         }(jQuery));
     });
 </script>
+<style type="text/css">
+  .ck-editor__editable {
+    min-height: 200px !important;
+}
+</style>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
 <input type="hidden" id="reunion_id" value="<?php echo $reunion['reunion_id'];?>">
@@ -70,7 +78,7 @@
 </div>
 
 <a href="<?php echo site_url('reunion'); ?>" class="btn btn-danger">
-    <i class="fa fa-times"></i> Cancelar</a>
+    <i class="fa fa-times"></i> Salir</a>
 <!-------------------------- INICIO modal nueva orden -------------------------->
 <div class="modal fade" id="modalnuevaorden" tabindex="-1" role="dialog" aria-labelledby="modalnuevaordenlabel">
     <div class="modal-dialog" role="document">
@@ -83,6 +91,12 @@
             <div class="modal-body">
                 <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
                     <img src="<?php echo base_url("resources/images/loader2.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="ordendia_asistencia" class="control-label">
+                        <input type="checkbox" name="ordendia_asistencia" value="<?php echo $this->input->post('ordendia_asistencia'); ?>" id="ordendia_asistencia" />
+                        Control de Asistencia
+                    </label>                    
                 </div>
                 <div class="col-md-12">
                     <label for="ordendia_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
@@ -100,32 +114,71 @@
     </div>
 </div>
 <!-------------------------- F I N  modal nueva orden -------------------------->
-<!-------------------------- INICIO modal nueva orden -------------------------->
-<div class="modal fade" id="modalnuevaorden" tabindex="-1" role="dialog" aria-labelledby="modalnuevaordenlabel">
+<!-------------------------- INICIO modal contenido orden dia -------------------------->
+<div class="modal fade" id="modalcontenidorden" tabindex="-1" role="dialog" aria-labelledby="modalcontenidordenlabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center d-block">
-                <span class="text-bold" >Registrar Orden del día</span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold" >Contenido de:</span><br>
+                <span class="text-bold" id="eltitulo"></span>
+                <span class="text-bold" id="ordendia_elid" hidden=""></span>
             </div>
             <div class="modal-body">
-                <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                <div class="row col-md-12" id='loader3'  style='display:none; text-align: center'>
                     <img src="<?php echo base_url("resources/images/loader2.gif"); ?>"  >
                 </div>
                 <div class="col-md-12">
-                    <label for="ordendia_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                    <label for="ordendia_texto" class="control-label"><span class="text-danger">*</span>Contenido</label>
                     <div class="form-group">
-                        <input type="text" name="ordendia_nombre" value="<?php echo $this->input->post('ordendia_nombre'); ?>" class="form-control" id="ordendia_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        <span class="text-danger" id="mensaje_nombre"></span>
+                        <!--<textarea id="ordendia_texto" name="ordendia_texto"></textarea>-->
+                        <div id="editor"></div>
+
                     </div>
                 </div>
             </div>
             <div class="modal-footer text-center d-block">
-                <a class="btn btn-success" onclick="registrar_ordendia()" id="cobrar" ><span class="fa fa-check"></span> Registrar</a>
+                <a class="btn btn-success" onclick="registrar_contenidordendia()" id="cobrar" ><span class="fa fa-check"></span> Registrar</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
 </div>
-<!-------------------------- F I N  modal modificar orden -------------------------->
+<!-------------------------- F I N  modal contenido orden dia -------------------------->
+<script>
+    var base_url = document.getElementById('base_url').value;
+    
+	ClassicEditor
+		.create( document.querySelector( '#editor' ), {
+                    ckfinder: {
+			uploadUrl: base_url+'resources/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+                    },
+                    //toolbar: [ 'ckfinder', 'imageUpload', '|', 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo' ]
+                    //toolbar: [ 'ckfinder', 'imageUpload', '|', 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ]
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'fontfamily', 'fontsize', '|',
+                            'alignment', '|',
+                            'fontColor', 'fontBackgroundColor', '|',
+                            'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                            'link', '|',
+                            'outdent', 'indent', '|',
+                            'bulletedList', 'numberedList', 'todoList', '|',
+                            'code', 'codeBlock', '|',
+                            'insertTable', '|',
+                            'uploadImage', 'blockQuote', '|',
+                            'undo', 'redo'
+                        ],
+                        shouldNotGroupWhenFull: true
+                    }
+         
+		} )
+		.then( editor => {
+			window.editor = editor;
+		} )
+		.catch( err => {
+			console.error( err.stack );
+		} );
+</script>
