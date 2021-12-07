@@ -23,6 +23,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
 <input type="hidden" id="reunion_id" value="<?php echo $reunion['reunion_id'];?>">
+<input type="hidden" id="estadoreunion_id" value="<?php echo $reunion['estado_id'];?>">
 <div class="box-header">
     <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
         <div class="container-fluid">
@@ -53,7 +54,7 @@
                     <tr>
                         <th>N&deg;</th>
                         <th>Orden del Día</th>
-                        <th>Detalle</th>
+                        <!--<th>Detalle</th>-->
                         <th>Fecha y hora</th>
                         <th></th>
                     </tr>
@@ -114,6 +115,43 @@
     </div>
 </div>
 <!-------------------------- F I N  modal nueva orden -------------------------->
+<!-------------------------- INICIO modal modificar información orden -------------------------->
+<div class="modal fade" id="modalmodificarorden" tabindex="-1" role="dialog" aria-labelledby="modalmodificarordenlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold" >Modificar Orden del día</span>
+                <span class="text-bold" id="eltitulomodif"></span>
+                <span class="text-bold" id="ordendia_idmodif" hidden=""></span>
+            </div>
+            <div class="modal-body">
+                <div class="row col-md-12" id='loader4'  style='display:none; text-align: center'>
+                    <img src="<?php //echo base_url("resources/images/loader2.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="ordendia_asistenciamodif" class="control-label">
+                        <input type="checkbox" name="ordendia_asistenciamodif" value="<?php echo $this->input->post('ordendia_asistencia'); ?>" id="ordendia_asistenciamodif" />
+                        Control de Asistencia
+                    </label>                    
+                </div>
+                <div class="col-md-12">
+                    <label for="ordendia_nombremodif" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                    <div class="form-group">
+                        <input type="text" name="ordendia_nombremodif" class="form-control" id="ordendia_nombremodif" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        <span class="text-danger" id="mensaje_nombremodif"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="modificar_ordendia()" id="cobrar" ><span class="fa fa-check"></span> Modifcar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------------- F I N  modal modifcar información orden -------------------------->
 <!-------------------------- INICIO modal contenido orden dia -------------------------->
 <div class="modal fade" id="modalcontenidorden" tabindex="-1" role="dialog" aria-labelledby="modalcontenidordenlabel">
     <div class="modal-dialog" role="document">
@@ -139,7 +177,7 @@
                 </div>
             </div>
             <div class="modal-footer text-center d-block">
-                <a class="btn btn-success" onclick="registrar_contenidordendia()" id="cobrar" ><span class="fa fa-check"></span> Registrar</a>
+                <a class="btn btn-success" onclick="registrar_contenidordendia()"><span class="fa fa-check"></span> Registrar</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

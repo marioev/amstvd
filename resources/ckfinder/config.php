@@ -173,7 +173,6 @@ $config['csrfProtection'] = true;
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_headers
 
 $config['headers'] = array();
-$config['height'] = '500px';
 
 /*============================== End of Configuration =================================*/
 

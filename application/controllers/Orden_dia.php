@@ -143,4 +143,33 @@ class Orden_dia extends CI_Controller{
             show_404();
         }
     }
+    /* registra detalle de orden del día */
+    function registrar_detalleordendia()
+    {
+        if ($this->input->is_ajax_request()){
+            $ordendia_id = $this->input->post('ordendia_id');
+            $params = array(
+                'ordendia_texto' => $this->input->post('ordendia_texto'),
+            );
+            $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* registra detalle de orden del día */
+    function modifcar_ordendia()
+    {
+        if ($this->input->is_ajax_request()){
+            $ordendia_id = $this->input->post('ordendia_id');
+            $params = array(
+                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+                'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
+            );
+            $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
 }
