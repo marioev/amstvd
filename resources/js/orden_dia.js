@@ -87,6 +87,7 @@ function tabla_ordendia(){
                     }else{
                         html += "<a onclick='mostrarmodalcontenidorden("+JSON.stringify(registros[i])+")' class='btn btn-success btn-xs' title='Registrar contenido' ><span class='fa fa-file-text-o'></span></a>";
                     }
+                    html += "<a onclick='mostrarmodaleliminarunorden("+JSON.stringify(registros[i])+")' class='btn btn-danger btn-xs' title='Eliminar orden' ><span class='fa fa-trash'></span></a>";
                 }
                 html += "</td>";
                 html += "</tr>";
@@ -206,4 +207,38 @@ function modificar_ordendia(){
                 }		
             });
         }
+}
+/* mostrar modal para eliminar orden */
+function mostrarmodaleliminarunorden(ordendia){
+    $("#mensaje_nombremodif").html("");
+    $("#ordendiaeliminar_id").html(ordendia["ordendia_id"]);
+    $("#eltituloeliminar").html(ordendia["ordendia_nombre"]);
+    
+    $("#modaleliminarunorden").modal('show');
+}
+/* elimina una orden */
+function eliminar_ordendia(){
+    var base_url = document.getElementById('base_url').value;
+    var ordendia_id = $('#ordendiaeliminar_id').html();
+    var controlador = base_url+'orden_dia/eliminar_ordendia';
+    document.getElementById('loader5').style.display = 'block'; //muestra el loader
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{ordendia_id:ordendia_id},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                    if (registros != null){
+                        document.getElementById('loader5').style.display = 'none';
+                        $("#modaleliminarunorden").modal('hide');
+                        tabla_ordendia();
+                    }
+                },
+                error:function(respuesta){
+                },
+                complete: function (jqXHR, textStatus) {
+                    document.getElementById('loader5').style.display = 'none'; //ocultar el bloque del loader 
+                    //tabla_inventario();
+                }		
+            });
+       // }
 }

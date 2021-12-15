@@ -125,6 +125,7 @@ class Orden_dia extends CI_Controller{
                 'ordendia_nombre' => $this->input->post('ordendia_nombre'),
                 'ordendia_fechahora' => date("Y-m-d H:i:s"),
                 'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
+                'ordendia_texto' => "",
             );
             $ordendia_id = $this->Orden_dia_model->add_orden_dia($params);
             echo json_encode("ok");
@@ -167,6 +168,18 @@ class Orden_dia extends CI_Controller{
                 'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
             );
             $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    
+    /* elimina un orden del día */
+    function eliminar_ordendia()
+    {
+        if ($this->input->is_ajax_request()){
+            $ordendia_id = $this->input->post('ordendia_id');
+            $this->Orden_dia_model->delete_orden_dia($ordendia_id);
             echo json_encode("ok");
         }else{
             show_404();

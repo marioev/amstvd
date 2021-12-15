@@ -184,6 +184,33 @@
     </div>
 </div>
 <!-------------------------- F I N  modal contenido orden dia -------------------------->
+<!-------------------------- INICIO modal eliminar un orden dia -------------------------->
+<div class="modal fade" id="modaleliminarunorden" tabindex="-1" role="dialog" aria-labelledby="modaleliminarunordenlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center d-block">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold" >Eliminar:</span><br>
+                <span class="text-bold" id="eltituloeliminar"></span>
+                <span class="text-bold" id="ordendiaeliminar_id" hidden></span>
+            </div>
+            <div class="modal-body">
+                <div class="row col-md-12" id='loader5'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label class="control-label"><span class="fa fa-trash"></span>Esta seguro que quiere eliminar esta orden? </label>
+                </div>
+            </div>
+            <div class="modal-footer text-center d-block">
+                <a class="btn btn-success" onclick="eliminar_ordendia()"><span class="fa fa-check"></span> Eliminar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-------------------------- F I N  modal eliminar un orden dia -------------------------->
 <script>
     var base_url = document.getElementById('base_url').value;
     
