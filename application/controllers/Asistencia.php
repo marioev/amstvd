@@ -112,5 +112,53 @@ class Asistencia extends CI_Controller{
         else
             show_error('The asistencia you are trying to delete does not exist.');
     }
-    
+    /*
+     * control de asistencia
+     */
+    function control($reunion_id, $ordendia_id)
+    {
+        //$data['all_asistencia'] = $this->Asistencia_model->get_allasistencia($reunion_id, $ordendia_id);
+        $data['reunion_id'] = $reunion_id;
+        $data['ordendia_id'] = $ordendia_id;
+        $this->load->model('Orden_dia_model');
+        $data['orden_dia'] = $this->Orden_dia_model->get_orden_dia($ordendia_id);
+        
+        $data['_view'] = 'asistencia/control';
+        $this->load->view('layouts/main',$data);
+    }
+    /* registra orden del día */
+    function registrar_asistencia()
+    {
+        if ($this->input->is_ajax_request()){
+            $this->load->model('Asociado_model');
+            $estado_id  = 1;
+            $fechahora = date("Y-m-d H:i:s");
+            $all_asociado = $this->Asociado_model->get_all_asociadosestado($estado_id);
+            foreach ($all_asociado as $asociado) {
+                $params = array(
+                    'reunion_id' => $this->input->post('reunion_id'),
+                    'ordendia_id' => $this->input->post('ordendia_id'),
+                    'asociado_id' => $asociado["asociado_id"],
+                    'asistencia_estado' => "PRESENTE",
+                    'asistencia_fechahora' => $fechahora,
+                );
+                $asistencia_id = $this->Asistencia_model->add_asistencia($params);
+            }
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* obtiene la asistencia de una reunión */
+    function get_asistencia()
+    {
+        if ($this->input->is_ajax_request()){
+            $reunion_id  = $this->input->post('reunion_id');
+            $ordendia_id = $this->input->post('ordendia_id');
+            $all_asistencia = $this->Asistencia_model->get_allasistencia($reunion_id, $ordendia_id);
+            echo json_encode($all_asistencia);
+        }else{
+            show_404();
+        }
+    }
 }

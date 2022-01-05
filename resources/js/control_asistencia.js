@@ -1,62 +1,53 @@
 $(document).on("ready",inicio);
 function inicio(){
-    tabla_ordendia();
+    tabla_asistencia();
 }
 /* mostrar modal nuevo orden */
-function mostrarnuevomodalorden(){
-    $("#mensaje_nombre").html("");
+function mostrarnuevomodalcontrol(){
+    /*$("#mensaje_nombre").html("");
     $("#ordendia_nombre").val("");
     $("#ordendia_asistencia").prop('checked', false);
     $('#modalnuevaorden').on('shown.bs.modal', function (e) {
        $('#ordendia_nombre').focus();
-    });
-    $("#modalnuevaorden").modal('show');
+    });*/
+    $("#modalnuevocontrol").modal('show');
 }
 
-function registrar_ordendia(){
+function generar_asistencia(){
     var base_url = document.getElementById('base_url').value;
-    var reunion_id = document.getElementById('reunion_id').value;
-    var ordendia_asistencia = 0;
-    var ordendia_nombre = document.getElementById('ordendia_nombre').value;
-    var controlador = base_url+'orden_dia/registrar_ordendia';
-    if(ordendia_nombre.trim() == ""){
-        $("#mensaje_nombre").html("Este campo no puede estar vacio!.");
-    }else{
-        if($('#ordendia_asistencia').is(':checked')){
-            ordendia_asistencia = 1;
-        }
+    var reunion_id  = document.getElementById('reunion_id').value;
+    var ordendia_id = document.getElementById('ordendia_id').value;
+    var controlador = base_url+'asistencia/registrar_asistencia';  
     document.getElementById('loader2').style.display = 'block'; //muestra el loader
         $.ajax({url:controlador,
                 type:"POST",
-                data:{reunion_id:reunion_id, ordendia_asistencia:ordendia_asistencia, ordendia_nombre:ordendia_nombre},
+                data:{reunion_id:reunion_id, ordendia_id:ordendia_id},
                 success:function(respuesta){
-                var registros = JSON.parse(respuesta);
-                if (registros != null){
-                    document.getElementById('loader2').style.display = 'none';
-                    $("#modalnuevaorden").modal('hide');
-                    tabla_ordendia();
-                }
+                    var registros = JSON.parse(respuesta);
+                    if (registros != null){
+                        document.getElementById('loader2').style.display = 'none';
+                        $("#modalnuevocontrol").modal('hide');
+                        tabla_ordendia();
+                    }
                 },
                 error:function(respuesta){
-
+                    
                 },
                 complete: function (jqXHR, textStatus) {
                     document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader 
-                    //tabla_inventario();
-                }		
+                }
             });
-        }
 }
-/* muestra ordenes del dia de una reunion */
-function tabla_ordendia(){
+/* muestra la asistencia de una reunion */
+function tabla_asistencia(){
     var base_url = document.getElementById('base_url').value;
     var reunion_id = document.getElementById('reunion_id').value;
-    var estadoreunion_id = document.getElementById('estadoreunion_id').value;
-    var controlador = base_url+'orden_dia/buscar_ordendia';
+    var ordendia_id = document.getElementById('ordendia_id').value;
+    var controlador = base_url+'asistencia/get_asistencia';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
     $.ajax({url:controlador,
             type:"POST",
-            data:{reunion_id:reunion_id},
+            data:{reunion_id:reunion_id, ordendia_id:ordendia_id},
             success:function(respuesta){
             var registros = JSON.parse(respuesta);
             $("#numeroreg").html(0);
@@ -68,18 +59,13 @@ function tabla_ordendia(){
                 html += "<tr>";
                 html += "<td class='text-center'>"+(i+1)+"</td>";
                 html += "<td>";
-                html += "<span style='font-size: 10pt'><b>"+registros[i]["ordendia_nombre"]+"</b></span>";
+                html += "<span style='font-size: 10pt'><b>"+registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"]+"</b></span>";
                 html += "</td>";
-                /*html += "<td>";
-                if(registros[i]["ordendia_texto"] != null){
-                    var texto = registros[i]["ordendia_texto"];
-                    parte_texto = texto.substr(0, 50);
-                    html+= parte_texto+"...";
-                }
-                html += "</td>";
-                */
-                html += "<td class='text-center'>"+moment(registros[i]["ordendia_fechahora"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
                 html += "<td class='text-center'>";
+                html += "<b>"+registros[i]["asistencia_estado"]+"</b>";
+                html += "</td>";
+                //html += "<td class='text-center'>"+moment(registros[i]["ordendia_fechahora"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
+                /*html += "<td class='text-center'>";
                 if(estadoreunion_id == 6){
                     html += "<a onclick='mostrarmodalmodificarorden("+JSON.stringify(registros[i])+")' class='btn btn-info btn-xs' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
                     if(registros[i]["ordendia_asistencia"] == 1){
@@ -90,10 +76,13 @@ function tabla_ordendia(){
                     html += "<a onclick='mostrarmodaleliminarunorden("+JSON.stringify(registros[i])+")' class='btn btn-danger btn-xs' title='Eliminar orden' ><span class='fa fa-trash'></span></a>";
                 }
                 html += "</td>";
+                */
                 html += "</tr>";
             }
                 $("#listaordendia").html(html);
                 document.getElementById('loader').style.display = 'none';
+            }else{
+                document.getElementById('esparanuevaasistencia').style.display = 'block';
             }
             },
             error:function(respuesta){
