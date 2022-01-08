@@ -59,7 +59,7 @@ class Estado_model extends CI_Model
     function get_all_estadotipo($tipo)
     {
         $this->db->where('estado_tipo',$tipo);
-        $this->db->order_by('estado_id', 'desc');
+        $this->db->order_by('estado_id', 'asc');
         return $this->db->get('estado')->result_array();
     }
 }

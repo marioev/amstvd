@@ -52,6 +52,8 @@ function tabla_asistencia(){
             var registros = JSON.parse(respuesta);
             $("#numeroreg").html(0);
             if (registros != null){
+                var allestado = JSON.parse(document.getElementById('all_estado').value);
+                var m = allestado.length;
                 var n = registros.length;
                 $("#numeroreg").html(n);
                 html = "";
@@ -63,6 +65,23 @@ function tabla_asistencia(){
                 html += "</td>";
                 html += "<td class='text-center'>";
                 html += "<b>"+registros[i]["asistencia_estado"]+"</b>";
+                html += "</td>";
+                html += "<td class='text-center'>";
+                html += "<select name='laasistencia"+registros[i]["asistencia_id"]+"' id='laasistencia"+registros[i]["asistencia_id"]+"' class='form-control' onchange='cambiar_asistencia("+registros[i]["asistencia_id"]+")'>";
+                var selected = "";
+                    for (var j = 0; j < m; j++) {
+                        //$selected = ($reunion['reunion_id'] == $asistencia['reunion_id']) ? ' selected="selected"' : "";
+                        if(allestado[j]["estado_nombre"] == registros[i]["asistencia_estado"]){
+                            selected = "selected='selected'";
+                        }else{
+                            selected = "";
+                        }
+                        html += "<option value='"+allestado[j]["estado_nombre"]+"' "+selected+">"+allestado[j]["estado_nombre"]+"</option>";
+                    }
+                    /*html += "<option value='RETRASO'>RETRASO</option>";
+                    html += "<option value='PERMISO'>PERMISO</option>";
+                    html += "<option value='FALTA'>FALTA</option>";*/
+                html += "</select>";
                 html += "</td>";
                 //html += "<td class='text-center'>"+moment(registros[i]["ordendia_fechahora"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
                 /*html += "<td class='text-center'>";
@@ -94,6 +113,88 @@ function tabla_asistencia(){
             }		
         });
 }
+
+function cambiar_asistencia(asistencia_id){
+    var base_url = document.getElementById('base_url').value;
+    var laasistencia = document.getElementById('laasistencia'+asistencia_id).value;
+    var controlador = base_url+'asistencia/modificar_asistencia';
+    document.getElementById('loader').style.display = 'block'; //muestra el loader
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{asistencia_id:asistencia_id,laasistencia:laasistencia},
+                success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                if (registros != null){
+                    document.getElementById('loader').style.display = 'none';
+                    tabla_asistencia();
+                }
+                },
+                error:function(respuesta){
+
+                },
+                complete: function (jqXHR, textStatus) {
+                    document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                    //tabla_inventario();
+                }		
+            });
+       // }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* mostrar modal modificar orden */
 function modificarmodalorden(){

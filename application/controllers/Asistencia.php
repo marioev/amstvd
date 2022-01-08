@@ -122,6 +122,9 @@ class Asistencia extends CI_Controller{
         $data['ordendia_id'] = $ordendia_id;
         $this->load->model('Orden_dia_model');
         $data['orden_dia'] = $this->Orden_dia_model->get_orden_dia($ordendia_id);
+        $this->load->model('Estado_model');
+        $tipo = 4;
+        $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
         
         $data['_view'] = 'asistencia/control';
         $this->load->view('layouts/main',$data);
@@ -157,6 +160,20 @@ class Asistencia extends CI_Controller{
             $ordendia_id = $this->input->post('ordendia_id');
             $all_asistencia = $this->Asistencia_model->get_allasistencia($reunion_id, $ordendia_id);
             echo json_encode($all_asistencia);
+        }else{
+            show_404();
+        }
+    }
+    /* modificar la asistencia de un asociado */
+    function modificar_asistencia()
+    {
+        if ($this->input->is_ajax_request()){
+            $asistencia_id  = $this->input->post('asistencia_id');
+            $params = array(
+                'asistencia_estado' => $this->input->post('laasistencia'),
+            );
+            $this->Asistencia_model->update_asistencia($asistencia_id,$params);
+            echo json_encode("ok");
         }else{
             show_404();
         }
