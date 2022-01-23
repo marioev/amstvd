@@ -91,6 +91,20 @@
                         ¿Esta seguro que quiere generar <br> Control de Asistencia?
                     </label>                    
                 </div>
+                <div class="col-md-12">
+                    <label for="asistencia_fecha" class="control-label"><span class="text-danger">*</span>Fecha y Hora</label>
+                    <div class="form-group" style="display: flex">
+                        <input type="date" name="asistencia_fecha" class="form-control" id="asistencia_fecha" required />
+                        <input type="time" step="any" name="asistencia_hora" class="form-control" id="asistencia_hora" required />
+                        <span class="text-danger" id="mensaje_fechahora"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="asistencia_estado" class="control-label"><span class="text-danger">*</span>Estado</label>
+                    <div class="form-group">
+                        <span id="paraestado"></span>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer text-center d-block">
                 <a class="btn btn-success" onclick="generar_asistencia()" id="cobrar" ><span class="fa fa-check"></span> Generar</a>

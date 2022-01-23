@@ -117,7 +117,7 @@ class Asistencia extends CI_Controller{
      */
     function control($reunion_id, $ordendia_id)
     {
-        //$data['all_asistencia'] = $this->Asistencia_model->get_allasistencia($reunion_id, $ordendia_id);
+        //$data['all_asistencia'] = $this->Asistencia_model->get_allasistencia($ordendia_id);
         $data['reunion_id'] = $reunion_id;
         $data['ordendia_id'] = $ordendia_id;
         $this->load->model('Orden_dia_model');
@@ -135,15 +135,16 @@ class Asistencia extends CI_Controller{
         if ($this->input->is_ajax_request()){
             $this->load->model('Asociado_model');
             $estado_id  = 1;
-            $fechahora = date("Y-m-d H:i:s");
+            //$fechahora = date("Y-m-d H:i:s");
             $all_asociado = $this->Asociado_model->get_all_asociadosestado($estado_id);
             foreach ($all_asociado as $asociado) {
                 $params = array(
                     'reunion_id' => $this->input->post('reunion_id'),
                     'ordendia_id' => $this->input->post('ordendia_id'),
                     'asociado_id' => $asociado["asociado_id"],
-                    'asistencia_estado' => "PRESENTE",
-                    'asistencia_fechahora' => $fechahora,
+                    'asistencia_estado' => $this->input->post('asistencia_estado'),
+                    'asistencia_fecha' => $this->input->post('asistencia_fecha'),
+                    'asistencia_hora' => $this->input->post('asistencia_hora'),
                 );
                 $asistencia_id = $this->Asistencia_model->add_asistencia($params);
             }
@@ -158,7 +159,7 @@ class Asistencia extends CI_Controller{
         if ($this->input->is_ajax_request()){
             $reunion_id  = $this->input->post('reunion_id');
             $ordendia_id = $this->input->post('ordendia_id');
-            $all_asistencia = $this->Asistencia_model->get_allasistencia($reunion_id, $ordendia_id);
+            $all_asistencia = $this->Asistencia_model->get_allasistencia($ordendia_id);
             echo json_encode($all_asistencia);
         }else{
             show_404();

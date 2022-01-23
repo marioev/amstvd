@@ -21,12 +21,11 @@ class Asistencia_model extends CI_Model
     /*
      * Get all asistencias by reunion and orden dia
      */
-    function get_allasistencia($reunion_id, $ordendia_id)
+    function get_allasistencia($ordendia_id)
     {
         $this->db->select('a.*, aso.asociado_nombre, aso.asociado_apellido');
-        $this->db->where('a.reunion_id', $reunion_id);
         $this->db->where('a.ordendia_id', $ordendia_id);
-        $this->db->join('orden_dia as od','a.ordendia_id = od.ordendia_id', 'left');
+        //$this->db->join('orden_dia as od','a.ordendia_id = od.ordendia_id', 'left');
         $this->db->join('asociado as aso','a.asociado_id = aso.asociado_id', 'left');
         $this->db->order_by('aso.asociado_apellido asc, aso.asociado_nombre asc');
         //$this->db->join('estado as e','a.estado_id = e.estado_id', 'left');

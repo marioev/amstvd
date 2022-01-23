@@ -10,6 +10,47 @@ function mostrarnuevomodalcontrol(){
     $('#modalnuevaorden').on('shown.bs.modal', function (e) {
        $('#ordendia_nombre').focus();
     });*/
+    let allestado = JSON.parse(document.getElementById('all_estado').value);
+    let m = allestado.length;
+    let html = "<select name='asistencia_estado' id='asistencia_estado' class='form-control'>";
+    var selected = "";
+    for (var j = 0; j < m; j++){
+        /*if(allestado[j]["estado_nombre"] == registros[i]["asistencia_estado"]){
+            selected = "selected='selected'";
+        }else{
+            selected = "";
+        }*/
+        html += "<option value='"+allestado[j]["estado_nombre"]+"' "+selected+">"+allestado[j]["estado_nombre"]+"</option>";
+    }
+    html += "</select>";
+    let date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth() + 1
+    let year = date.getFullYear()
+    if(month < 10){
+      month = `0${month}`;
+    }
+    if(day < 10){
+      day = `0${day}`;
+    }
+    fecha = `${year}-${month}-${day}`;
+    //let hora = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    let hora = date.getHours();
+    let min  = date.getMinutes();
+    let seg  = date.getSeconds();
+    if(hora<10){
+        hora = `0${hora}`;
+    }
+    if(min<10){
+        min = `0${min}`;
+    }
+    if(seg<10){
+        seg = `0${seg}`;
+    }
+    lahora = `${hora}:${min}:${seg}`;
+    $("#asistencia_fecha").val(fecha);
+    $("#asistencia_hora").val(lahora);
+    $("#paraestado").html(html);
     $("#modalnuevocontrol").modal('show');
 }
 
@@ -17,17 +58,21 @@ function generar_asistencia(){
     var base_url = document.getElementById('base_url').value;
     var reunion_id  = document.getElementById('reunion_id').value;
     var ordendia_id = document.getElementById('ordendia_id').value;
+    var asistencia_fecha  = document.getElementById('asistencia_fecha').value;
+    var asistencia_hora   = document.getElementById('asistencia_hora').value;
+    var asistencia_estado = document.getElementById('asistencia_estado').value;
     var controlador = base_url+'asistencia/registrar_asistencia';  
     document.getElementById('loader2').style.display = 'block'; //muestra el loader
         $.ajax({url:controlador,
                 type:"POST",
-                data:{reunion_id:reunion_id, ordendia_id:ordendia_id},
+                data:{reunion_id:reunion_id, ordendia_id:ordendia_id, asistencia_fecha:asistencia_fecha,
+                      asistencia_hora:asistencia_hora, asistencia_estado:asistencia_estado},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                     if (registros != null){
                         document.getElementById('loader2').style.display = 'none';
                         $("#modalnuevocontrol").modal('hide');
-                        tabla_ordendia();
+                        tabla_asistencia();
                     }
                 },
                 error:function(respuesta){
@@ -56,6 +101,11 @@ function tabla_asistencia(){
                 var m = allestado.length;
                 var n = registros.length;
                 $("#numeroreg").html(n);
+                if(n > 0){
+                    $("#esparanuevaasistencia").css("display", "none");
+                }else{
+                    $("#esparanuevaasistencia").css("display", "block");
+                }
                 html = "";
                 for (var i = 0; i < n ; i++){
                 html += "<tr>";
