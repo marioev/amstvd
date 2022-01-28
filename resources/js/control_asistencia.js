@@ -106,8 +106,20 @@ function tabla_asistencia(){
                 }else{
                     $("#esparanuevaasistencia").css("display", "block");
                 }
+                let totalpresentes = Number(0);
+                let totalpermisos  = Number(0);
+                let totalfaltas    = Number(0);
+                let total          = Number(0);
                 html = "";
                 for (var i = 0; i < n ; i++){
+                    total += 1;
+                    if(registros[i]["asistencia_estado"] == "PRESENTE" || registros[i]["asistencia_estado"] == "RETRASO PAGADO" || registros[i]["asistencia_estado"] == "RETRASO SIN PAGAR"){
+                        totalpresentes += 1;
+                    }else if(registros[i]["asistencia_estado"] == "PERMISO"){
+                        totalpermisos += 1;
+                    }else if(registros[i]["asistencia_estado"] == "FALTA"){
+                        totalfaltas += 1;
+                    }
                 html += "<tr>";
                 html += "<td class='text-center'>"+(i+1)+"</td>";
                 html += "<td>";
@@ -148,6 +160,25 @@ function tabla_asistencia(){
                 */
                 html += "</tr>";
             }
+            html += "<tr>";
+            html += "<th colspan='4'>Resumen</th>";
+            html += "</tr>";
+            html += "<tr>";
+            html += "<td colspan='2' class='text-right'>Presentes:</td>";
+            html += "<td colspan='2' class='text-lefth text-bold'>"+totalpresentes+"</td>";
+            html += "</tr>";
+            html += "<tr>";
+            html += "<td colspan='2' class='text-right'>Permisos:</td>";
+            html += "<td colspan='2' class='text-lefth text-bold'>"+totalpermisos+"</td>";
+            html += "</tr>";
+            html += "<tr>";
+            html += "<td colspan='2' class='text-right'>Faltas:</td>";
+            html += "<td colspan='2' class='text-lefth text-bold'>"+totalfaltas+"</td>";
+            html += "</tr>";
+            html += "<tr>";
+            html += "<td colspan='2' class='text-right text-bold'>Total:</td>";
+            html += "<td colspan='2' class='text-lefth text-bold'>"+total+"</td>";
+            html += "</tr>";
                 $("#listaordendia").html(html);
                 document.getElementById('loader').style.display = 'none';
             }else{
@@ -189,100 +220,20 @@ function cambiar_asistencia(asistencia_id){
             });
        // }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* mostrar modal modificar orden */
-function modificarmodalorden(){
-    $("#mensaje_nombre").html("");
-    $("#ordendia_nombre").val("");
-    $('#modalnuevaorden').on('shown.bs.modal', function (e) {
-       $('#ordendia_nombre').focus();
-    });
-    $("#modalnuevaorden").modal('show');
-}
-
-/* mostrar modal para registrar el contenido de el punto a tratar */
-function mostrarmodalcontenidorden(ordendia){
-    $("#eltitulo").html(ordendia['ordendia_nombre']);
-    $("#ordendia_elid").html(ordendia['ordendia_id']);
-    editor.setData(ordendia['ordendia_texto']);
-    $('#modalcontenidorden').on('shown.bs.modal', function (e) {
-       $('#editor').focus();
-    });
-    $("#modalcontenidorden").modal('show');
-}
-
-function registrar_contenidordendia(){
+/* guarda la multa de los que no asistieron a una reunion!. */
+function guardar_asistencia(){
     var base_url = document.getElementById('base_url').value;
-    var reunion_id = document.getElementById('reunion_id').value;
-    var ordendia_id = $('#ordendia_elid').html();
-    var controlador = base_url+'orden_dia/registrar_detalleordendia';
-    var ordendia_texto = editor.getData();
+    var ordendia_id = document.getElementById('ordendia_id').value;
+    var controlador = base_url+'asistencia/guardar_asistenciamulta';
     document.getElementById('loader').style.display = 'block'; //muestra el loader
         $.ajax({url:controlador,
                 type:"POST",
-                data:{ordendia_texto:ordendia_texto, ordendia_id:ordendia_id},
+                data:{ordendia_id:ordendia_id},
                 success:function(respuesta){
                 var registros = JSON.parse(respuesta);
                 if (registros != null){
                     document.getElementById('loader').style.display = 'none';
-                    $("#modalcontenidorden").modal('hide');
-                    tabla_ordendia();
+                    tabla_asistencia();
                 }
                 },
                 error:function(respuesta){
@@ -290,91 +241,6 @@ function registrar_contenidordendia(){
                 },
                 complete: function (jqXHR, textStatus) {
                     document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
-                    //tabla_inventario();
-                }		
-            });
-       // }
-}
-/* mostrar modal nuevo orden */
-function mostrarmodalmodificarorden(ordendia){
-    $("#mensaje_nombremodif").html("");
-    $("#ordendia_idmodif").html(ordendia["ordendia_id"]);
-    $("#ordendia_nombremodif").val(ordendia["ordendia_nombre"]);
-    if(ordendia["ordendia_asistencia"] == 1){
-        $("#ordendia_asistenciamodif").prop('checked', true);
-    }else{
-        $("#ordendia_asistenciamodif").prop('checked', false);
-    }
-    
-    $('#modalmodificarorden').on('shown.bs.modal', function (e) {
-       $('#ordendia_nombremodif').focus();
-    });
-    $("#modalmodificarorden").modal('show');
-}
-
-function modificar_ordendia(){
-    var base_url = document.getElementById('base_url').value;
-    var ordendia_id = $('#ordendia_idmodif').html();
-    var ordendia_nombre = document.getElementById('ordendia_nombremodif').value;
-    var controlador = base_url+'orden_dia/modifcar_ordendia';
-    var ordendia_asistencia = 0;
-    if(ordendia_nombre.trim() == ""){
-        $("#mensaje_nombremodif").html("Este campo no puede estar vacio!.");
-    }else{
-        if($('#ordendia_asistenciamodif').is(':checked')){
-            ordendia_asistencia = 1;
-        }
-    document.getElementById('loader4').style.display = 'block'; //muestra el loader
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{ordendia_id:ordendia_id, ordendia_asistencia:ordendia_asistencia, ordendia_nombre:ordendia_nombre},
-                success:function(respuesta){
-                var registros = JSON.parse(respuesta);
-                if (registros != null){
-                    document.getElementById('loader4').style.display = 'none';
-                    $("#modalmodificarorden").modal('hide');
-                    tabla_ordendia();
-                }
-                },
-                error:function(respuesta){
-
-                },
-                complete: function (jqXHR, textStatus) {
-                    document.getElementById('loader4').style.display = 'none'; //ocultar el bloque del loader 
-                    //tabla_inventario();
-                }		
-            });
-        }
-}
-/* mostrar modal para eliminar orden */
-function mostrarmodaleliminarunorden(ordendia){
-    $("#mensaje_nombremodif").html("");
-    $("#ordendiaeliminar_id").html(ordendia["ordendia_id"]);
-    $("#eltituloeliminar").html(ordendia["ordendia_nombre"]);
-    
-    $("#modaleliminarunorden").modal('show');
-}
-/* elimina una orden */
-function eliminar_ordendia(){
-    var base_url = document.getElementById('base_url').value;
-    var ordendia_id = $('#ordendiaeliminar_id').html();
-    var controlador = base_url+'orden_dia/eliminar_ordendia';
-    document.getElementById('loader5').style.display = 'block'; //muestra el loader
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{ordendia_id:ordendia_id},
-                success:function(respuesta){
-                    var registros = JSON.parse(respuesta);
-                    if (registros != null){
-                        document.getElementById('loader5').style.display = 'none';
-                        $("#modaleliminarunorden").modal('hide');
-                        tabla_ordendia();
-                    }
-                },
-                error:function(respuesta){
-                },
-                complete: function (jqXHR, textStatus) {
-                    document.getElementById('loader5').style.display = 'none'; //ocultar el bloque del loader 
                     //tabla_inventario();
                 }		
             });

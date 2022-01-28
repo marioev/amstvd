@@ -179,4 +179,27 @@ class Asistencia extends CI_Controller{
             show_404();
         }
     }
+    /* guarda la multa de los que no asistieron a una reunion */
+    function guardar_asistenciamulta()
+    {
+        if ($this->input->is_ajax_request()){
+            $ordendia_id = $this->input->post('ordendia_id');
+            $all_asistencia = $this->Asistencia_model->get_allasistencia($ordendia_id);
+            foreach ($all_asistencia as $asistencia) {
+                if($asistencia["asistencia_estado"] == "RETRASO PAGADO"){
+                    $params = array(
+                        'asistencia_estado' => $this->input->post('laasistencia'),
+                    );
+                    $asistencia_id = $this->Asistencia_model->add_asistencia($params);
+                }elseif($asistencia["asistencia_estado"] == "RETRASO SIN PAGAR"){
+                    
+                }elseif($asistencia["asistencia_estado"] == "FALTA"){
+                    
+                }
+            }
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
 }

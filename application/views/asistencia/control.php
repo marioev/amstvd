@@ -70,9 +70,12 @@
         </div>
     </div>
 </div>
-
-<a href="<?php echo site_url('reunion'); ?>" class="btn btn-danger">
+<div class="col-md-12 text-center">
+    <a onclick="guardar_asistencia()" class="btn btn-success">
+        <i class="fa fa-check"></i> Guardar Asistencia</a>
+    <a href="<?php echo site_url('orden_dia/nuevareunion/'.$reunion_id); ?>" class="btn btn-danger">
     <i class="fa fa-times"></i> Salir</a>
+</div>
 <!-------------------------- INICIO modal nuevo control -------------------------->
 <div class="modal fade" id="modalnuevocontrol" tabindex="-1" role="dialog" aria-labelledby="modalnuevocontrollabel">
     <div class="modal-dialog" role="document">
