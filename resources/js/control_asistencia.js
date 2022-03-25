@@ -129,7 +129,7 @@ function tabla_asistencia(){
                 html += "<b>"+registros[i]["asistencia_estado"]+"</b>";
                 html += "</td>";
                 html += "<td class='text-center'>";
-                html += "<select name='laasistencia"+registros[i]["asistencia_id"]+"' id='laasistencia"+registros[i]["asistencia_id"]+"' class='form-control' onchange='cambiar_asistencia("+registros[i]["asistencia_id"]+")'>";
+                html += "<select style='height: 30px !important; padding: 1px; font-size: 10px !important' name='laasistencia"+registros[i]["asistencia_id"]+"' id='laasistencia"+registros[i]["asistencia_id"]+"' class='form-control' onchange='cambiar_asistencia("+registros[i]["asistencia_id"]+")'>";
                 var selected = "";
                     for (var j = 0; j < m; j++) {
                         //$selected = ($reunion['reunion_id'] == $asistencia['reunion_id']) ? ' selected="selected"' : "";
