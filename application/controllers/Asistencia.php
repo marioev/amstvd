@@ -125,6 +125,8 @@ class Asistencia extends CI_Controller{
         $this->load->model('Estado_model');
         $tipo = 4;
         $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
+        $this->load->model('Tipo_multa_model');
+        $data['all_tipomulta'] = $this->Tipo_multa_model->get_all_tipomulta_vigente();
         
         $data['_view'] = 'asistencia/control';
         $this->load->view('layouts/main',$data);
@@ -194,7 +196,7 @@ class Asistencia extends CI_Controller{
                 }elseif($asistencia["asistencia_estado"] == "RETRASO SIN PAGAR"){
                     
                 }elseif($asistencia["asistencia_estado"] == "FALTA"){
-                    
+                    //
                 }
             }
             echo json_encode("ok");

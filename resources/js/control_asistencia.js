@@ -98,8 +98,10 @@ function tabla_asistencia(){
             $("#numeroreg").html(0);
             if (registros != null){
                 var allestado = JSON.parse(document.getElementById('all_estado').value);
+                var alltipomulta = JSON.parse(document.getElementById('all_tipomulta').value);
                 var m = allestado.length;
                 var n = registros.length;
+                var h = alltipomulta.length;
                 $("#numeroreg").html(n);
                 if(n > 0){
                     $("#esparanuevaasistencia").css("display", "none");
@@ -120,65 +122,86 @@ function tabla_asistencia(){
                     }else if(registros[i]["asistencia_estado"] == "FALTA"){
                         totalfaltas += 1;
                     }
-                html += "<tr>";
-                html += "<td class='text-center'>"+(i+1)+"</td>";
-                html += "<td>";
-                html += "<span style='font-size: 10pt'><b>"+registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"]+"</b></span>";
-                html += "</td>";
-                html += "<td class='text-center'>";
-                html += "<b>"+registros[i]["asistencia_estado"]+"</b>";
-                html += "</td>";
-                html += "<td class='text-center'>";
-                html += "<select style='height: 30px !important; padding: 1px; font-size: 10px !important' name='laasistencia"+registros[i]["asistencia_id"]+"' id='laasistencia"+registros[i]["asistencia_id"]+"' class='form-control' onchange='cambiar_asistencia("+registros[i]["asistencia_id"]+")'>";
-                var selected = "";
-                    for (var j = 0; j < m; j++) {
-                        //$selected = ($reunion['reunion_id'] == $asistencia['reunion_id']) ? ' selected="selected"' : "";
-                        if(allestado[j]["estado_nombre"] == registros[i]["asistencia_estado"]){
-                            selected = "selected='selected'";
-                        }else{
-                            selected = "";
+                    html += "<tr>";
+                    html += "<td class='text-center'>"+(i+1)+"</td>";
+                    html += "<td>";
+                    html += "<span style='font-size: 10pt'><b>"+registros[i]["asociado_apellido"]+" "+registros[i]["asociado_nombre"]+"</b></span>";
+                    html += "</td>";
+                    html += "<td class='text-center'>";
+                    html += "<b>"+registros[i]["asistencia_estado"]+"</b>";
+                    html += "</td>";
+                    html += "<td class='text-center'>";
+                    html += "<select style='height: 30px !important; padding: 1px; font-size: 10px !important' name='laasistencia"+registros[i]["asistencia_id"]+"' id='laasistencia"+registros[i]["asistencia_id"]+"' class='form-control' onchange='cambiar_asistencia("+registros[i]["asistencia_id"]+")'>";
+                    var selected = "";
+                        for (var j = 0; j < m; j++) {
+                            //$selected = ($reunion['reunion_id'] == $asistencia['reunion_id']) ? ' selected="selected"' : "";
+                            if(allestado[j]["estado_nombre"] == registros[i]["asistencia_estado"]){
+                                selected = "selected='selected'";
+                            }else{
+                                selected = "";
+                            }
+                            html += "<option value='"+allestado[j]["estado_nombre"]+"' "+selected+">"+allestado[j]["estado_nombre"]+"</option>";
                         }
-                        html += "<option value='"+allestado[j]["estado_nombre"]+"' "+selected+">"+allestado[j]["estado_nombre"]+"</option>";
+                        /*html += "<option value='RETRASO'>RETRASO</option>";
+                        html += "<option value='PERMISO'>PERMISO</option>";
+                        html += "<option value='FALTA'>FALTA</option>";*/
+                    html += "</select>";
+                    html += "</td>";
+                    //html += "<td class='text-center'>"+moment(registros[i]["ordendia_fechahora"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
+                    /*html += "<td class='text-center'>";
+                    if(estadoreunion_id == 6){
+                        html += "<a onclick='mostrarmodalmodificarorden("+JSON.stringify(registros[i])+")' class='btn btn-info btn-xs' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
+                        if(registros[i]["ordendia_asistencia"] == 1){
+                            html += "<a class='btn btn-success btn-xs' href='"+base_url+"asistencia/control/"+registros[i]["reunion_id"]+"/"+registros[i]["ordendia_id"]+"' title='Control de Asistencia' ><span class='fa fa-file-text-o'></span></a>";
+                        }else{
+                            html += "<a onclick='mostrarmodalcontenidorden("+JSON.stringify(registros[i])+")' class='btn btn-success btn-xs' title='Registrar contenido' ><span class='fa fa-file-text-o'></span></a>";
+                        }
+                        html += "<a onclick='mostrarmodaleliminarunorden("+JSON.stringify(registros[i])+")' class='btn btn-danger btn-xs' title='Eliminar orden' ><span class='fa fa-trash'></span></a>";
                     }
-                    /*html += "<option value='RETRASO'>RETRASO</option>";
-                    html += "<option value='PERMISO'>PERMISO</option>";
-                    html += "<option value='FALTA'>FALTA</option>";*/
-                html += "</select>";
-                html += "</td>";
-                //html += "<td class='text-center'>"+moment(registros[i]["ordendia_fechahora"]).format("DD/MM/YYYY HH:mm:ss")+"</td>";
-                /*html += "<td class='text-center'>";
-                if(estadoreunion_id == 6){
-                    html += "<a onclick='mostrarmodalmodificarorden("+JSON.stringify(registros[i])+")' class='btn btn-info btn-xs' target='_blank' title='Modificar información' ><span class='fa fa-pencil'></span></a>";
-                    if(registros[i]["ordendia_asistencia"] == 1){
-                        html += "<a class='btn btn-success btn-xs' href='"+base_url+"asistencia/control/"+registros[i]["reunion_id"]+"/"+registros[i]["ordendia_id"]+"' title='Control de Asistencia' ><span class='fa fa-file-text-o'></span></a>";
-                    }else{
-                        html += "<a onclick='mostrarmodalcontenidorden("+JSON.stringify(registros[i])+")' class='btn btn-success btn-xs' title='Registrar contenido' ><span class='fa fa-file-text-o'></span></a>";
-                    }
-                    html += "<a onclick='mostrarmodaleliminarunorden("+JSON.stringify(registros[i])+")' class='btn btn-danger btn-xs' title='Eliminar orden' ><span class='fa fa-trash'></span></a>";
+                    html += "</td>";
+                    */
+                    html += "</tr>";
                 }
-                html += "</td>";
-                */
+                html += "<tr>";
+                html += "<td colspan='2'>";
+                html += "<table class='table table-striped' id='mitabla'>";
+                html += "<tr>";
+                html += "<th colspan='2'>Resumen</th>";
                 html += "</tr>";
-            }
-            html += "<tr>";
-            html += "<th colspan='4'>Resumen</th>";
-            html += "</tr>";
-            html += "<tr>";
-            html += "<td colspan='2' class='text-right'>Presentes:</td>";
-            html += "<td colspan='2' class='text-lefth text-bold'>"+totalpresentes+"</td>";
-            html += "</tr>";
-            html += "<tr>";
-            html += "<td colspan='2' class='text-right'>Permisos:</td>";
-            html += "<td colspan='2' class='text-lefth text-bold'>"+totalpermisos+"</td>";
-            html += "</tr>";
-            html += "<tr>";
-            html += "<td colspan='2' class='text-right'>Faltas:</td>";
-            html += "<td colspan='2' class='text-lefth text-bold'>"+totalfaltas+"</td>";
-            html += "</tr>";
-            html += "<tr>";
-            html += "<td colspan='2' class='text-right text-bold'>Total:</td>";
-            html += "<td colspan='2' class='text-lefth text-bold'>"+total+"</td>";
-            html += "</tr>";
+                html += "<tr>";
+                html += "<td class='text-right'>Presentes:</td>";
+                html += "<td class='text-lefth text-bold'>"+totalpresentes+"</td>";
+                html += "</tr>";
+                html += "<tr>";
+                html += "<td class='text-right'>Permisos:</td>";
+                html += "<td class='text-lefth text-bold'>"+totalpermisos+"</td>";
+                html += "</tr>";
+                html += "<tr>";
+                html += "<td class='text-right'>Faltas:</td>";
+                html += "<td class='text-lefth text-bold'>"+totalfaltas+"</td>";
+                html += "</tr>";
+                html += "<tr>";
+                html += "<td class='text-right text-bold'>Total:</td>";
+                html += "<td class='text-lefth text-bold'>"+total+"</td>";
+                html += "</tr>";
+                html += "</table>";
+                html += "</td>";
+                html += "<td colspan='2'>";
+                html += "<table class='table table-striped' id='mitabla'>";
+                html += "<tr>";
+                html += "<th colspan='2'>Detalle Tipo de Multa</th>";
+                html += "</tr>";
+                for (var b = 0; b < h; b++) {
+                    html += "<tr>";
+                    html += "<td class='text-right'>"+alltipomulta[b]["tipomulta_nombre"]+"</td>";
+                    html += "<td class='text-right'>";
+                    html += "<input type='number' style='height: 30px !important; padding: 1px; font-size: 10px !important' name='tipomulta"+alltipomulta[b]["tipomulta_id"]+"' value='"+alltipomulta[b]["tipomulta_monto"]+"' class='form-control' id='tipomulta"+alltipomulta[b]["tipomulta_id"]+"' required autocomplete='off' />";
+                    html += "</td>";
+                    html += "</tr>";
+                }
+                html += "</table>";
+                html += "</td>";
+                html += "</tr>";
                 $("#listaordendia").html(html);
                 document.getElementById('loader').style.display = 'none';
             }else{

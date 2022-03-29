@@ -18,6 +18,7 @@
 <input type="hidden" id="ordendia_id" value="<?php echo $ordendia_id;?>">
 <input type="hidden" id="ordendia_id" value="<?php echo $ordendia_id;?>">
 <input type="hidden" name="all_estado" id="all_estado" value='<?php echo json_encode($all_estado); ?>' />
+<input type="hidden" name="all_tipomulta" id="all_tipomulta" value='<?php echo json_encode($all_tipomulta); ?>' />
 <div class="box-header">
     <section class="content-header" style="padding-left: 0px; padding-right: 0px;">
         <div class="container-fluid">

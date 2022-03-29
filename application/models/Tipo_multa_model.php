@@ -56,4 +56,16 @@ class Tipo_multa_model extends CI_Model
     {
         return $this->db->delete('tipo_multa',array('tipomulta_id'=>$tipomulta_id));
     }
+    /*
+     * Get all tipo_multa vigente
+     */
+    function get_all_tipomulta_vigente()
+    {
+        $this->db->select('tm.*, e.estado_nombre, e.estado_color');
+        $this->db->from('tipo_multa as tm');
+        $this->db->join('estado as e','tm.estado_id = e.estado_id', 'left');
+        $this->db->where('tm.estado_id',1);
+        $this->db->order_by('tipomulta_nombre', 'asc');
+        return $this->db->get()->result_array();
+    }
 }
