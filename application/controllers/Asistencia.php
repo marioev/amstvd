@@ -9,6 +9,8 @@ class Asistencia extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Asistencia_model');
+        $this->load->model('Tipo_multa_model');
+        $this->load->model('Multa_model');
     } 
 
     /*
@@ -125,7 +127,7 @@ class Asistencia extends CI_Controller{
         $this->load->model('Estado_model');
         $tipo = 4;
         $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
-        $this->load->model('Tipo_multa_model');
+        
         $data['all_tipomulta'] = $this->Tipo_multa_model->get_all_tipomulta_vigente();
         
         $data['_view'] = 'asistencia/control';
@@ -186,17 +188,68 @@ class Asistencia extends CI_Controller{
     {
         if ($this->input->is_ajax_request()){
             $ordendia_id = $this->input->post('ordendia_id');
+            $valormulta  = $this->input->post('valormulta');
             $all_asistencia = $this->Asistencia_model->get_allasistencia($ordendia_id);
+            $lafecha = date("Y-m-d");
+            $lahora = date("H:i:s");
+            $estado_pendiente = 3;
+            $estado_cancelado = 4;
+            //$all_tipomulta = $this->Tipo_multa_model->get_all_tipomulta_vigente();
             foreach ($all_asistencia as $asistencia) {
                 if($asistencia["asistencia_estado"] == "RETRASO PAGADO"){
-                    $params = array(
-                        'asistencia_estado' => $this->input->post('laasistencia'),
-                    );
-                    $asistencia_id = $this->Asistencia_model->add_asistencia($params);
+                    $all_multa = $valormulta;
+                    foreach($all_multa as $valorm) {
+                        if($valorm["nombre"] == "RETRASO A REUNION"){
+                            $params = array(
+				'asistencia_id' => $asistencia['asistencia_id'],
+				'estado_id' => $estado_cancelado,
+				'multa_socio' => $asistencia["asociado_apellido"]." ".$asistencia["asociado_nombre"],
+				'multa_nombrepago' => $asistencia["asistencia_estado"],
+				'multa_fecha' => $lafecha,
+				'multa_hora' => $lahora,
+                                'multa_fechapago' => $lafecha,
+				'multa_horapago' => $lahora,
+				'multa_monto' => $valorm["lamulta"],
+				'multa_obs' => "Pago en Reunion",
+                            );
+                            $multa_id = $this->Multa_model->add_multa($params);
+                            break;
+                        }
+                    }
                 }elseif($asistencia["asistencia_estado"] == "RETRASO SIN PAGAR"){
-                    
+                    $all_multa = $valormulta;
+                    foreach($all_multa as $valorm) {
+                        if($valorm["nombre"] == "RETRASO A REUNION"){
+                            $params = array(
+				'asistencia_id' => $asistencia['asistencia_id'],
+				'estado_id' => $estado_pendiente,
+				'multa_socio' => $asistencia["asociado_apellido"]." ".$asistencia["asociado_nombre"],
+				'multa_nombrepago' => $asistencia["asistencia_estado"],
+				'multa_fecha' => $lafecha,
+				'multa_hora' => $lahora,
+				'multa_monto' => $valorm["lamulta"],
+                            );
+                            $multa_id = $this->Multa_model->add_multa($params);
+                            break;
+                        }
+                    }
                 }elseif($asistencia["asistencia_estado"] == "FALTA"){
-                    //
+                    $all_multa = $valormulta;
+                    foreach($all_multa as $valorm) {
+                        if($valorm["nombre"] == "FALTA A REUNION"){
+                            $params = array(
+				'asistencia_id' => $asistencia['asistencia_id'],
+				'estado_id' => $estado_pendiente,
+				'multa_socio' => $asistencia["asociado_apellido"]." ".$asistencia["asociado_nombre"],
+				'multa_nombrepago' => $asistencia["asistencia_estado"],
+				'multa_fecha' => $lafecha,
+				'multa_hora' => $lahora,
+				'multa_monto' => $valorm["lamulta"],
+                            );
+                            $multa_id = $this->Multa_model->add_multa($params);
+                            break;
+                        }
+                    }
                 }
             }
             echo json_encode("ok");
