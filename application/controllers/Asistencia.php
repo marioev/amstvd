@@ -188,6 +188,7 @@ class Asistencia extends CI_Controller{
     {
         if ($this->input->is_ajax_request()){
             $ordendia_id = $this->input->post('ordendia_id');
+            $reunion_id = $this->input->post('reunion_id');
             $valormulta  = $this->input->post('valormulta');
             $all_asistencia = $this->Asistencia_model->get_allasistencia($ordendia_id);
             $lafecha = date("Y-m-d");
@@ -195,6 +196,7 @@ class Asistencia extends CI_Controller{
             $estado_pendiente = 3;
             $estado_cancelado = 4;
             //$all_tipomulta = $this->Tipo_multa_model->get_all_tipomulta_vigente();
+            $resdelele = $this->Multa_model->delete_asistenciamulta($reunion_id);
             foreach ($all_asistencia as $asistencia) {
                 if($asistencia["asistencia_estado"] == "RETRASO PAGADO"){
                     $all_multa = $valormulta;

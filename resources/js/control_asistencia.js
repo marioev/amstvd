@@ -248,29 +248,34 @@ function guardar_asistencia(){
     var base_url = document.getElementById('base_url').value;
     var ordendia_id = document.getElementById('ordendia_id').value;
     var controlador = base_url+'asistencia/guardar_asistenciamulta';
-    
-    var alltipomulta = JSON.parse(document.getElementById('all_tipomulta').value);
-    var h = alltipomulta.length;
-    //const llave = {};
-    const valormulta = [];
-    
-    for (var b = 0; b < h; b++) {
-        var lamulta = document.getElementById('tipomulta'+alltipomulta[b]["tipomulta_id"]).value;
-        var nombre = alltipomulta[b]["tipomulta_nombre"];
-        valormulta.push({lamulta, nombre});
-    }
-    let eslamulta = valormulta;
-    //console.log(JSON.stringify(valormulta));
-    document.getElementById('loader').style.display = 'block'; //muestra el loader
+    let opcion = confirm("Si esta volviendo a guardar el control de asitencia, este borrara el registro anterior y generara otro! \n ¿Desea Continuar?");
+    if(opcion == true){
+        var alltipomulta = JSON.parse(document.getElementById('all_tipomulta').value);
+        var reunion_id = document.getElementById('reunion_id').value;
+        var h = alltipomulta.length;
+        //const llave = {};
+        const valormulta = [];
+
+        for (var b = 0; b < h; b++) {
+            var lamulta = document.getElementById('tipomulta'+alltipomulta[b]["tipomulta_id"]).value;
+            var nombre = alltipomulta[b]["tipomulta_nombre"];
+            valormulta.push({lamulta, nombre});
+        }
+        let eslamulta = valormulta;
+        //console.log(JSON.stringify(valormulta));
+        document.getElementById('loader').style.display = 'block'; //muestra el loader
         $.ajax({url:controlador,
                 type:"POST",
-                data:{ordendia_id:ordendia_id, valormulta:eslamulta},
+                data:{ordendia_id:ordendia_id, valormulta:eslamulta, reunion_id:reunion_id},
                 success:function(respuesta){
-                var registros = JSON.parse(respuesta);
-                if (registros != null){
-                    document.getElementById('loader').style.display = 'none';
-                    //tabla_asistencia();
-                }
+                    var registros = JSON.parse(respuesta);
+                    if (registros != null){
+                        document.getElementById('loader').style.display = 'none';
+                        alert("Asistencia guardada con Exito..!");
+                        let dir_url = base_url+"orden_dia/nuevareunion/"+reunion_id;
+                        location.href =dir_url;
+                        //tabla_asistencia();
+                    }
                 },
                 error:function(respuesta){
 
@@ -279,6 +284,6 @@ function guardar_asistencia(){
                     document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
                     //tabla_inventario();
                 }		
-            });
-       // }
+        });
+    }
 }

@@ -53,4 +53,22 @@ class Multa_model extends CI_Model
     {
         return $this->db->delete('multa',array('multa_id'=>$multa_id));
     }
+    /*
+     * function to delete multa
+     */
+    function delete_asistenciamulta($reunion_id)
+    {
+        $borrar_amulta = $this->db->query("
+            delete multa from multa
+	    left join asistencia a on multa.asistencia_id = a.asistencia_id
+            where a.reunion_id = $reunion_id
+        ");
+        return $borrar_amulta;
+        
+        /*$this->db->from('multa m');
+        $this->db->join('asistencia a', 'm.asistencia_id = a.asistencia_id', 'left');
+        $this->db->where('a.reunion_id', $reunion_id);
+        return $this->db->delete('multa m');
+         */
+    }
 }
