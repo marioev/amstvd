@@ -139,4 +139,23 @@ class Reunion extends CI_Controller{
             show_404();
         }
     }
+    /* * Finalizar una reunion */
+    function finalizar_reunion()
+    {
+        if ($this->input->is_ajax_request()) {
+            $reunion_id = $this->input->post('reunion_id');
+            $reunion_fin = date("H:i:s");
+            $estado_id = 7; //Concluido
+            $params = array(
+                'estado_id' => $estado_id,
+                'reunion_fin' => $reunion_fin,
+            );
+            $this->Reunion_model->update_reunion($reunion_id,$params);
+            echo json_encode("ok");
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
 }

@@ -77,9 +77,12 @@
         </div>
     </div>
 </div>
-
-<a href="<?php echo site_url('reunion'); ?>" class="btn btn-danger">
+<div class="col-md-12 text-center">
+    <a onclick="finalizar_reunion()" class="btn btn-success">
+        <i class="fa fa-check"></i> Finalizar Reuni&oacute;n</a>
+    <a href="<?php echo site_url('reunion'); ?>" class="btn btn-danger">
     <i class="fa fa-times"></i> Salir</a>
+</div>
 <!-------------------------- INICIO modal nueva orden -------------------------->
 <div class="modal fade" id="modalnuevaorden" tabindex="-1" role="dialog" aria-labelledby="modalnuevaordenlabel">
     <div class="modal-dialog" role="document">

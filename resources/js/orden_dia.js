@@ -240,3 +240,30 @@ function eliminar_ordendia(){
             });
        // }
 }
+/* finalizar reunión */
+function finalizar_reunion(){
+    var base_url = document.getElementById('base_url').value;
+    var reunion_id = document.getElementById('reunion_id').value;
+    var controlador = base_url+'reunion/finalizar_reunion';
+    document.getElementById('loader').style.display = 'block'; //muestra el loader
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{reunion_id:reunion_id},
+                success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                if (registros != null){
+                    document.getElementById('loader').style.display = 'none';
+                    let dir_url = base_url+"reunion";
+                    location.href =dir_url;
+                }
+                },
+                error:function(respuesta){
+
+                },
+                complete: function (jqXHR, textStatus) {
+                    document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                    //tabla_inventario();
+                }		
+            });
+       // }
+}
