@@ -58,7 +58,7 @@ class Verificar extends CI_Controller
                     /*if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                         redirect('alerta/dosificacion'); 
                     }*/
-                    redirect('asociado'); 
+                    redirect('dashboard'); 
                 }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
                     redirect('detalle_venta/recepcion');
                 }else{  // En caso de otro usuario no administrador 

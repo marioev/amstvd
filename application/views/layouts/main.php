@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <?php
+        $session_data = $this->session->userdata('logged_in');
+        $rolusuario = $session_data['rol'];
+    ?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A.M.S.T.V.D.<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
@@ -57,25 +61,25 @@
             <ul class="navbar-nav ml-auto">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?php echo site_url('resources/img/user2-160x160.jpg');?>" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']); ?>" class="user-image" alt="User Image">
+                        <span class="hidden-xs"><?php echo strtolower($session_data['usuario_login']); ?></span>
                     </a>
                     <ul class="dropdown-menu" style="top: 45px">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?php echo site_url('resources/img/user2-160x160.jpg');?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']); ?>" class="img-circle" alt="User Image">
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?php echo ucwords(strtolower($session_data['usuario_nombre'])).' - '.$session_data['tipousuario_descripcion']; ?>
+                                <small><?php echo $session_data['usuario_email']; ?></small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
+                            <!--<div class="pull-left">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            </div>
+                            </div>-->
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="<?php echo site_url()?>verificar/logout" class="btn btn-default btn-flat">Salir</a>
                             </div>
                         </li>
                     </ul>
@@ -101,10 +105,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="resources/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']); ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block"><?php echo ucwords(strtolower($session_data['usuario_nombre'])); ?></a>
         </div>
       </div>
 
@@ -126,9 +130,9 @@
                 <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="<?php echo site_url();?>" class="nav-link active">
+                    <a href="<?php echo site_url('dashboard');?>" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
+                        <p>Inicio</p>
                     </a>
                 </li>
                 <li class="nav-item">

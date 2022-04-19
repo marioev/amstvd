@@ -5,14 +5,29 @@
  */
  
 class Dashboard extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
-        
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
 
     function index()
     {
+        $gestion_id = $this->session_data['gestion_id'];
+        $estado_id = 1;
+        $this->load->model('Asociado_model');
+        $data['asociado'] = count($this->Asociado_model->get_all_asociadosestado($estado_id));
+        $this->load->model('Reunion_model');
+        $data['reunion'] = count($this->Reunion_model->get_las_reunion('', $gestion_id, 0));
+        $this->load->model('Aporte_model');
+        $data['aporte'] = count($this->Aporte_model->get_all_aportes('', $gestion_id, 0));
+        $this->load->model('Informacion_model');
+        $data['informacion'] = count($this->Informacion_model->get_all_informaciones('', $gestion_id));
         $data['_view'] = 'dashboard';
         $this->load->view('layouts/main',$data);
     }

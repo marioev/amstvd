@@ -53,4 +53,27 @@ class Informacion_model extends CI_Model
     {
         return $this->db->delete('informacion',array('informacion_id'=>$informacion_id));
     }
+    /*
+     * Get all informaciones
+     */
+    function get_all_informaciones($filtro, $gestion_id)
+    {
+        $comp = " ";
+        if($gestion_id > 0){
+            $comp = $comp." and i.gestion_id = ".$gestion_id;
+        }
+        $sql = "SELECT
+                 i.*, g.gestion_nombre, e.estado_nombre, e.estado_color
+              FROM
+              informacion as i
+              LEFT JOIN gestion as g on i.gestion_id = g.gestion_id
+              LEFT JOIN estado e on i.estado_id = e.estado_id
+              WHERE 
+                   (i.informacion_titulo like '%".$filtro."%' or i.informacion_contenido like '%".$filtro."%')
+                   ".$comp."
+              ORDER By i.informacion_fecha desc";
+
+        $aporte = $this->db->query($sql)->result_array();
+        return $aporte;
+    }
 }
