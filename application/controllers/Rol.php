@@ -5,22 +5,39 @@
  */
  
 class Rol extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Rol_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of rol
      */
     function index()
     {
+        if($this->acceso(31)){
             $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
             $data['all_rolhijo'] = $this->Rol_model->get_allrol_hijo();
-            $data['page_title'] = "Roles";
+            $data['page_title'] = "Rol";
             $data['_view'] = 'rol/index';
             $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -28,6 +45,7 @@ class Rol extends CI_Controller{
      */
     function add()
     {
+        if($this->acceso(31)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('rol_nombre','Rol Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
@@ -45,11 +63,12 @@ class Rol extends CI_Controller{
             }
             else
             {
-                $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
-                $data['page_title'] = "Nuevo Rol";
+                $data['all_rolpadre'] = $this->Rol_model->get_allrol_padreordenado();
+                $data['page_title'] = "Rol";
                 $data['_view'] = 'rol/add';
                 $this->load->view('layouts/main',$data);
             }
+        }
     }  
 
     /*
@@ -57,6 +76,7 @@ class Rol extends CI_Controller{
      */
     function edit($rol_id)
     {
+        if($this->acceso(31)){
             // check if the rol exists before trying to edit it
             $data['rol'] = $this->Rol_model->get_rol($rol_id);
 
@@ -78,10 +98,10 @@ class Rol extends CI_Controller{
                 }
                 else
                 {
-                    $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
+                    $data['all_rolpadre'] = $this->Rol_model->get_allrol_padreordenado();
+                    $estado_tipo = 1;
                     $this->load->model('Estado_model');
-                    $tipo = 1;
-                    $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
+                    $data['all_estado'] = $this->Estado_model->get_all_estadotipo($estado_tipo);
                     $data['page_title'] = "Rol";
                     $data['_view'] = 'rol/edit';
                     $this->load->view('layouts/main',$data);
@@ -89,13 +109,15 @@ class Rol extends CI_Controller{
             }
             else
                 show_error('The rol you are trying to edit does not exist.');
+        }
     } 
 
     /*
      * Deleting rol
      */
-    /*function remove($rol_id)
+    function remove($rol_id)
     {
+        if($this->acceso(31)){
             $rol = $this->Rol_model->get_rol($rol_id);
 
             // check if the rol exists before trying to delete it
@@ -106,6 +128,7 @@ class Rol extends CI_Controller{
             }
             else
                 show_error('The rol you are trying to delete does not exist.');
-    }*/
+        }
+    }
     
 }

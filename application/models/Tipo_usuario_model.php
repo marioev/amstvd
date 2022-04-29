@@ -16,7 +16,15 @@ class Tipo_usuario_model extends CI_Model
      */
     function get_tipo_usuario($tipousuario_id)
     {
-        return $this->db->get_where('tipo_usuario',array('tipousuario_id'=>$tipousuario_id))->row_array();
+        $tipo_usuario = $this->db->query("
+            SELECT
+                *
+            FROM
+                `tipo_usuario`
+            WHERE
+                `tipousuario_id` = ?
+        ",array($tipousuario_id))->row_array();
+        return $tipo_usuario;
     }
         
     /*
@@ -24,8 +32,17 @@ class Tipo_usuario_model extends CI_Model
      */
     function get_all_tipo_usuario()
     {
-        $this->db->order_by('tipousuario_id', 'desc');
-        return $this->db->get('tipo_usuario')->result_array();
+        $tipo_usuario = $this->db->query("
+            SELECT
+                *
+            FROM
+                `tipo_usuario`
+            WHERE
+                1 = 1
+            ORDER BY `tipousuario_id` 
+        ")->result_array();
+
+        return $tipo_usuario;
     }
         
     /*
@@ -52,5 +69,30 @@ class Tipo_usuario_model extends CI_Model
     function delete_tipo_usuario($tipousuario_id)
     {
         return $this->db->delete('tipo_usuario',array('tipousuario_id'=>$tipousuario_id));
+    }
+
+    function inactivar_tipo_usuario($tipousuario_id)
+    {
+        $sql = "update tipo_usuario set estado_id = 2 where tipousuario_id = ".$tipousuario_id;
+        
+        return $this->db->query($sql);
+    }
+    /*
+     * Get nombre detipo_usuario by tipousuario_id
+     */
+    function get_tipousuario_nombre($tipousuario_id)
+    {
+        $tipo_usuario = $this->db->query("
+            SELECT
+                t.tipousuario_nombre
+
+            FROM
+                tipo_usuario t
+
+            WHERE
+                t.tipousuario_id = ?
+        ",array($tipousuario_id))->row_array();
+
+        return $tipo_usuario['tipousuario_nombre'];
     }
 }

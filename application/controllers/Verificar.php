@@ -10,7 +10,9 @@ class Verificar extends CI_Controller
         $this->load->library('form_validation');
         $this->load->library('session');
         $this->load->model('login_model');
-        $this->load->model('rol_model');
+        $this->load->model('Rol_model');
+        $this->load->model('Rol_usuario_model');
+        $this->load->model('Tipo_usuario_model');
     }
 
     function index()
@@ -28,10 +30,8 @@ class Verificar extends CI_Controller
                     $thumb = "thumb_".$result->usuario_imagen;
                     //$thumb = $this->foto_thumb($result->usuario_imagen);
                 }
-                //$rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
-                $rolusuario = "2";
-                //$tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
-                $tipousuario_nombre ="hola";
+                $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
+                $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                 $sess_array = array(
                     'usuario_login' => $result->usuario_login,
                     'usuario_id' => $result->usuario_id,

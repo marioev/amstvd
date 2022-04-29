@@ -5,21 +5,38 @@
  */
  
 class Configuracion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Configuracion_model');
-    } 
-    
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of configuracions
      */
     function index()
     {
-        $config_id = 1;
-        $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
-        $data['_view'] = 'configuracion/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(23)){
+            $config_id = 1;
+            $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
+            $data['_view'] = 'configuracion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -27,18 +44,20 @@ class Configuracion extends CI_Controller{
      */
     function add()
     {
-        if(isset($_POST) && count($_POST) > 0)     
-        {
-            $params = array(
-                'config_apikey' => $this->input->post('config_apikey'),
-            );
-            $config_id = $this->Configuracion_model->add_configuracion($params);
-            redirect('configuracion');
-        }
-        else
-        {
-            $data['_view'] = 'configuracion/add';
-            $this->load->view('layouts/main',$data);
+        if($this->acceso(23)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {
+                $params = array(
+                    'config_apikey' => $this->input->post('config_apikey'),
+                );
+                $config_id = $this->Configuracion_model->add_configuracion($params);
+                redirect('configuracion');
+            }
+            else
+            {
+                $data['_view'] = 'configuracion/add';
+                $this->load->view('layouts/main',$data);
+            } 
         } 
     } 
 
@@ -47,26 +66,28 @@ class Configuracion extends CI_Controller{
      */
     function edit($config_id)
     {
-        // check if the configuracion exists before trying to edit it
-        $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
-        if(isset($data['configuracion']['config_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
+        if($this->acceso(23)){
+            // check if the configuracion exists before trying to edit it
+            $data['configuracion'] = $this->Configuracion_model->get_configuracion($config_id);
+            if(isset($data['configuracion']['config_id']))
             {
-                $params = array(
-                    'config_apikey' => $this->input->post('config_apikey'),
-                );
-                $this->Configuracion_model->update_configuracion($config_id,$params);            
-                redirect('configuracion');
+                if(isset($_POST) && count($_POST) > 0)     
+                {
+                    $params = array(
+                        'config_apikey' => $this->input->post('config_apikey'),
+                    );
+                    $this->Configuracion_model->update_configuracion($config_id,$params);            
+                    redirect('configuracion');
+                }
+                else
+                {
+                    $data['_view'] = 'configuracion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'configuracion/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('La configuracion que intenta modificar no existe!.');
         }
-        else
-            show_error('La configuracion que intenta modificar no existe!.');
     }
     
 }

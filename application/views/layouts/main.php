@@ -135,18 +135,18 @@
                         <p>Inicio</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?php echo site_url('aporte');?>" class="nav-link">
+                <!--<li class="nav-item">
+                    <a href="<?php //echo site_url('aporte');?>" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>Aportes</p>
                     </a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-book"></i>
+                        <i class="nav-icon fas fa-money-bill-alt"></i>
                         <p>Cobro de
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">3</span>
+                            <span class="badge badge-info right">1</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -156,12 +156,12 @@
                                 <p>Aportes</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?php echo site_url('asociado');?>" class="nav-link">
+                        <!--<li class="nav-item">
+                            <a href="<?php //echo site_url('asociado');?>" class="nav-link">
                                 <i class="fa fa-user nav-icon"></i>
                                 <p>Socios</p>
                             </a>
-                        </li>
+                        </li>-->
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -169,7 +169,7 @@
                         <i class="nav-icon fas fa-book"></i>
                         <p>Registro de
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            <span class="badge badge-info right">4</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -191,6 +191,12 @@
                                 <p>Socios</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo site_url('gestion');?>" class="nav-link">
+                                <i class="fa fa-calendar nav-icon"></i>
+                                <p>Gesti&oacute;n</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -204,43 +210,37 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?php echo site_url('configuracion');?>" class="nav-link">
-                                <i class="fa fa-check-square"></i>
+                                <i class="fa fa-check-square nav-icon"></i>
                                 <p>Configuraci&oacute;n</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?php echo site_url('estado');?>" class="nav-link">
-                                <i class="fa fa-toggle-on"></i>
+                                <i class="fa fa-toggle-on nav-icon"></i>
                                 <p>Estado</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?php echo site_url('estado_civil');?>" class="nav-link">
-                                <i class="fa fa-odnoklassniki"></i>
+                                <i class="fa fa-odnoklassniki nav-icon"></i>
                                 <p>Estado Civil</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?php echo site_url('expedido');?>" class="nav-link">
-                                <i class="fa fa-vcard-o"></i>
+                                <i class="fa fa-vcard-o nav-icon"></i>
                                 <p>Expedido</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?php echo site_url('genero');?>" class="nav-link">
-                                <i class="fa fa-venus-mars"></i>
+                                <i class="fa fa-venus-mars nav-icon"></i>
                                 <p>G&eacute;nero</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo site_url('gestion');?>" class="nav-link">
-                                <i class="fa fa-calendar"></i>
-                                <p>Gesti&oacute;n</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<?php echo site_url('Organizacion');?>" class="nav-link">
-                                <i class="fa fa-bank"></i>
+                                <i class="fa fa-bank nav-icon"></i>
                                 <p>Organizaci&oacute;n</p>
                             </a>
                         </li>
@@ -251,7 +251,7 @@
                         <i class="nav-icon fa fa-braille"></i>
                         <p>Categor&iacute;as
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            <span class="badge badge-info right">2</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -267,6 +267,29 @@
                                 <p>Tipo Reuni&oacute;n</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file-text"></i>
+                        <p>Reportes
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">0</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!--<li class="nav-item">
+                            <a href="<?php //echo site_url('aporte_asociado');?>" class="nav-link">
+                                <i class="fa fa-list-ol nav-icon"></i>
+                                <p>Aportes</p>
+                            </a>
+                        </li>-->
+                        <!--<li class="nav-item">
+                            <a href="<?php //echo site_url('asociado');?>" class="nav-link">
+                                <i class="fa fa-user nav-icon"></i>
+                                <p>Socios</p>
+                            </a>
+                        </li>-->
                     </ul>
                 </li>
                 <li class="nav-item">

@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Nuevo Rol</h3>
+              	<h3 class="box-title"> Añadir Rol </h3>
             </div>
             <?php echo form_open('rol/add'); ?>
             <div class="box-body">
@@ -10,8 +10,7 @@
                     <div class="col-md-6">
                         <label for="rol_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="rol_nombre"  class="form-control" id="rol_nombre" autofocus autocomplete="off" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                            <span class="text-danger"><?php echo form_error('rol_nombre');?></span>
+                            <input type="text" name="rol_nombre"  class="form-control" id="rol_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required autofocus />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -32,7 +31,7 @@
                     <div class="col-md-6">
                         <label for="rol_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="rol_descripcion"  class="form-control" id="rol_descripcion" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="rol_descripcion"  class="form-control" id="rol_descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                 </div>
