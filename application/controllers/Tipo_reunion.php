@@ -5,51 +5,46 @@
  */
  
 class Tipo_reunion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_reunion_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of tipo_reunion
      */
     function index()
     {
-        $data['tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
-        $data['_view'] = 'tipo_reunion/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(29)){
+            $data['tipo_reunion'] = $this->Tipo_reunion_model->get_all_tipo_reunion();
+            $data['_view'] = 'tipo_reunion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tipo_reunion
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('tiporeunion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())
-        {   
-            $params = array(
-                'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
-            );
-            $tipo_reunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
-            redirect('tipo_reunion');
-        }else{            
-            $data['_view'] = 'tipo_reunion/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a tipo_reunion
-     */
-    function edit($tiporeunion_id)
-    {   
-        // check if the tipo_reunion exists before trying to edit it
-        $data['tipo_reunion'] = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
-        if(isset($data['tipo_reunion']['tiporeunion_id']))
-        {
+    {
+        if($this->acceso(29)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('tiporeunion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())
@@ -57,15 +52,42 @@ class Tipo_reunion extends CI_Controller{
                 $params = array(
                     'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
                 );
-                $this->Tipo_reunion_model->update_tipo_reunion($tiporeunion_id,$params);            
+                $tipo_reunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
                 redirect('tipo_reunion');
-            }else{
-                $data['_view'] = 'tipo_reunion/edit';
+            }else{            
+                $data['_view'] = 'tipo_reunion/add';
                 $this->load->view('layouts/main',$data);
             }
         }
-        else
-            show_error('The tipo_reunion you are trying to edit does not exist.');
+    }  
+
+    /*
+     * Editing a tipo_reunion
+     */
+    function edit($tiporeunion_id)
+    {
+        if($this->acceso(29)){
+            // check if the tipo_reunion exists before trying to edit it
+            $data['tipo_reunion'] = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
+            if(isset($data['tipo_reunion']['tiporeunion_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('tiporeunion_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {   
+                    $params = array(
+                        'tiporeunion_nombre' => $this->input->post('tiporeunion_nombre'),
+                    );
+                    $this->Tipo_reunion_model->update_tipo_reunion($tiporeunion_id,$params);            
+                    redirect('tipo_reunion');
+                }else{
+                    $data['_view'] = 'tipo_reunion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The tipo_reunion you are trying to edit does not exist.');
+        }
     } 
 
     /*
@@ -88,18 +110,20 @@ class Tipo_reunion extends CI_Controller{
     /* * añadir nuevo tipo de reunion desde nueva reunion(reunion/add) */
     function nuevotipodereunion()
     {
-        if ($this->input->is_ajax_request()) {
-            $tiporeunion_nombre = $this->input->post('tiporeunion_nombre');
-            $params = array(
-                'tiporeunion_nombre' => $tiporeunion_nombre,
-            );
-            $tiporeunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
-            $datos = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
-            echo json_encode($datos);
-        }
-        else
-        {                 
-            show_404();
+        if($this->acceso(29)){
+            if ($this->input->is_ajax_request()) {
+                $tiporeunion_nombre = $this->input->post('tiporeunion_nombre');
+                $params = array(
+                    'tiporeunion_nombre' => $tiporeunion_nombre,
+                );
+                $tiporeunion_id = $this->Tipo_reunion_model->add_tipo_reunion($params);
+                $datos = $this->Tipo_reunion_model->get_tipo_reunion($tiporeunion_id);
+                echo json_encode($datos);
+            }
+            else
+            {                 
+                show_404();
+            }
         }
     }
     

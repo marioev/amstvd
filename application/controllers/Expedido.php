@@ -5,40 +5,60 @@
  */
  
 class Expedido extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Expedido_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of expedido
      */
     function index()
     {
-        $data['expedido'] = $this->Expedido_model->get_all_expedido();
-        
-        $data['_view'] = 'expedido/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(26)){
+            $data['expedido'] = $this->Expedido_model->get_all_expedido();
+
+            $data['_view'] = 'expedido/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new expedido
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('expedido_nombre','Expedido Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())
-        {
-            $params = array(
-                'expedido_nombre' => $this->input->post('expedido_nombre'),
-            );
-            $expedido_id = $this->Expedido_model->add_expedido($params);
-            redirect('expedido');
-        }else{
-            $data['_view'] = 'expedido/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(26)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('expedido_nombre','Expedido Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
+            {
+                $params = array(
+                    'expedido_nombre' => $this->input->post('expedido_nombre'),
+                );
+                $expedido_id = $this->Expedido_model->add_expedido($params);
+                redirect('expedido');
+            }else{
+                $data['_view'] = 'expedido/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -46,30 +66,32 @@ class Expedido extends CI_Controller{
      * Editing a expedido
      */
     function edit($expedido_id)
-    {   
-        // check if the expedido exists before trying to edit it
-        $data['expedido'] = $this->Expedido_model->get_expedido($expedido_id);
-        if(isset($data['expedido']['expedido_id']))
-        {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('expedido_nombre','Expedido Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())
-            {   
-                $params = array(
-                    'expedido_nombre' => $this->input->post('expedido_nombre'),
-                );
+    {
+        if($this->acceso(26)){
+            // check if the expedido exists before trying to edit it
+            $data['expedido'] = $this->Expedido_model->get_expedido($expedido_id);
+            if(isset($data['expedido']['expedido_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('expedido_nombre','Expedido Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {   
+                    $params = array(
+                        'expedido_nombre' => $this->input->post('expedido_nombre'),
+                    );
 
-                $this->Expedido_model->update_expedido($expedido_id,$params);            
-                redirect('expedido');
+                    $this->Expedido_model->update_expedido($expedido_id,$params);            
+                    redirect('expedido');
+                }
+                else
+                {
+                    $data['_view'] = 'expedido/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'expedido/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The expedido you are trying to edit does not exist.');
         }
-        else
-            show_error('The expedido you are trying to edit does not exist.');
     } 
 
     /*

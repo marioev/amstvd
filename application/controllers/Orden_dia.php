@@ -5,184 +5,117 @@
  */
  
 class Orden_dia extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Orden_dia_model');
-    } 
-
-    /*
-     * Listing of orden_dia
-     */
-    function index()
-    {
-        $data['orden_dia'] = $this->Orden_dia_model->get_all_orden_dia();
-        
-        $data['_view'] = 'orden_dia/index';
-        $this->load->view('layouts/main',$data);
-    }
-
-    /*
-     * Adding a new orden_dia
-     */
-    function add()
-    {   
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('ordendia_nombre','Ordendia Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-                'reunion_id' => $this->input->post('reunion_id'),
-                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-                'ordendia_observacion' => $this->input->post('ordendia_observacion'),
-            );
-            
-            $orden_dia_id = $this->Orden_dia_model->add_orden_dia($params);
-            redirect('orden_dia/index');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
         }
-        else
-        {
-			$this->load->model('Reunion_model');
-			$data['all_reunion'] = $this->Reunion_model->get_all_reunion();
-            
-            $data['_view'] = 'orden_dia/add';
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
-    }  
-
-    /*
-     * Editing a orden_dia
-     */
-    function edit($ordendia_id)
-    {   
-        // check if the orden_dia exists before trying to edit it
-        $data['orden_dia'] = $this->Orden_dia_model->get_orden_dia($ordendia_id);
-        
-        if(isset($data['orden_dia']['ordendia_id']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('ordendia_nombre','Ordendia Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'reunion_id' => $this->input->post('reunion_id'),
-					'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-					'ordendia_observacion' => $this->input->post('ordendia_observacion'),
-                );
-
-                $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);            
-                redirect('orden_dia/index');
-            }
-            else
-            {
-				$this->load->model('Reunion_model');
-				$data['all_reunion'] = $this->Reunion_model->get_all_reunion();
-
-                $data['_view'] = 'orden_dia/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The orden_dia you are trying to edit does not exist.');
-    } 
-
-    /*
-     * Deleting orden_dia
-     */
-    function remove($ordendia_id)
-    {
-        $orden_dia = $this->Orden_dia_model->get_orden_dia($ordendia_id);
-
-        // check if the orden_dia exists before trying to delete it
-        if(isset($orden_dia['ordendia_id']))
-        {
-            $this->Orden_dia_model->delete_orden_dia($ordendia_id);
-            redirect('orden_dia/index');
-        }
-        else
-            show_error('The orden_dia you are trying to delete does not exist.');
     }
+    
     /*
      * nueva orden del dia para una reunion
      */
     function nuevareunion($reunion_id)
     {
-        $this->load->model('Reunion_model');
-        $data['reunion'] = $this->Reunion_model->get_lareunion($reunion_id);
-        $data['_view'] = 'orden_dia/nuevareunion';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(11)){
+            $this->load->model('Reunion_model');
+            $data['reunion'] = $this->Reunion_model->get_lareunion($reunion_id);
+            $data['_view'] = 'orden_dia/nuevareunion';
+            $this->load->view('layouts/main',$data);
+        }
     }
     /* registra orden del día */
     function registrar_ordendia()
     {
-        if ($this->input->is_ajax_request()){
-            $params = array(
-                'reunion_id' => $this->input->post('reunion_id'),
-                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-                'ordendia_fechahora' => date("Y-m-d H:i:s"),
-                'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
-                'ordendia_texto' => "",
-            );
-            $ordendia_id = $this->Orden_dia_model->add_orden_dia($params);
-            echo json_encode("ok");
-        }else{
-            show_404();
+        if($this->acceso(12)){
+            if ($this->input->is_ajax_request()){
+                $params = array(
+                    'reunion_id' => $this->input->post('reunion_id'),
+                    'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+                    'ordendia_fechahora' => date("Y-m-d H:i:s"),
+                    'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
+                    'ordendia_texto' => "",
+                );
+                $ordendia_id = $this->Orden_dia_model->add_orden_dia($params);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
         }
     }
     /* buscar orden del día */
     function buscar_ordendia()
     {
-        if ($this->input->is_ajax_request()){
-            $reunion_id = $this->input->post('reunion_id');
-            $datos = $this->Orden_dia_model->get_all_orden_dia($reunion_id);
-            echo json_encode($datos);
-        }else{
-            show_404();
+        if($this->acceso(8)){
+            if ($this->input->is_ajax_request()){
+                $reunion_id = $this->input->post('reunion_id');
+                $datos = $this->Orden_dia_model->get_all_orden_dia($reunion_id);
+                echo json_encode($datos);
+            }else{
+                show_404();
+            }
         }
     }
     /* registra detalle de orden del día */
     function registrar_detalleordendia()
     {
-        if ($this->input->is_ajax_request()){
-            $ordendia_id = $this->input->post('ordendia_id');
-            $params = array(
-                'ordendia_texto' => $this->input->post('ordendia_texto'),
-            );
-            $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
-            echo json_encode("ok");
-        }else{
-            show_404();
+        if($this->acceso(13)){
+            if ($this->input->is_ajax_request()){
+                $ordendia_id = $this->input->post('ordendia_id');
+                $params = array(
+                    'ordendia_texto' => $this->input->post('ordendia_texto'),
+                );
+                $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
         }
     }
     /* registra detalle de orden del día */
     function modifcar_ordendia()
     {
-        if ($this->input->is_ajax_request()){
-            $ordendia_id = $this->input->post('ordendia_id');
-            $params = array(
-                'ordendia_nombre' => $this->input->post('ordendia_nombre'),
-                'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
-            );
-            $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
-            echo json_encode("ok");
-        }else{
-            show_404();
+        if($this->acceso(14)){
+            if ($this->input->is_ajax_request()){
+                $ordendia_id = $this->input->post('ordendia_id');
+                $params = array(
+                    'ordendia_nombre' => $this->input->post('ordendia_nombre'),
+                    'ordendia_asistencia' => $this->input->post('ordendia_asistencia'),
+                );
+                $this->Orden_dia_model->update_orden_dia($ordendia_id,$params);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
         }
     }
     
     /* elimina un orden del día */
     function eliminar_ordendia()
     {
-        if ($this->input->is_ajax_request()){
-            $ordendia_id = $this->input->post('ordendia_id');
-            $this->Orden_dia_model->delete_orden_dia($ordendia_id);
-            echo json_encode("ok");
-        }else{
-            show_404();
+        if($this->acceso(17)){
+            if ($this->input->is_ajax_request()){
+                $ordendia_id = $this->input->post('ordendia_id');
+                $this->Orden_dia_model->delete_orden_dia($ordendia_id);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
         }
     }
 }

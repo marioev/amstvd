@@ -5,46 +5,66 @@
  */
  
 class Tipo_multa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tipo_multa_model');
+         if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of tipo_multa
      */
     function index()
     {
-        $data['tipo_multa'] = $this->Tipo_multa_model->get_all_tipo_multa();
-        
-        $data['_view'] = 'tipo_multa/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(37)){
+            $data['tipo_multa'] = $this->Tipo_multa_model->get_all_tipo_multa();
+
+            $data['_view'] = 'tipo_multa/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new tipo_multa
      */
     function add()
-    {   
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('tipomulta_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('tipomulta_monto','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())
-        {
-            $estado_id = 1; // estado ACTIVO
-            $params = array(
-                'estado_id' => $estado_id,
-                'tipomulta_nombre' => $this->input->post('tipomulta_nombre'),
-                'tipomulta_monto' => $this->input->post('tipomulta_monto'),
-            );
-            $tipo_multa_id = $this->Tipo_multa_model->add_tipo_multa($params);
-            redirect('tipo_multa');
-        }
-        else
-        {
-            $data['_view'] = 'tipo_multa/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(37)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('tipomulta_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('tipomulta_monto','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
+            {
+                $estado_id = 1; // estado ACTIVO
+                $params = array(
+                    'estado_id' => $estado_id,
+                    'tipomulta_nombre' => $this->input->post('tipomulta_nombre'),
+                    'tipomulta_monto' => $this->input->post('tipomulta_monto'),
+                );
+                $tipo_multa_id = $this->Tipo_multa_model->add_tipo_multa($params);
+                redirect('tipo_multa');
+            }
+            else
+            {
+                $data['_view'] = 'tipo_multa/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -52,33 +72,35 @@ class Tipo_multa extends CI_Controller{
      * Editing a tipo_multa
      */
     function edit($tipomulta_id)
-    {   
-        // check if the tipo_multa exists before trying to edit it
-        $data['tipo_multa'] = $this->Tipo_multa_model->get_tipo_multa($tipomulta_id);
-        if(isset($data['tipo_multa']['tipomulta_id']))
-        {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('tipomulta_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            $this->form_validation->set_rules('tipomulta_monto','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())     
-            {   
-                $params = array(
-                    'estado_id' => $this->input->post('estado_id'),
-                    'tipomulta_nombre' => $this->input->post('tipomulta_nombre'),
-                    'tipomulta_monto' => $this->input->post('tipomulta_monto'),
-                );
-                $this->Tipo_multa_model->update_tipo_multa($tipomulta_id,$params);            
-                redirect('tipo_multa');
-            }else{
-                $this->load->model('Estado_model');
-                $tipo = 1;
-                $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
-                $data['_view'] = 'tipo_multa/edit';
-                $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(37)){
+            // check if the tipo_multa exists before trying to edit it
+            $data['tipo_multa'] = $this->Tipo_multa_model->get_tipo_multa($tipomulta_id);
+            if(isset($data['tipo_multa']['tipomulta_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('tipomulta_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('tipomulta_monto','Monto','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {   
+                    $params = array(
+                        'estado_id' => $this->input->post('estado_id'),
+                        'tipomulta_nombre' => $this->input->post('tipomulta_nombre'),
+                        'tipomulta_monto' => $this->input->post('tipomulta_monto'),
+                    );
+                    $this->Tipo_multa_model->update_tipo_multa($tipomulta_id,$params);            
+                    redirect('tipo_multa');
+                }else{
+                    $this->load->model('Estado_model');
+                    $tipo = 1;
+                    $data['all_estado'] = $this->Estado_model->get_all_estadotipo($tipo);
+                    $data['_view'] = 'tipo_multa/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
+            else
+                show_error('El tipo de multa que intentas modificar no existe!.');
         }
-        else
-            show_error('El tipo de multa que intentas modificar no existe!.');
     } 
 
     /*
@@ -86,16 +108,18 @@ class Tipo_multa extends CI_Controller{
      */
     function remove($tipomulta_id)
     {
-        $tipo_multa = $this->Tipo_multa_model->get_tipo_multa($tipomulta_id);
+        if($this->acceso(37)){
+            $tipo_multa = $this->Tipo_multa_model->get_tipo_multa($tipomulta_id);
 
-        // check if the tipo_multa exists before trying to delete it
-        if(isset($tipo_multa['tipomulta_id']))
-        {
-            $this->Tipo_multa_model->delete_tipo_multa($tipomulta_id);
-            redirect('tipo_multa/index');
+            // check if the tipo_multa exists before trying to delete it
+            if(isset($tipo_multa['tipomulta_id']))
+            {
+                $this->Tipo_multa_model->delete_tipo_multa($tipomulta_id);
+                redirect('tipo_multa/index');
+            }
+            else
+                show_error('El tipo de multa que intentas eliminar no existe!.');
         }
-        else
-            show_error('El tipo de multa que intentas eliminar no existe!.');
     }
     
 }

@@ -5,57 +5,77 @@
  */
  
 class Mesa_directiva extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Mesa_directiva_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of mesa_directiva
      */
     function index()
     {
-        $data['mesa_directiva'] = $this->Mesa_directiva_model->get_all_mesa_directiva();
-        
-        $data['_view'] = 'mesa_directiva/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(35)){
+            $data['mesa_directiva'] = $this->Mesa_directiva_model->get_all_mesa_directiva();
+
+            $data['_view'] = 'mesa_directiva/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new mesa_directiva
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'asociado_id' => $this->input->post('asociado_id'),
-				'gestion_id' => $this->input->post('gestion_id'),
-				'organ_id' => $this->input->post('organ_id'),
-				'estado_id' => $this->input->post('estado_id'),
-				'mesadir_nombreasoc' => $this->input->post('mesadir_nombreasoc'),
-            );
-            
-            $mesa_directiva_id = $this->Mesa_directiva_model->add_mesa_directiva($params);
-            redirect('mesa_directiva/index');
-        }
-        else
-        {
-			$this->load->model('Asociado_model');
-			$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+    {
+        if($this->acceso(35)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                                    'asociado_id' => $this->input->post('asociado_id'),
+                                    'gestion_id' => $this->input->post('gestion_id'),
+                                    'organ_id' => $this->input->post('organ_id'),
+                                    'estado_id' => $this->input->post('estado_id'),
+                                    'mesadir_nombreasoc' => $this->input->post('mesadir_nombreasoc'),
+                );
 
-			$this->load->model('Gestion_model');
-			$data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+                $mesa_directiva_id = $this->Mesa_directiva_model->add_mesa_directiva($params);
+                redirect('mesa_directiva/index');
+            }
+            else
+            {
+                            $this->load->model('Asociado_model');
+                            $data['all_asociado'] = $this->Asociado_model->get_all_asociado();
 
-			$this->load->model('Organizacion_model');
-			$data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
+                            $this->load->model('Gestion_model');
+                            $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
 
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-            
-            $data['_view'] = 'mesa_directiva/add';
-            $this->load->view('layouts/main',$data);
+                            $this->load->model('Organizacion_model');
+                            $data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
+
+                            $this->load->model('Estado_model');
+                            $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                $data['_view'] = 'mesa_directiva/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -63,45 +83,47 @@ class Mesa_directiva extends CI_Controller{
      * Editing a mesa_directiva
      */
     function edit($mesadir_id)
-    {   
-        // check if the mesa_directiva exists before trying to edit it
-        $data['mesa_directiva'] = $this->Mesa_directiva_model->get_mesa_directiva($mesadir_id);
-        
-        if(isset($data['mesa_directiva']['mesadir_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'asociado_id' => $this->input->post('asociado_id'),
-					'gestion_id' => $this->input->post('gestion_id'),
-					'organ_id' => $this->input->post('organ_id'),
-					'estado_id' => $this->input->post('estado_id'),
-					'mesadir_nombreasoc' => $this->input->post('mesadir_nombreasoc'),
-                );
+    {
+        if($this->acceso(35)){
+            // check if the mesa_directiva exists before trying to edit it
+            $data['mesa_directiva'] = $this->Mesa_directiva_model->get_mesa_directiva($mesadir_id);
 
-                $this->Mesa_directiva_model->update_mesa_directiva($mesadir_id,$params);            
-                redirect('mesa_directiva/index');
+            if(isset($data['mesa_directiva']['mesadir_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'asociado_id' => $this->input->post('asociado_id'),
+                                            'gestion_id' => $this->input->post('gestion_id'),
+                                            'organ_id' => $this->input->post('organ_id'),
+                                            'estado_id' => $this->input->post('estado_id'),
+                                            'mesadir_nombreasoc' => $this->input->post('mesadir_nombreasoc'),
+                    );
+
+                    $this->Mesa_directiva_model->update_mesa_directiva($mesadir_id,$params);            
+                    redirect('mesa_directiva/index');
+                }
+                else
+                {
+                                    $this->load->model('Asociado_model');
+                                    $data['all_asociado'] = $this->Asociado_model->get_all_asociado();
+
+                                    $this->load->model('Gestion_model');
+                                    $data['all_gestion'] = $this->Gestion_model->get_all_gestion();
+
+                                    $this->load->model('Organizacion_model');
+                                    $data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
+
+                                    $this->load->model('Estado_model');
+                                    $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                    $data['_view'] = 'mesa_directiva/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Asociado_model');
-				$data['all_asociado'] = $this->Asociado_model->get_all_asociado();
-
-				$this->load->model('Gestion_model');
-				$data['all_gestion'] = $this->Gestion_model->get_all_gestion();
-
-				$this->load->model('Organizacion_model');
-				$data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
-
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-                $data['_view'] = 'mesa_directiva/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The mesa_directiva you are trying to edit does not exist.');
         }
-        else
-            show_error('The mesa_directiva you are trying to edit does not exist.');
     } 
 
     /*
@@ -109,16 +131,18 @@ class Mesa_directiva extends CI_Controller{
      */
     function remove($mesadir_id)
     {
-        $mesa_directiva = $this->Mesa_directiva_model->get_mesa_directiva($mesadir_id);
+        if($this->acceso(35)){
+            $mesa_directiva = $this->Mesa_directiva_model->get_mesa_directiva($mesadir_id);
 
-        // check if the mesa_directiva exists before trying to delete it
-        if(isset($mesa_directiva['mesadir_id']))
-        {
-            $this->Mesa_directiva_model->delete_mesa_directiva($mesadir_id);
-            redirect('mesa_directiva/index');
+            // check if the mesa_directiva exists before trying to delete it
+            if(isset($mesa_directiva['mesadir_id']))
+            {
+                $this->Mesa_directiva_model->delete_mesa_directiva($mesadir_id);
+                redirect('mesa_directiva/index');
+            }
+            else
+                show_error('The mesa_directiva you are trying to delete does not exist.');
         }
-        else
-            show_error('The mesa_directiva you are trying to delete does not exist.');
     }
     
 }

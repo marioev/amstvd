@@ -5,51 +5,71 @@
  */
  
 class Informacion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Informacion_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of informacion
      */
     function index()
     {
-        $data['informacion'] = $this->Informacion_model->get_all_informacion();
-        
-        $data['_view'] = 'informacion/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(30)){
+            $data['informacion'] = $this->Informacion_model->get_all_informacion();
+
+            $data['_view'] = 'informacion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new informacion
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(30)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('informacion_titulo','Informacion Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'organ_id' => $this->input->post('organ_id'),
-				'informacion_titulo' => $this->input->post('informacion_titulo'),
-				'informacion_fecha' => $this->input->post('informacion_fecha'),
-				'informacion_contenido' => $this->input->post('informacion_contenido'),
-            );
-            
-            $informacion_id = $this->Informacion_model->add_informacion($params);
-            redirect('informacion/index');
-        }
-        else
-        {
-			$this->load->model('Organizacion_model');
-			$data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
-            
-            $data['_view'] = 'informacion/add';
-            $this->load->view('layouts/main',$data);
+                    $this->form_validation->set_rules('informacion_titulo','Informacion Titulo','required');
+
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'organ_id' => $this->input->post('organ_id'),
+                                    'informacion_titulo' => $this->input->post('informacion_titulo'),
+                                    'informacion_fecha' => $this->input->post('informacion_fecha'),
+                                    'informacion_contenido' => $this->input->post('informacion_contenido'),
+                );
+
+                $informacion_id = $this->Informacion_model->add_informacion($params);
+                redirect('informacion/index');
+            }
+            else
+            {
+                            $this->load->model('Organizacion_model');
+                            $data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
+
+                $data['_view'] = 'informacion/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -57,39 +77,41 @@ class Informacion extends CI_Controller{
      * Editing a informacion
      */
     function edit($informacion_id)
-    {   
-        // check if the informacion exists before trying to edit it
-        $data['informacion'] = $this->Informacion_model->get_informacion($informacion_id);
-        
-        if(isset($data['informacion']['informacion_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(30)){
+            // check if the informacion exists before trying to edit it
+            $data['informacion'] = $this->Informacion_model->get_informacion($informacion_id);
 
-			$this->form_validation->set_rules('informacion_titulo','Informacion Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'organ_id' => $this->input->post('organ_id'),
-					'informacion_titulo' => $this->input->post('informacion_titulo'),
-					'informacion_fecha' => $this->input->post('informacion_fecha'),
-					'informacion_contenido' => $this->input->post('informacion_contenido'),
-                );
+            if(isset($data['informacion']['informacion_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Informacion_model->update_informacion($informacion_id,$params);            
-                redirect('informacion/index');
+                            $this->form_validation->set_rules('informacion_titulo','Informacion Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'organ_id' => $this->input->post('organ_id'),
+                                            'informacion_titulo' => $this->input->post('informacion_titulo'),
+                                            'informacion_fecha' => $this->input->post('informacion_fecha'),
+                                            'informacion_contenido' => $this->input->post('informacion_contenido'),
+                    );
+
+                    $this->Informacion_model->update_informacion($informacion_id,$params);            
+                    redirect('informacion/index');
+                }
+                else
+                {
+                                    $this->load->model('Organizacion_model');
+                                    $data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
+
+                    $data['_view'] = 'informacion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Organizacion_model');
-				$data['all_organizacion'] = $this->Organizacion_model->get_all_organizacion();
-
-                $data['_view'] = 'informacion/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The informacion you are trying to edit does not exist.');
         }
-        else
-            show_error('The informacion you are trying to edit does not exist.');
     } 
 
     /*
@@ -97,16 +119,18 @@ class Informacion extends CI_Controller{
      */
     function remove($informacion_id)
     {
-        $informacion = $this->Informacion_model->get_informacion($informacion_id);
+        if($this->acceso(30)){
+            $informacion = $this->Informacion_model->get_informacion($informacion_id);
 
-        // check if the informacion exists before trying to delete it
-        if(isset($informacion['informacion_id']))
-        {
-            $this->Informacion_model->delete_informacion($informacion_id);
-            redirect('informacion/index');
+            // check if the informacion exists before trying to delete it
+            if(isset($informacion['informacion_id']))
+            {
+                $this->Informacion_model->delete_informacion($informacion_id);
+                redirect('informacion/index');
+            }
+            else
+                show_error('The informacion you are trying to delete does not exist.');
         }
-        else
-            show_error('The informacion you are trying to delete does not exist.');
     }
     
 }
