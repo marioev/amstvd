@@ -150,12 +150,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <?php
+                        if($rolusuario[4-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('aporte_asociado');?>" class="nav-link">
                                 <i class="fa fa-list-ol nav-icon"></i>
                                 <p>Aportes</p>
                             </a>
                         </li>
+                        <?php }?>
                         <!--<li class="nav-item">
                             <a href="<?php //echo site_url('asociado');?>" class="nav-link">
                                 <i class="fa fa-user nav-icon"></i>
@@ -173,30 +177,48 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <?php
+                        if($rolusuario[1-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('aporte');?>" class="nav-link">
                                 <i class="fa fa-list-ol nav-icon"></i>
                                 <p>Aportes</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[8-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('reunion');?>" class="nav-link">
                                 <i class="fa fa-users nav-icon"></i>
                                 <p>Reuniones</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[18-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('asociado');?>" class="nav-link">
                                 <i class="fa fa-user nav-icon"></i>
                                 <p>Socios</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[34-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('gestion');?>" class="nav-link">
                                 <i class="fa fa-calendar nav-icon"></i>
                                 <p>Gesti&oacute;n</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -208,42 +230,68 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <?php
+                        if($rolusuario[23-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('configuracion');?>" class="nav-link">
                                 <i class="fa fa-check-square nav-icon"></i>
                                 <p>Configuraci&oacute;n</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('estado');?>" class="nav-link">
                                 <i class="fa fa-toggle-on nav-icon"></i>
                                 <p>Estado</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[25-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('estado_civil');?>" class="nav-link">
                                 <i class="fa fa-odnoklassniki nav-icon"></i>
                                 <p>Estado Civil</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[26-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('expedido');?>" class="nav-link">
                                 <i class="fa fa-vcard-o nav-icon"></i>
                                 <p>Expedido</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[27-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('genero');?>" class="nav-link">
                                 <i class="fa fa-venus-mars nav-icon"></i>
                                 <p>G&eacute;nero</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[28-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('Organizacion');?>" class="nav-link">
                                 <i class="fa fa-bank nav-icon"></i>
                                 <p>Organizaci&oacute;n</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -255,18 +303,28 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <?php
+                        if($rolusuario[7-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('tipo_aporte');?>" class="nav-link">
                                 <i class="fa fa-bars"></i>
                                 <p>Tipo Aporte</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[29-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('tipo_reunion');?>" class="nav-link">
                                 <i class="fa fa-list"></i>
                                 <p>Tipo Reuni&oacute;n</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -301,24 +359,38 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <?php
+                        if($rolusuario[31-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('rol');?>" class="nav-link">
                                 <i class="fa fa-gg"></i>
                                 <p>Roles</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[32-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('tipo_usuario');?>" class="nav-link">
                                 <i class="fa fa-list-ul"></i>
                                 <p>Tipo Usuario</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[33-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li class="nav-item">
                             <a href="<?php echo site_url('usuario');?>" class="nav-link">
                                 <i class="fa fa-users"></i>
                                 <p>Usuarios</p>
                             </a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
             </ul>
@@ -344,10 +416,10 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
+    <strong><!--Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.--></strong>
+    <!--All rights reserved.-->
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0-rc
+      <!--<b>Version</b> 3.1.0-rc-->
     </div>
   </footer>
 
